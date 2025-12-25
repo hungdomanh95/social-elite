@@ -18,7 +18,7 @@ export const Marquee = styled.div`
   white-space: nowrap;
   text-align: left;
 
-  /* tránh hover/repaint làm jump */
+  /* chống jump/reflow */
   contain: layout paint;
 
   &[data-fade="1"] {
@@ -50,7 +50,6 @@ export const Track = styled.div`
 
   animation: ticker-marquee var(--duration, 18s) linear infinite;
 
-  /* ✅ TrustBy style: pause only (no duration change => no restart => no jerk) */
   ${Marquee}[data-pause="1"]:hover & {
     animation-play-state: paused;
   }
@@ -75,40 +74,22 @@ export const Row = styled.div`
   align-items: center;
   gap: var(--gap, 28px);
   padding: 14px 0;
+  padding-right: var(--gap, 28px);
 `;
 
-export const Item = styled.span<{ "data-uppercase"?: "1" | "0" }>`
+export const Item = styled.span`
   display: inline-flex;
   align-items: center;
 
-  /* variant=text: áp style chữ giống ảnh */
-  ${Marquee}[data-variant="text"] & {
-    font-weight: 850;
-    font-size: 12px;
-    letter-spacing: 0.28px;
-    color: rgba(255, 255, 255, 0.85);
+  /* default “text look” (item custom vẫn ok vì node tự style) */
+  font-weight: 850;
+  font-size: 12px;
+  letter-spacing: 0.28px;
+  color: rgba(255, 255, 255, 0.85);
+  text-transform: uppercase;
 
-    ${({ ["data-uppercase"]: u }) => (u === "1" ? "text-transform: uppercase;" : "")}
-  }
-`;
-
-export const ItemLink = styled.a<{ "data-uppercase"?: "1" | "0" }>`
-  display: inline-flex;
-  align-items: center;
-  text-decoration: none;
-
-  ${Marquee}[data-variant="text"] & {
-    font-weight: 850;
-    font-size: 12px;
-    letter-spacing: 0.28px;
-    color: rgba(255, 255, 255, 0.85);
-
-    ${({ ["data-uppercase"]: u }) => (u === "1" ? "text-transform: uppercase;" : "")}
-  }
-
-  &:hover {
-    ${Marquee}[data-variant="text"] & {
-      color: rgba(255, 255, 255, 0.95);
-    }
+  /* img đẹp hơn */
+  img {
+    display: block;
   }
 `;

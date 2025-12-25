@@ -2,6 +2,21 @@ import React, { useMemo } from "react";
 import * as S from "./ecosystemOverview.styled";
 import TickerMarquee from "@/shared/components/TickerMarquee";
 import CountUp from "@/shared/components/CountUp";
+import {
+  TrendingUp,
+  Briefcase,
+  Cpu,
+  Users,
+  Monitor,
+} from "lucide-react";
+
+const ticker = [
+  { label: "TRENDING", Icon: TrendingUp },
+  { label: "PERSONAL OPERATION", Icon: Briefcase },
+  { label: "TECHNOLOGY", Icon: Cpu },
+  { label: "SOCIAL FIRST", Icon: Users },
+  { label: "DIGITAL CONTENT", Icon: Monitor },
+];
 
 type Stat = {
   value: number;
@@ -26,12 +41,19 @@ const EcosystemOverview: React.FC<Props> = ({
 }) => {
   const defaultBadges = useMemo(
     () => [
-      "#No.1 influencer platform and celeb network",
       <>
-        #Winner of Shopee Awards 2024{" "}
+        <S.BadgeAccent>#No.1</S.BadgeAccent>
+        {" "}influencer platform and celeb network
+      </>,
+      <>
+        <S.BadgeAccent>#Winner </S.BadgeAccent>
+        of Shopee Awards 2024{" "}
         <S.BadgeAccent>Excellence Commercial MCN</S.BadgeAccent>
       </>,
-      "#2nd Runner Up Youtube Works Awards 2025",
+     <>
+       <S.BadgeAccent>#2nd</S.BadgeAccent>
+        {" "}Runner Up of Youtube Works Awards 2025
+     </>
     ],
     []
   );
@@ -88,19 +110,18 @@ const EcosystemOverview: React.FC<Props> = ({
           </S.Stats>
         </S.Content>
       </S.Container>
-
       <TickerMarquee
-        items={[
-          "Digital Content",
-          "Trending",
-          "Personal Operation",
-          "Technology",
-          "Social First",
-        ]}
-        durationSec={18}
-        pauseOnHover
-        showDot
-        fadeEdges
+        items={ticker.map(({ label, Icon }) => (
+          <span
+            key={label}
+            style={{ display: "inline-flex", gap: 10, alignItems: "center" }}
+          >
+            <Icon size={16} color="var(--accent)" />
+            <span style={{ fontSize: 20 }}>{label}</span>
+          </span>
+        ))}
+        durationSec={50}
+        gapPx={56}
       />
     </S.Section>
   );

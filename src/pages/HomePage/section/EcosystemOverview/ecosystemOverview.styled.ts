@@ -5,15 +5,96 @@ const bp = {
   lg: 1024,
 };
 
+// export const Section = styled.section`
+//   position: relative;
+//   padding: 72px 0 0;
+
+//   @media (max-width: ${bp.lg}px) {
+//     padding: 62px 0 0;
+//   }
+//   @media (max-width: ${bp.md}px) {
+//     padding: 46px 0 0;
+//   }
+
+//   /* reveal animation */
+//   [data-reveal] {
+//     opacity: 0;
+//     transform: translateY(10px);
+//     animation: eco-reveal 700ms ease forwards;
+//   }
+
+//   @keyframes eco-reveal {
+//     to {
+//       opacity: 1;
+//       transform: translateY(0);
+//     }
+//   }
+// `;
+
 export const Section = styled.section`
   position: relative;
+  overflow: hidden; /* ✅ để glow không tràn ra ngoài */
   padding: 72px 0 0;
+
+  /* ✅ nền + vignette nhẹ */
+  background:
+    radial-gradient(1200px 700px at 50% 18%, rgba(255,255,255,0.03) 0%, transparent 60%),
+    radial-gradient(900px 520px at 10% 10%, rgba(255,255,255,0.02) 0%, transparent 55%),
+    #050707;
 
   @media (max-width: ${bp.lg}px) {
     padding: 62px 0 0;
   }
   @media (max-width: ${bp.md}px) {
     padding: 46px 0 0;
+  }
+
+  /* ✅ green glow “lan” từ dưới lên giống ảnh */
+  &::before {
+    content: "";
+    position: absolute;
+    inset: -20%;
+    pointer-events: none;
+    z-index: 0;
+
+    background:
+      radial-gradient(60% 55% at 18% 100%,
+        rgba(34, 197, 94, 0.28) 0%,
+        rgba(34, 197, 94, 0.16) 25%,
+        rgba(34, 197, 94, 0.06) 42%,
+        transparent 62%),
+      radial-gradient(55% 50% at 55% 105%,
+        rgba(34, 197, 94, 0.18) 0%,
+        rgba(34, 197, 94, 0.10) 30%,
+        transparent 60%),
+      radial-gradient(40% 35% at 88% 18%,
+        rgba(34, 197, 94, 0.10) 0%,
+        transparent 55%);
+  }
+
+  /* ✅ “band” xanh ở phần đáy (nơi ticker chạy) */
+  &::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 180px;
+    pointer-events: none;
+    z-index: 0;
+
+    background: linear-gradient(
+      to top,
+      rgba(34, 197, 94, 0.22) 0%,
+      rgba(34, 197, 94, 0.10) 35%,
+      transparent 100%
+    );
+  }
+
+  /* ✅ đảm bảo content nằm trên glow */
+  > * {
+    position: relative;
+    z-index: 1;
   }
 
   /* reveal animation */
@@ -31,10 +112,13 @@ export const Section = styled.section`
   }
 `;
 
+
 export const Container = styled.div`
   max-width: 1320px;
   margin: 0 auto;
-  padding: 0 24px;
+  display: flex;
+  justify-content: center;
+  /* padding: 0 128px; */
 
   @media (max-width: ${bp.md}px) {
     padding: 0 16px;
@@ -105,7 +189,7 @@ export const Badges = styled.div`
 `;
 
 export const Badge = styled.div`
-  font-size: 14px;
+  font-size: 16px;
   line-height: 1.4;
   font-weight: 650;
   letter-spacing: 0.1px;
@@ -145,7 +229,7 @@ export const StatNumber = styled.div`
 `;
 
 export const StatLabel = styled.div`
-  font-size: 13px;
+  font-size: 16px;
   color: rgba(255, 255, 255, 0.6);
   line-height: 1.35;
 `;
