@@ -70,11 +70,10 @@ const Contact: React.FC<ContactProps> = (props) => {
 
             <S.Field>
               <S.Label>message</S.Label>
-              <S.Textarea
+              <S.Input
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
                 placeholder="Tell us what you need help with"
-                rows={3}
               />
             </S.Field>
 

@@ -4,6 +4,7 @@ import linkedin from "@/assets/icons/linkedin.png";
 import facebook from "@/assets/icons/facebook.png";
 import instagram from "@/assets/icons/instagram.png";
 import tiktok from "@/assets/icons/tiktok.png";
+import Black_BG from "@/assets/images/Black_BG.png";
 
 type SocialType = "linkedin" | "facebook" | "instagram" | "tiktok";
 
@@ -35,10 +36,7 @@ const FooterBottom: React.FC<FooterBottomProps> = (props) => {
         <S.FooterTop>
           <S.FooterTopLeft>
             <S.Brand>
-              <S.BrandText>
-                <span className="white">social</span>
-                <span className="green">elite</span>
-              </S.BrandText>
+              <S.BrandLogo src={Black_BG} alt='logo' />
             </S.Brand>
 
             <S.Info>

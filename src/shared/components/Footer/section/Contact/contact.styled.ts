@@ -55,12 +55,11 @@ export const ContactTitle = styled.div``;
 
 export const ContactHeading = styled.h2`
   margin: 0;
-  font-size: 44px;
+  font-size: 64px;
   line-height: 1.05;
-  letter-spacing: -0.4px;
-  font-weight: 900;
-  color: var(--accent);
-
+  letter-spacing: -1px;
+  font-weight: 700;
+  color: var(--accent-3);
   @media (max-width: ${bp.lg}px) {
     font-size: 38px;
   }
@@ -96,11 +95,11 @@ export const Field = styled.div`
 `;
 
 export const Label = styled.div`
-  font-size: 13px;
+  font-size: 18px;
   font-weight: 700;
   letter-spacing: 0.2px;
   text-transform: lowercase;
-  color: rgba(255, 255, 255, 0.75);
+  color: rgba(255, 255, 255, 1);
 
   @media (max-width: ${bp.md}px) {
     font-size: 12px;
@@ -115,7 +114,7 @@ const baseInput = `
   outline: none;
   padding: 10px 0;
 
-  border-bottom: 1px solid rgba(255, 255, 255, 0.18);
+  border-bottom: 2px solid rgba(255, 255, 255, 0.18);
 
   &::placeholder {
     color: rgba(255, 255, 255, 0.35);
@@ -161,14 +160,14 @@ export const SendBtn = styled.button`
 
   padding: 12px 22px;
   border-radius: var(--radius-xl);
-  font-weight: 900;
+  font-weight: 600;
   letter-spacing: 0.2px;
 
-  color: #062213;
-  background: linear-gradient(180deg, #2cff7a, var(--accent-2));
-  box-shadow: var(--shadow-accent);
+  color: #000000;
+  background: var(--accent-3);
+  /* box-shadow: var(--shadow-accent); */
 
-  &:hover {
+  /* &:hover {
     filter: brightness(1.03);
   }
 
@@ -176,7 +175,7 @@ export const SendBtn = styled.button`
     cursor: not-allowed;
     opacity: 0.55;
     filter: none;
-  }
+  } */
 
   @media (max-width: ${bp.md}px) {
     padding: 11px 18px;
