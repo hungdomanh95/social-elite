@@ -2,20 +2,21 @@ import React, { useMemo } from "react";
 import * as S from "./ecosystemOverview.styled";
 import TickerMarquee from "@/shared/components/TickerMarquee";
 import CountUp from "@/shared/components/CountUp";
-import {
-  TrendingUp,
-  Briefcase,
-  Cpu,
-  Users,
-  Monitor,
-} from "lucide-react";
+import Icon from "@/assets/icons";
+// import {
+//   TrendingUp,
+//   Briefcase,
+//   Cpu,
+//   Users,
+//   Monitor,
+// } from "lucide-react";
 
 const ticker = [
-  { label: "TRENDING", Icon: TrendingUp },
-  { label: "PERSONAL OPERATION", Icon: Briefcase },
-  { label: "TECHNOLOGY", Icon: Cpu },
-  { label: "SOCIAL FIRST", Icon: Users },
-  { label: "DIGITAL CONTENT", Icon: Monitor },
+  { label: "TRENDING", icon: "TrendingUp" },
+  { label: "PERSONAL OPERATION", icon: "Briefcase" },
+  { label: "TECHNOLOGY", icon: "Cpu" },
+  { label: "SOCIAL FIRST", icon: "Users" },
+  { label: "DIGITAL CONTENT", icon: "Monitor" },
 ];
 
 type Stat = {
@@ -111,12 +112,12 @@ const EcosystemOverview: React.FC<Props> = ({
         </S.Content>
       </S.Container>
       <TickerMarquee
-        items={ticker.map(({ label, Icon }) => (
+        items={ticker.map(({ label, icon }) => (
           <span
             key={label}
             style={{ display: "inline-flex", gap: 10, alignItems: "center" }}
           >
-            <Icon size={16} color="var(--accent)" />
+            <Icon name={icon} size={16} color="var(--accent)" />
             <span style={{ fontSize: 20 }}>{label}</span>
           </span>
         ))}

@@ -3,14 +3,14 @@ import brand2 from "@/assets/images/brand/brand2.png";
 import brand3 from "@/assets/images/brand/brand3.png";
 import brand4 from "@/assets/images/brand/brand4.png";
 
-import talent1 from "@/assets/images/talents/talent_01.png";
-import talent2 from "@/assets/images/talents/talent_02.png";
-import talent3 from "@/assets/images/talents/talent_03.png";
-import talent4 from "@/assets/images/talents/talent_04.png";
-import talent5 from "@/assets/images/talents/talent_05.png";
-import talent6 from "@/assets/images/talents/talent_06.png";
-import talent7 from "@/assets/images/talents/talent_07.png";
-import talent8 from "@/assets/images/talents/talent_08.png";
+import talent1 from "@/assets/images/talents/talent1.png";
+import talent2 from "@/assets/images/talents/talent2.png";
+import talent3 from "@/assets/images/talents/talent3.png";
+import talent4 from "@/assets/images/talents/talent4.png";
+import talent5 from "@/assets/images/talents/talent5.png";
+import talent6 from "@/assets/images/talents/talent6.png";
+import talent7 from "@/assets/images/talents/talent7.png";
+import talent8 from "@/assets/images/talents/talent8.png";
 
 export const leftTalents = [
   {
@@ -71,6 +71,45 @@ export const rightTalents = [
     imageSrc: talent8,
     alt: "Talent 8",
     href: "#",
+  },
+];
+
+export type CapacityItem = {
+  key:
+    | "AGENCY_SERVICE"
+    | "SOCIAL_CHANNEL_NETWORK"
+    | "CREATOR_BUSINESS_MANAGEMENT"
+    | "COMPLEX_STUDIO_SERVICE"
+    | "MCN";
+  title: string; // dùng \n để xuống dòng
+  icon: string;
+};
+
+export const CAPACITY_ITEMS:CapacityItem[] = [
+  {
+    key: "AGENCY_SERVICE",
+    title: "Agency Service",
+    icon: "BadgeCheck", // huy hiệu/chứng nhận
+  },
+  {
+    key: "SOCIAL_CHANNEL_NETWORK",
+    title: "Social Channel\nNetwork",
+    icon: "Users", // network người dùng
+  },
+  {
+    key: "CREATOR_BUSINESS_MANAGEMENT",
+    title: "Creator Business\nManagement",
+    icon: "Briefcase", // quản lý/kinh doanh
+  },
+  {
+    key: "COMPLEX_STUDIO_SERVICE",
+    title: "Complex Studio\nService",
+    icon: "Camera", // studio
+  },
+  {
+    key: "MCN",
+    title: "Multi-Channel Network\n(MCN)",
+    icon: "Monitor", // màn hình/MCN
   },
 ];
 
