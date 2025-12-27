@@ -12,13 +12,24 @@ import talent6 from "@/assets/images/talents/talent6.png";
 import talent7 from "@/assets/images/talents/talent7.png";
 import talent8 from "@/assets/images/talents/talent8.png";
 
-export const leftTalents = [
+
+export type Talent = {
+  id: string | number;
+  name: string;
+  imageSrc: string;
+  alt?: string;
+  href?: string;
+  position?: number;
+};
+
+export const leftTalents: Talent[] = [
   {
     id: 1,
     name: "Talent 1",
     imageSrc: talent1,
     alt: "Talent 1",
     href: "#",
+    position: 1,
   },
   {
     id: 2,
@@ -26,6 +37,7 @@ export const leftTalents = [
     imageSrc: talent2,
     alt: "Talent 2",
     href: "#",
+    position: 2,
   },
   {
     id: 3,
@@ -33,6 +45,7 @@ export const leftTalents = [
     imageSrc: talent3,
     alt: "Talent 3",
     href: "#",
+    position: 4,
   },
   {
     id: 4,
@@ -40,10 +53,11 @@ export const leftTalents = [
     imageSrc: talent4,
     alt: "Talent 4",
     href: "#",
+    position: 3,
   },
 ];
 
-export const rightTalents = [
+export const rightTalents: Talent[] = [
   {
     id: 5,
     name: "Talent 5",
@@ -138,3 +152,18 @@ const DATA_TRUST_BY = [
 ];
 
 export default DATA_TRUST_BY;
+
+export type SuccessStory = {
+  id: string | number;
+  title: string;
+  category: string;
+  imageSrc?: string; // optional
+  href?: string;
+};
+
+export const SUCCESS_STORIES: SuccessStory[] = [
+  { id: 1, title: "Fashion Week Vietnam", category: "Fashion & Lifestyle" },
+  { id: 2, title: "Tech Launch Campaign", category: "Technology" },
+  { id: 3, title: "Beauty Brand Collab", category: "Beauty & Wellness" },
+  { id: 4, title: "Lifestyle Brand", category: "Lifestyle" },
+];

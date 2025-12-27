@@ -1,15 +1,9 @@
-import React from "react";
+import React, { useMemo } from "react";
 import * as S from "./ourCapacity.styled";
+import BG_Capacity from "@/assets/images/BG_Capacity.png";
+
 import { CAPACITY_ITEMS } from "../../mockData";
 import Icon from "@/assets/icons";
-
-const POS = {
-  AGENCY_SERVICE: { x: 50, y: 14 },
-  SOCIAL_CHANNEL_NETWORK: { x: 84, y: 40 },
-  CREATOR_BUSINESS_MANAGEMENT: { x: 70, y: 84 },
-  COMPLEX_STUDIO_SERVICE: { x: 30, y: 84 },
-  MCN: { x: 16, y: 40 },
-} as const;
 
 const orderedKeys = [
   "AGENCY_SERVICE",
@@ -19,78 +13,119 @@ const orderedKeys = [
   "MCN",
 ] as const;
 
+const deg2rad = (deg: number) => (deg * Math.PI) / 180;
+
 const OurCapacity: React.FC = () => {
   const maskId = React.useId();
 
+  /**
+   * Regular pentagon khớp layout hình:
+   * top y ≈ 14, bottom y ≈ 84  -> CY ≈ 52.7, R ≈ 38.7
+   */
+  const CX = 50;
+  const CY = 52.7;
+  const R = 38.7;
+
+  const vertices = useMemo(() => {
+    const angles = [-90, -18, 54, 126, 198];
+    return angles.map((a) => ({
+      x: CX + R * Math.cos(deg2rad(a)),
+      y: CY + R * Math.sin(deg2rad(a)),
+    }));
+  }, []);
+
+  const pointsStr = useMemo(() => {
+    const pts = vertices.map((p) => `${p.x.toFixed(1)} ${p.y.toFixed(1)}`);
+    return `${pts.join(", ")}, ${pts[0]}`;
+  }, [vertices]);
+
+  // ✅ tăng radius “hole” để line không chạm mép circle => không còn vệt xanh lọt vào
+const HOLE_OUTER = 11.8;   // 11.5–12.5 tuỳ mắt
+const HOLE_CENTER = 16.2;  // 15.5–16.8 tuỳ mắt
+
   return (
-    <S.Section>
+    <S.Section $bg={BG_Capacity}>
       <S.Container>
-        <S.Diagram>
-          {/* center (đứng yên) */}
-          <S.Center>
-            <S.CenterTitle>ALL-IN-ONE</S.CenterTitle>
-            <S.CenterSub>
-              Ecosystem of
-              <br />
-              social commerce &amp;
-              <br />
-              influencer solutions
-            </S.CenterSub>
-          </S.Center>
+        <S.Header>
+          <S.Kicker>Our Capacity</S.Kicker>
+          <S.Headline>Comprehensive Set Of Service</S.Headline>
+        </S.Header>
 
-          {/* ✅ Orbit xoay tròn: gồm line + nodes */}
-          <S.Orbit style={{ ["--dur" as any]: "22s" } as React.CSSProperties}>
-            <S.Lines viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden>
-              <defs>
-                <mask id={maskId} maskUnits="userSpaceOnUse">
-                  <rect x="0" y="0" width="100" height="100" fill="white" />
+        {/* ✅ full-bleed wrapper cho mobile */}
+        <S.Bleed>
+          <S.Diagram
+            style={
+              {
+                ["--cy" as any]: `${CY}%`,
+              } as React.CSSProperties
+            }
+          >
+            <S.Stage>
+              {/* Center đứng yên */}
+              <S.Center>
+                <S.CenterTitle>ALL-IN-ONE</S.CenterTitle>
+                <S.CenterSub>
+                  Ecosystem of
+                  <br />
+                  social commerce &amp;
+                  <br />
+                  influencer solutions
+                </S.CenterSub>
+              </S.Center>
 
-                  {/* center hole */}
-                  <circle cx="50" cy="56" r="15" fill="black" />
+              {/* Orbit xoay: line + nodes */}
+              <S.Orbit style={{ ["--dur" as any]: "22s" } as React.CSSProperties}>
+                <S.Lines viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden>
+                  <defs>
+                    <mask id={maskId} maskUnits="userSpaceOnUse">
+                      <rect x="0" y="0" width="100" height="100" fill="white" />
 
-                  {/* outer holes (tăng nhẹ r để line không chạm vào circle) */}
-                  <circle cx="50" cy="14" r="12" fill="black" />
-                  <circle cx="84" cy="40" r="12" fill="black" />
-                  <circle cx="70" cy="84" r="12" fill="black" />
-                  <circle cx="30" cy="84" r="12" fill="black" />
-                  <circle cx="16" cy="40" r="12" fill="black" />
-                </mask>
-              </defs>
+                      {/* cut center */}
+                      <circle cx={CX} cy={CY} r={HOLE_CENTER} fill="black" />
 
-              <polyline
-                mask={`url(#${maskId})`}
-                points="50 14, 84 40, 70 84, 30 84, 16 40, 50 14"
-              />
-            </S.Lines>
+                      {/* cut outer nodes */}
+                      {vertices.map((p, idx) => (
+                        <circle key={idx} cx={p.x} cy={p.y} r={HOLE_OUTER} fill="black" />
+                      ))}
+                    </mask>
+                  </defs>
 
-            {orderedKeys.map((key, idx) => {
-              const item = CAPACITY_ITEMS.find((x) => x.key === key)!;
-              const p = POS[key];
-              return (
-                <S.Node
-                  key={item.key}
-                  style={
-                    {
-                      ["--x" as any]: `${p.x}%`,
-                      ["--y" as any]: `${p.y}%`,
-                      ["--i" as any]: idx,
-                    } as React.CSSProperties
-                  }
-                >
-                  <S.NodeInner>
-                    {/* ✅ counter-rotate để nội dung không xoay */}
-                    <S.NodeContent>
-                      <S.NodeIconWrap>
-                        <Icon name={item.icon} size={26} />
-                      </S.NodeIconWrap>
-                      <S.NodeText>{item.title}</S.NodeText>
-                    </S.NodeContent>
-                  </S.NodeInner>
-                </S.Node>
-              );
-            })}
-          </S.Orbit>
-        </S.Diagram>
+                  <polyline mask={`url(#${maskId})`} points={pointsStr} />
+                </S.Lines>
+
+                {orderedKeys.map((key, idx) => {
+                  const item = CAPACITY_ITEMS.find((x) => x.key === key)!;
+                  const p = vertices[idx];
+
+                  return (
+                    <S.Node
+                      key={item.key}
+                      style={
+                        {
+                          ["--x" as any]: `${p.x}%`,
+                          ["--y" as any]: `${p.y}%`,
+                          ["--i" as any]: idx,
+                        } as React.CSSProperties
+                      }
+                    >
+                      <S.NodeInner>
+                        <S.NodeShell>
+                          {/* counter-rotate để nội dung không xoay */}
+                          <S.NodeContent>
+                            <S.NodeIconWrap>
+                              <Icon name={item.icon} size={26} />
+                            </S.NodeIconWrap>
+                            <S.NodeText>{item.title}</S.NodeText>
+                          </S.NodeContent>
+                        </S.NodeShell>
+                      </S.NodeInner>
+                    </S.Node>
+                  );
+                })}
+              </S.Orbit>
+            </S.Stage>
+          </S.Diagram>
+        </S.Bleed>
       </S.Container>
     </S.Section>
   );

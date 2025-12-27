@@ -9,7 +9,8 @@ export const Title = styled.div`
   color: var(--accent);
   font-weight: 800;
   letter-spacing: 0.2px;
-  margin-bottom: 14px;
+  /* margin-bottom: 14px; */
+  margin-top: 14px;
 `;
 
 export const Marquee = styled.div`

@@ -15,19 +15,19 @@ type Props = {
 
 const TrustBy: React.FC<Props> = (props) => {
   return (
-    <TickerMarquee
-      title="Trusted By"
-      items={props.brands.map((b) => (
-        <img
-          key={b.id}
-          src={b.img}
-          alt={b.alt}
-          style={{ height: 46, width: "auto" }}
-        />
-      ))}
-      durationSec={props.speedSec}
-      gapPx={56}
-    />
+      <TickerMarquee
+        title="Trusted By"
+        items={props.brands.map((b) => (
+          <img
+            key={b.id}
+            src={b.img}
+            alt={b.alt}
+            style={{ height: 46, width: "auto" }}
+          />
+        ))}
+        durationSec={props.speedSec}
+        gapPx={56}
+      />
   );
 };
 

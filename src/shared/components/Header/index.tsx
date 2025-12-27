@@ -13,8 +13,8 @@ export default function Header() {
       { label: "About Us", to: "/about-us" },
       { label: "Brand Service", to: "/brand-service" },
       { label: "For Creator", to: "/for-creator" },
-      { label: "Blog", to: "/blog" },
-      { label: "Our Campaign", to: "/our-campaign" },
+      { label: "Blogs", to: "/blog" },
+      { label: "Our Campaigns", to: "/our-campaign" },
     ],
     []
   );
@@ -32,9 +32,19 @@ export default function Header() {
     };
   }, [open]);
 
+  // ESC để đóng menu
+  useEffect(() => {
+    if (!open) return;
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setOpen(false);
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [open]);
+
   return (
     <S.Wrap>
-      <S.Glow />
+      <S.Glow aria-hidden />
 
       <S.Inner>
         <S.Logo as={Link} to="/" aria-label="Social Elite">
