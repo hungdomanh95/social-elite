@@ -1,4 +1,3 @@
-import React from "react";
 import * as S from "./aboutUs.styled";
 
 export default function AboutUs() {
