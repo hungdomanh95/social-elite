@@ -11,6 +11,7 @@ type Props = {
   gapPx?: number;           // default 28
 
   className?: string;
+  style?: React.CSSProperties;
 };
 
 const clamp = (n: number, min: number, max: number) =>
@@ -26,6 +27,7 @@ const TickerMarquee: React.FC<Props> = ({
   gapPx = 28,
 
   className,
+  style
 }) => {
   const base = useMemo(() => items.filter(Boolean), [items]);
   const [repeat, setRepeat] = useState(2);
@@ -80,7 +82,7 @@ const TickerMarquee: React.FC<Props> = ({
   if (!base.length) return null;
 
   return (
-    <S.Wrap className={className}>
+    <S.Wrap className={className} style={style}>
       {title ? <S.Title>{title}</S.Title> : null}
 
       <S.Marquee

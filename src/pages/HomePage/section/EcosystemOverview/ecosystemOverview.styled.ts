@@ -126,7 +126,7 @@ export const Container = styled.div`
 `;
 
 export const Content = styled.div`
-  max-width: 860px;
+  /* max-width: 860px; */
 `;
 
 export const Heading = styled.div`
@@ -135,21 +135,20 @@ export const Heading = styled.div`
 `;
 
 export const TitleLine = styled.div`
-  font-weight: 800;
-  font-size: clamp(34px, 3.2vw, 44px);
-  letter-spacing: -0.6px;
-  line-height: 1.05;
+  font-weight: 600;
+  font-size: clamp(46px, 5.2vw, 72px); /* ✅ max 72px */
+  letter-spacing: -1px;
+  line-height: 1.02; /* ✅ giữ gọn khi chữ to */
   color: rgba(255, 255, 255, 0.92);
 `;
 
 export const TitleLineAccent = styled.div`
-  font-weight: 900;
-  font-size: clamp(34px, 3.2vw, 44px);
-  letter-spacing: -0.6px;
-  line-height: 1.05;
+  font-weight: 600;
+  font-size: clamp(46px, 5.2vw, 72px); /* ✅ max 72px */
+  letter-spacing: -1px;
+  line-height: 1.02;
   color: var(--accent);
 `;
-
 export const CTARow = styled.div`
   margin-top: 14px;
 `;
@@ -189,11 +188,11 @@ export const Badges = styled.div`
 `;
 
 export const Badge = styled.div`
-  font-size: 16px;
+  font-size: 24px;
   line-height: 1.4;
-  font-weight: 650;
+  font-weight: 700;
   letter-spacing: 0.1px;
-  color: rgba(255, 255, 255, 0.8);
+  color: rgba(255, 255, 255,1);
 `;
 
 export const BadgeAccent = styled.span`
@@ -205,8 +204,8 @@ export const Stats = styled.div`
   margin-top: 26px;
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 22px;
-  max-width: 760px;
+  gap: 80px;
+  /* max-width: 760px; */
 
   @media (max-width: ${bp.md}px) {
     grid-template-columns: 1fr;
@@ -221,15 +220,15 @@ export const StatCard = styled.div`
 `;
 
 export const StatNumber = styled.div`
-  font-size: clamp(40px, 4.2vw, 56px);
-  font-weight: 950;
+  font-size: clamp(40px, 6.2vw, 96px);
+  font-weight: 600;
   letter-spacing: -0.8px;
   line-height: 1;
   color: var(--accent);
 `;
 
 export const StatLabel = styled.div`
-  font-size: 16px;
-  color: rgba(255, 255, 255, 0.6);
+  font-size: 28px;
+  color: rgba(255, 255, 255, 1);
   line-height: 1.35;
 `;

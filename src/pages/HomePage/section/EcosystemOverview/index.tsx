@@ -112,6 +112,7 @@ const EcosystemOverview: React.FC<Props> = ({
         </S.Content>
       </S.Container>
       <TickerMarquee
+        style={{ marginTop: 32 , marginBottom: 24 }}
         items={ticker.map(({ label, icon }) => (
           <span
             key={label}
