@@ -19,7 +19,7 @@ const HomePage = () => {
       <EliteTalents leftTalents={leftTalents} rightTalents={rightTalents}/>
       <OurCapacity />
       <SuccessStories items={SUCCESS_STORIES} />
-      <TrustBy brands={DATA_TRUST_BY} speedSec={20} />
+      <TrustBy brands={DATA_TRUST_BY}/>
     </div>
   );
 };

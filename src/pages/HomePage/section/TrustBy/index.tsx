@@ -10,7 +10,6 @@ export type TrustBrand = {
 
 type Props = {
   brands: TrustBrand[];
-  speedSec?: number;
 };
 
 const TrustBy: React.FC<Props> = (props) => {
@@ -25,7 +24,7 @@ const TrustBy: React.FC<Props> = (props) => {
             style={{ height: 46, width: "auto" }}
           />
         ))}
-        durationSec={props.speedSec}
+        durationSec={50}
         gapPx={56}
       />
   );
