@@ -3,21 +3,9 @@ import * as S from "./ecosystemOverview.styled";
 import TickerMarquee from "@/shared/components/TickerMarquee";
 import CountUp from "@/shared/components/CountUp";
 import Icon from "@/assets/icons";
-// import {
-//   TrendingUp,
-//   Briefcase,
-//   Cpu,
-//   Users,
-//   Monitor,
-// } from "lucide-react";
+import { TICKER_TRENDING } from "../../mockData";
 
-const ticker = [
-  { label: "TRENDING", icon: "TrendingUp" },
-  { label: "PERSONAL OPERATION", icon: "Briefcase" },
-  { label: "TECHNOLOGY", icon: "Cpu" },
-  { label: "SOCIAL FIRST", icon: "Users" },
-  { label: "DIGITAL CONTENT", icon: "Monitor" },
-];
+
 
 type Stat = {
   value: number;
@@ -113,7 +101,7 @@ const EcosystemOverview: React.FC<Props> = ({
       </S.Container>
       <TickerMarquee
         style={{ marginTop: 32 , marginBottom: 24 }}
-        items={ticker.map(({ label, icon }) => (
+        items={TICKER_TRENDING.map(({ label, icon }) => (
           <span
             key={label}
             style={{ display: "inline-flex", gap: 10, alignItems: "center" }}

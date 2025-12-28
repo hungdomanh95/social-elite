@@ -167,3 +167,11 @@ export const SUCCESS_STORIES: SuccessStory[] = [
   { id: 3, title: "Beauty Brand Collab", category: "Beauty & Wellness" },
   { id: 4, title: "Lifestyle Brand", category: "Lifestyle" },
 ];
+
+export const TICKER_TRENDING = [
+  { label: "TRENDING", icon: "TrendingUp" },
+  { label: "PERSONAL OPERATION", icon: "Briefcase" },
+  { label: "TECHNOLOGY", icon: "Cpu" },
+  { label: "SOCIAL FIRST", icon: "Users" },
+  { label: "DIGITAL CONTENT", icon: "Monitor" },
+];

@@ -16,7 +16,7 @@ const HomePage = () => {
     <div style={{ backgroundColor : "#010402"}}>
       <Banner videoSrc={SE_2025} />
       <EcosystemOverview />
-      <EliteTalents leftTalents={leftTalents} rightTalents={rightTalents}/>
+      <EliteTalents />
       <OurCapacity />
       <SuccessStories items={SUCCESS_STORIES} />
       <TrustBy brands={DATA_TRUST_BY}/>
