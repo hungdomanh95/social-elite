@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import * as S from "./header.styled";
+import Black_BG from "@/assets/images/Black_BG.png";
 
 type MenuItem = { label: string; to: string };
 
@@ -11,18 +12,16 @@ export default function Header() {
   const menu: MenuItem[] = useMemo(
     () => [
       { label: "About Us", to: "/about-us" },
-      { label: "Brand Service", to: "/brand-service" },
+      { label: "For Brand", to: "/brand-service" },
       { label: "For Creator", to: "/for-creator" },
-      { label: "Blogs", to: "/blog" },
-      { label: "Our Campaigns", to: "/our-campaign" },
+      { label: "Blog", to: "/blog" },
+      { label: "Our Campaign", to: "/our-campaign" },
     ],
     []
   );
 
-  // đóng mobile menu khi đổi route
   useEffect(() => setOpen(false), [location.pathname]);
 
-  // lock scroll khi mở menu mobile
   useEffect(() => {
     if (!open) return;
     const prev = document.body.style.overflow;
@@ -32,7 +31,6 @@ export default function Header() {
     };
   }, [open]);
 
-  // ESC để đóng menu
   useEffect(() => {
     if (!open) return;
     const onKeyDown = (e: KeyboardEvent) => {
@@ -45,64 +43,55 @@ export default function Header() {
   return (
     <S.Wrap>
       <S.Glow aria-hidden />
-
       <S.Inner>
-        <S.Logo as={Link} to="/" aria-label="Social Elite">
-          <S.LogoText>
-            social<S.LogoAccent>elite</S.LogoAccent>
-          </S.LogoText>
-        </S.Logo>
+        {/* CỤM GIỮA: Logo + Menu + CTA (giống hình) */}
+        <S.CenterRow>
+          <S.Logo to="/" aria-label="Social Elite">
+            <S.LogoImg src={Black_BG} alt="socialelite" />
+          </S.Logo>
 
-        <S.Nav aria-label="Primary">
-          {menu.map((m) => (
-            <S.MenuLink
-              key={m.to}
-              to={m.to}
-              className={({ isActive }) => (isActive ? "active" : "")}
-            >
-              {m.label}
-            </S.MenuLink>
-          ))}
-        </S.Nav>
+          <S.Nav aria-label="Primary">
+            {menu.map((m) => (
+              <S.MenuLink
+                key={m.to}
+                to={m.to}
+                className={({ isActive }) => (isActive ? "active" : "")}
+              >
+                {m.label}
+              </S.MenuLink>
+            ))}
+          </S.Nav>
 
-        <S.Right>
           <S.Cta
             to="/contact-us"
             className={({ isActive }) => (isActive ? "active" : "")}
           >
             Contact Us
           </S.Cta>
+        </S.CenterRow>
 
-          <S.Hamburger
-            type="button"
-            aria-label="Open menu"
-            aria-expanded={open}
-            onClick={() => setOpen((v) => !v)}
-          >
-            <span />
-            <span />
-            <span />
-          </S.Hamburger>
-        </S.Right>
+        {/* Mobile */}
+        <S.Hamburger
+          type="button"
+          aria-label="Open menu"
+          aria-expanded={open}
+          onClick={() => setOpen((v) => !v)}
+        >
+          <span />
+          <span />
+          <span />
+        </S.Hamburger>
       </S.Inner>
 
       {open && (
-        <S.MobileOverlay
-          role="dialog"
-          aria-modal="true"
-          onClick={() => setOpen(false)}
-        >
+        <S.MobileOverlay role="dialog" aria-modal="true" onClick={() => setOpen(false)}>
           <S.MobilePanel onClick={(e) => e.stopPropagation()}>
             <S.MobileTop>
-              <S.MobileBrand>
-                social<span>elite</span>
+              <S.MobileBrand to="/" onClick={() => setOpen(false)} aria-label="Social Elite">
+                <img src={Black_BG} alt="socialelite" />
               </S.MobileBrand>
 
-              <S.CloseBtn
-                type="button"
-                aria-label="Close menu"
-                onClick={() => setOpen(false)}
-              >
+              <S.CloseBtn type="button" aria-label="Close menu" onClick={() => setOpen(false)}>
                 ✕
               </S.CloseBtn>
             </S.MobileTop>

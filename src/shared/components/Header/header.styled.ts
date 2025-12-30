@@ -1,9 +1,7 @@
 import styled from "styled-components";
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 
-const bp = {
-  md: 900,
-};
+const bp = { md: 900 };
 
 export const Wrap = styled.header`
   position: sticky;
@@ -11,11 +9,40 @@ export const Wrap = styled.header`
   z-index: 50;
 
   height: var(--header-h, 64px);
-  background: #0a0d0b;
   overflow: hidden;
 
-  /* giống UI: không “glass” quá nhiều, chỉ hơi “polish” */
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  /* Glass base */
+  background: rgba(10, 13, 11, 0.42);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.14);
+
+  /* Glass blur */
+  -webkit-backdrop-filter: blur(14px) saturate(140%);
+  backdrop-filter: blur(14px) saturate(140%);
+
+  /* depth */
+  box-shadow:
+    0 18px 40px rgba(0, 0, 0, 0.35),
+    0 1px 0 rgba(255, 255, 255, 0.06) inset;
+
+  /* top sheen */
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.12),
+      rgba(255, 255, 255, 0.04) 32%,
+      transparent 70%
+    );
+    opacity: 0.65;
+  }
+
+  /* fallback nếu browser không support blur */
+  @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    background: rgba(10, 13, 11, 0.88);
+  }
 `;
 
 export const Glow = styled.div`
@@ -23,23 +50,17 @@ export const Glow = styled.div`
   inset: -2px;
   pointer-events: none;
 
-  /* nền có rings + green blob như hình */
+  /* Glass-friendly glow: nhẹ, trong, không “đục” */
   background:
-    /* green blob right */
-    radial-gradient(900px 220px at 82% 35%, rgba(30, 215, 96, 0.36), transparent 65%),
-    radial-gradient(720px 220px at 95% 0%, rgba(30, 215, 96, 0.22), transparent 60%),
-    radial-gradient(520px 240px at 92% 90%, rgba(30, 215, 96, 0.14), transparent 60%),
+    radial-gradient(900px 220px at 86% 35%, rgba(30, 215, 96, 0.32), transparent 66%),
+    radial-gradient(700px 220px at 100% 0%, rgba(30, 215, 96, 0.18), transparent 62%),
+    radial-gradient(520px 240px at 95% 100%, rgba(30, 215, 96, 0.12), transparent 62%),
+    radial-gradient(circle at 12% 60%, transparent 0 54px, rgba(255, 255, 255, 0.08) 55px 56px, transparent 57px 240px);
 
-    /* subtle rings left */
-    radial-gradient(circle at 8% 40%, transparent 0 44px, rgba(255, 255, 255, 0.06) 45px 46px, transparent 47px 180px),
-    radial-gradient(circle at 14% 70%, transparent 0 70px, rgba(255, 255, 255, 0.045) 71px 72px, transparent 73px 240px),
-    radial-gradient(circle at 22% 30%, transparent 0 96px, rgba(255, 255, 255, 0.035) 97px 98px, transparent 99px 320px),
-
-    /* soft top sheen */
-    linear-gradient(180deg, rgba(255, 255, 255, 0.06), transparent 55%);
-
-  opacity: 0.95;
+  opacity: 0.9;
+  filter: blur(0.2px);
 `;
+
 
 export const Inner = styled.div`
   position: relative;
@@ -47,42 +68,41 @@ export const Inner = styled.div`
 
   max-width: var(--container, 1180px);
   margin: 0 auto;
-  padding: 0 20px;
+  padding: 0 22px;
 
-  /* Canh giữa nav đúng như UI */
-  display: grid;
-  grid-template-columns: 1fr auto 1fr;
+  display: flex;
   align-items: center;
-  gap: 18px;
+  justify-content: center;
 
   @media (max-width: ${bp.md}px) {
-    grid-template-columns: auto 1fr auto;
+    justify-content: space-between;
     padding: 0 16px;
   }
 `;
 
-export const Logo = styled.a`
-  justify-self: start;
+/* Cụm giữa (logo + menu + cta) */
+export const CenterRow = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 26px;
+`;
+
+export const Logo = styled(Link)`
+  display: inline-flex;
+  align-items: center;
   text-decoration: none;
 `;
 
-export const LogoText = styled.div`
-  font-weight: 900;
-  letter-spacing: 0.2px;
-  color: #fff;
-  font-size: 18px;
-  line-height: 1;
-`;
-
-export const LogoAccent = styled.span`
-  color: var(--accent, #1ed760);
+export const LogoImg = styled.img`
+  height: 22px;
+  width: auto;
+  display: block;
 `;
 
 export const Nav = styled.nav`
-  justify-self: center;
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: 22px;
 
   @media (max-width: ${bp.md}px) {
     display: none;
@@ -92,40 +112,41 @@ export const Nav = styled.nav`
 export const MenuLink = styled(NavLink)`
   position: relative;
   text-decoration: none;
-  font-weight: 500;
-  font-size: 12.5px;
-  letter-spacing: 0.12px;
 
-  color: rgba(255, 255, 255, 0.72);
-  padding: 6px 2px;
+  font-size: 16px; /* yêu cầu */
+  font-weight: 500;
+  letter-spacing: 0.1px;
+
+  color: rgba(255, 255, 255, 0.78);
+  padding: 8px 4px;
 
   transition: color 180ms ease;
+
+  &:hover {
+    color: rgba(255, 255, 255, 0.92);
+  }
+
+  &.active {
+    color: var(--accent, #1ed760);
+  }
 
   &::after {
     content: "";
     position: absolute;
-    left: 0;
-    right: 0;
-    bottom: -10px;
+    left: 6px;
+    right: 6px;
+    bottom: -12px;
     height: 2px;
     border-radius: 999px;
-    background: rgba(30, 215, 96, 0.9);
+    background: rgba(30, 215, 96, 0.95);
     box-shadow: 0 0 18px rgba(30, 215, 96, 0.45);
     transform: scaleX(0);
     transform-origin: center;
     transition: transform 220ms ease;
   }
 
-  &:hover {
-    color: rgba(255, 255, 255, 0.9);
-  }
-
   &:hover::after {
-    transform: scaleX(0.65);
-  }
-
-  &.active {
-    color: #fff;
+    transform: scaleX(0.55);
   }
 
   &.active::after {
@@ -133,20 +154,14 @@ export const MenuLink = styled(NavLink)`
   }
 `;
 
-export const Right = styled.div`
-  justify-self: end;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-`;
-
 export const Cta = styled(NavLink)`
   text-decoration: none;
-  font-weight: 700;
-  font-size: 12.5px;
-  letter-spacing: 0.12px;
 
-  padding: 10px 18px;
+  font-size: 16px; /* yêu cầu */
+  font-weight: 700;
+  letter-spacing: 0.1px;
+
+  padding: 10px 22px;
   border-radius: 999px;
 
   color: #07140b;
@@ -176,6 +191,7 @@ export const Cta = styled(NavLink)`
 
 export const Hamburger = styled.button`
   display: none;
+
   width: 42px;
   height: 42px;
   border-radius: 999px;
@@ -196,7 +212,7 @@ export const Hamburger = styled.button`
     width: 18px;
     height: 2px;
     margin: 4px auto;
-    background: rgba(255, 255, 255, 0.9);
+    background: rgba(255, 255, 255, 0.92);
     border-radius: 2px;
   }
 
@@ -239,7 +255,6 @@ export const MobilePanel = styled.div`
   position: relative;
   overflow: hidden;
 
-  /* green blob nhẹ giống tone header */
   &::before {
     content: "";
     position: absolute;
@@ -272,13 +287,15 @@ export const MobileTop = styled.div`
   justify-content: space-between;
 `;
 
-export const MobileBrand = styled.div`
-  font-weight: 900;
-  font-size: 18px;
-  color: #fff;
+export const MobileBrand = styled(Link)`
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
 
-  span {
-    color: var(--accent, #1ed760);
+  img {
+    height: 22px;
+    width: auto;
+    display: block;
   }
 `;
 
@@ -312,7 +329,10 @@ export const MobileLink = styled(NavLink)`
   padding: 12px 12px;
   border-radius: 14px;
 
-  color: rgba(255, 255, 255, 0.86);
+  font-size: 16px; /* đồng bộ */
+  font-weight: 600;
+
+  color: rgba(255, 255, 255, 0.88);
   background: rgba(255, 255, 255, 0.03);
   border: 1px solid rgba(255, 255, 255, 0.06);
 
@@ -325,7 +345,7 @@ export const MobileLink = styled(NavLink)`
   }
 
   &.active {
-    color: #fff;
+    color: var(--accent, #1ed760);
     border-color: rgba(30, 215, 96, 0.35);
     box-shadow: 0 0 0 3px rgba(30, 215, 96, 0.12);
   }
@@ -338,8 +358,9 @@ export const MobileCta = styled(NavLink)`
   text-align: center;
   text-decoration: none;
 
+  font-size: 16px;
   font-weight: 800;
-  letter-spacing: 0.12px;
+  letter-spacing: 0.1px;
 
   padding: 12px 16px;
   border-radius: 999px;

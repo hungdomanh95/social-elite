@@ -2,7 +2,7 @@
   /* brand */
   --accent: #1fd760;
   --accent-2: #18c55a;
-  --accent-3: #39D760;
+  --accent-3: #39d760;
 
   /* base */
   --bg: #050705;
@@ -23,35 +23,40 @@
   --header-h: 64px;
   --radius-md: 12px;
   --radius-xl: 999px;
+
+  /* ========== FONT (global) ========== */
+  --font-sans: "Cal Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI",
+    Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+
+  /* ========== TYPE SCALE (global) ========== */
+  --fs-body: 17px;
+  --fs-sm: 14px;
+  --fs-xs: 12px;
+
+  --fs-h1: clamp(40px, 4.2vw, 64px);
+  --fs-h2: clamp(32px, 3.2vw, 48px);
+  --fs-h3: clamp(24px, 2.4vw, 32px);
 }
 
-// * { box-sizing: border-box; }
-// html, body { height: 100%; }
-
-// body {
-//   margin: 0;
-//   background: var(--bg);
-//   color: var(--text);
-//   font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
-// }
-
-// a { color: inherit; }
-
+/* ========== Reset ========== */
 *,
 *::before,
 *::after {
   box-sizing: border-box;
 }
 
-/* ========== Remove default spacing ========== */
 * {
   margin: 0;
   padding: 0;
 }
 
-/* ========== Base ========== */
 html:focus-within {
   scroll-behavior: smooth;
+}
+
+html {
+  /* base font-size cho toàn site */
+  font-size: 16px;
 }
 
 body {
@@ -61,16 +66,16 @@ body {
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
 
-  /* set font + bg theo project của bạn */
-  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto,
-    Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+  font-family: var(--font-sans);
+  font-size: var(--fs-body);
+
   margin: 0;
   background: var(--bg);
   color: var(--text);
   overflow-x: hidden;
 }
 
-/* ========== Media defaults ========== */
+/* Media defaults */
 img,
 picture,
 video,
@@ -80,7 +85,7 @@ svg {
   max-width: 100%;
 }
 
-/* ========== Form elements inherit font ========== */
+/* Form elements inherit font */
 input,
 button,
 textarea,
@@ -99,7 +104,7 @@ textarea {
   resize: vertical;
 }
 
-/* ========== Text overflow safety ========== */
+/* Text overflow safety */
 p,
 h1,
 h2,
@@ -110,7 +115,21 @@ h6 {
   overflow-wrap: break-word;
 }
 
-/* ========== Lists / links ========== */
+/* Optional: set default heading sizes (nếu bạn muốn đồng bộ toàn project) */
+h1 {
+  font-size: var(--fs-h1);
+  line-height: 1.05;
+}
+h2 {
+  font-size: var(--fs-h2);
+  line-height: 1.1;
+}
+h3 {
+  font-size: var(--fs-h3);
+  line-height: 1.15;
+}
+
+/* Lists / links */
 ul,
 ol {
   list-style: none;
@@ -121,13 +140,13 @@ a {
   text-decoration: none;
 }
 
-/* ========== Tables ========== */
+/* Tables */
 table {
   border-collapse: collapse;
   border-spacing: 0;
 }
 
-/* ========== Reduced motion ========== */
+/* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
   html:focus-within {
     scroll-behavior: auto;
