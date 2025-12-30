@@ -57,8 +57,8 @@ export const ContactHeading = styled.h2`
   margin: 0;
   font-size: 64px;
   line-height: 1.05;
-  letter-spacing: -1px;
-  font-weight: 700;
+  // letter-spacing: -1px;
+  // font-weight: 700;
   color: var(--accent-3);
   @media (max-width: ${bp.lg}px) {
     font-size: 38px;
@@ -96,8 +96,8 @@ export const Field = styled.div`
 
 export const Label = styled.div`
   font-size: 18px;
-  font-weight: 700;
-  letter-spacing: 0.2px;
+  // font-weight: 700;
+  // letter-spacing: 0.2px;
   text-transform: lowercase;
   color: rgba(255, 255, 255, 1);
 
@@ -160,7 +160,7 @@ export const SendBtn = styled.button`
 
   padding: 12px 22px;
   border-radius: var(--radius-xl);
-  font-weight: 600;
+  // font-weight: 600;
   letter-spacing: 0.2px;
 
   color: #000000;

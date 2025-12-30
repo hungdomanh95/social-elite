@@ -47,8 +47,8 @@ export const Copy = styled.div`
 
 export const H1 = styled.h1`
   margin: 0;
-  font-weight: 800;
-  letter-spacing: -0.02em;
+  // font-weight: 800;
+  // letter-spacing: -0.02em;
   line-height: 1.03;
   font-size: clamp(38px, 4.8vw, 76px);
 
@@ -72,7 +72,7 @@ export const CTAButton = styled.button`
 
   background: var(--accent, #22c55e);
   color: #07130b;
-  font-weight: 800;
+  // font-weight: 800;
 
   box-shadow: 0 14px 32px rgba(34, 197, 94, 0.18);
 
@@ -110,7 +110,7 @@ export const Stat = styled.div`
 `;
 
 export const StatValue = styled.div`
-  font-weight: 900;
+  // font-weight: 900;
   color: var(--accent, #22c55e);
   font-size: clamp(54px, 6.5vw, 104px);
   letter-spacing: -0.02em;
@@ -184,7 +184,7 @@ export const OrbitCenter = styled.div`
   border-radius: 999px;
   display: grid;
   place-items: center;
-  font-weight: 800;
+  // font-weight: 800;
   letter-spacing: -0.02em;
   background: radial-gradient(circle at 50% 50%, rgba(34, 197, 94, 1), rgba(34, 197, 94, 0.72));
   color: #0b1a10;
@@ -237,7 +237,7 @@ export const OfferInner = styled.div`
 export const OfferTitle = styled.h2`
   margin: 0 0 34px;
   text-align: center;
-  font-weight: 900;
+  // font-weight: 900;
   letter-spacing: -0.02em;
   color: var(--accent, #22c55e);
   font-size: clamp(32px, 3.2vw, 48px);
@@ -303,7 +303,7 @@ export const OfferIcon = styled.div`
 `;
 
 export const OfferText = styled.div`
-  font-weight: 800;
+  // font-weight: 800;
   color: #0b0f0c;
   font-size: 18px;
 

@@ -114,8 +114,8 @@ export const MenuLink = styled(NavLink)`
   text-decoration: none;
 
   font-size: 16px; /* yêu cầu */
-  font-weight: 500;
-  letter-spacing: 0.1px;
+  // font-weight: 500;
+  // letter-spacing: 0.1px;
 
   color: rgba(255, 255, 255, 0.78);
   padding: 8px 4px;
@@ -158,7 +158,7 @@ export const Cta = styled(NavLink)`
   text-decoration: none;
 
   font-size: 16px; /* yêu cầu */
-  font-weight: 700;
+  // font-weight: 700;
   letter-spacing: 0.1px;
 
   padding: 10px 22px;
@@ -330,7 +330,7 @@ export const MobileLink = styled(NavLink)`
   border-radius: 14px;
 
   font-size: 16px; /* đồng bộ */
-  font-weight: 600;
+  // font-weight: 600;
 
   color: rgba(255, 255, 255, 0.88);
   background: rgba(255, 255, 255, 0.03);
@@ -359,7 +359,7 @@ export const MobileCta = styled(NavLink)`
   text-decoration: none;
 
   font-size: 16px;
-  font-weight: 800;
+  // font-weight: 800;
   letter-spacing: 0.1px;
 
   padding: 12px 16px;

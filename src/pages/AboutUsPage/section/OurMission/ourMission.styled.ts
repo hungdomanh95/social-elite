@@ -31,8 +31,8 @@ export const Hero = styled.section`
 
 export const HeroTitle = styled.h1`
   margin: 0;
-  /* font-weight: 800; */
-  letter-spacing: -0.02em;
+  // font-weight: 800;
+  // letter-spacing: -0.02em;
   color: ${ACCENT};
   font-size: clamp(44px, 5.2vw, 84px);
   line-height: 1;
@@ -71,7 +71,7 @@ export const SectionHeading = styled.div`
   }
 
   .text {
-    /* font-weight: 800; */
+  // font-weight: 800;
     color: ${ACCENT};
     font-size: clamp(24px, 2.6vw, 64px);
   }
@@ -104,7 +104,7 @@ export const MissionCard = styled.div`
 `;
 
 export const MissionKicker = styled.div`
-  /* font-weight: 800; */
+  // font-weight: 800;
   color: ${ACCENT};
   font-size: clamp(46px, 4.8vw, 86px);
   line-height: 1;
@@ -113,11 +113,11 @@ export const MissionKicker = styled.div`
 
 export const MissionMain = styled.div`
   margin-top: 10px;
-  /* font-weight: 800; */
+  // font-weight: 800;
   color: #fff;
   font-size: clamp(46px, 5vw, 86px);
   line-height: 1.04;
-  letter-spacing: -0.02em;
+  // letter-spacing: -0.02em;
 `;
 
 export const MissionRight = styled.div`

@@ -84,8 +84,8 @@ export const Pill = styled.div`
   border-radius: 999px;
 
   font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.02em;
+  // font-weight: 700;
+  // letter-spacing: 0.02em;
   color: rgba(0, 210, 106, 0.95);
 
   background: rgba(0, 210, 106, 0.10);
@@ -95,8 +95,8 @@ export const Pill = styled.div`
 export const Heading = styled.h2`
   margin: 0;
   color: #ffffff;
-  font-weight: 900;
-  letter-spacing: -0.02em;
+  // font-weight: 900;
+  // letter-spacing: -0.02em;
   line-height: 1.05;
 
   font-size: clamp(34px, 4.4vw, 54px);
@@ -115,7 +115,7 @@ const viewAllBase = css`
 
   padding: 10px 16px;
   border-radius: 999px;
-  font-weight: 800;
+  // font-weight: 800;
   font-size: 13px;
 
   background: var(--accent, #00d26a);
@@ -209,9 +209,9 @@ export const Thumb = styled.div<{ $src?: string }>`
 
 export const CardTitle = styled.div`
   color: rgba(255, 255, 255,1);
-  font-weight: 800;
+  // font-weight: 800;
   font-size: 16px;
-  letter-spacing: -0.01em;
+  // letter-spacing: -0.01em;
 
   @media (max-width: ${bp.md}px) {
     font-size: 15px;

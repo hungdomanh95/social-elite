@@ -27,8 +27,8 @@ export const SoundTag = styled.div`
   color: #111;
   box-shadow: 0 10px 22px rgba(0, 0, 0, 0.2);
 
-  font-weight: 800;
-  letter-spacing: 0.08em;
+  // font-weight: 800;
+  // letter-spacing: 0.08em;
   text-transform: uppercase;
   line-height: 1;
 

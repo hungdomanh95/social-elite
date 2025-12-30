@@ -135,17 +135,17 @@ export const Heading = styled.div`
 `;
 
 export const TitleLine = styled.div`
-  font-weight: 600;
+  /* font-weight: 600; */
   font-size: clamp(46px, 5.2vw, 72px); /* ✅ max 72px */
-  letter-spacing: -1px;
+  // letter-spacing: -1px;
   line-height: 1.02; /* ✅ giữ gọn khi chữ to */
   color: rgba(255, 255, 255, 0.92);
 `;
 
 export const TitleLineAccent = styled.div`
-  font-weight: 600;
+  /* font-weight: 600; */
   font-size: clamp(46px, 5.2vw, 72px); /* ✅ max 72px */
-  letter-spacing: -1px;
+  // letter-spacing: -1px;
   line-height: 1.02;
   color: var(--accent);
 `;
@@ -160,9 +160,9 @@ export const CTAButton = styled.button`
   padding: 8px 14px;
   border-radius: 999px;
 
-  font-weight: 800;
+    // font-weight: 800;
   font-size: 12px;
-  letter-spacing: 0.2px;
+  // letter-spacing: 0.2px;
 
   color: #0b1a10;
   background: var(--accent);
@@ -190,20 +190,23 @@ export const Badges = styled.div`
 export const Badge = styled.div`
   font-size: 24px;
   line-height: 1.4;
-  font-weight: 700;
-  letter-spacing: 0.1px;
+    // font-weight: 700;
+  // letter-spacing: 0.1px;
   color: rgba(255, 255, 255,1);
 `;
 
 export const BadgeAccent = styled.span`
   color: var(--accent);
-  font-weight: 800;
+    // font-weight: 800;
 `;
 
 export const Stats = styled.div`
   margin-top: 26px;
-  display: grid;
+  /* display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 80px; */
+  display: flex;
+  justify-content: center;
   gap: 80px;
   /* max-width: 760px; */
 
@@ -215,20 +218,23 @@ export const Stats = styled.div`
 `;
 
 export const StatCard = styled.div`
-  display: grid;
+  display: flex;
+  flex-direction: column;
   gap: 6px;
+  justify-content: center;
+  align-items: center;
 `;
 
 export const StatNumber = styled.div`
   font-size: clamp(40px, 6.2vw, 96px);
-  font-weight: 600;
-  letter-spacing: -0.8px;
+    // font-weight: 600;
+  // letter-spacing: -0.8px;
   line-height: 1;
   color: var(--accent);
 `;
 
 export const StatLabel = styled.div`
-  font-size: 28px;
+  font-size: 24px;
   color: rgba(255, 255, 255, 1);
   line-height: 1.35;
 `;

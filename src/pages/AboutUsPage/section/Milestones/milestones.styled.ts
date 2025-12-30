@@ -45,17 +45,17 @@ export const MilestonesHeading = styled.div`
   }
 
   .top {
-    font-weight: 800;
+  // font-weight: 800;
     color: ${ACCENT};
-    letter-spacing: -0.01em;
+  // letter-spacing: -0.01em;
     font-size: clamp(26px, 3vw, 40px);
     line-height: 1.05;
   }
 
   .bottom {
-    font-weight: 800;
+  // font-weight: 800;
     color: #fff;
-    letter-spacing: -0.01em;
+  // letter-spacing: -0.01em;
     font-size: clamp(26px, 3vw, 40px);
     line-height: 1.05;
   }
@@ -351,7 +351,7 @@ export const Content = styled.div<{ $side: "left" | "right" }>`
 
   .accent {
     color: ${ACCENT};
-    font-weight: 800;
+  // font-weight: 800;
   }
 
   animation: content-hit var(--cycle) ease-in-out infinite;
@@ -380,8 +380,8 @@ export const Content = styled.div<{ $side: "left" | "right" }>`
 `;
 
 export const Year = styled.div`
-  font-weight: 900;
-  letter-spacing: -0.02em;
+  // font-weight: 900;
+  // letter-spacing: -0.02em;
   color: #fff;
   font-size: clamp(52px, 4.8vw, 78px);
   line-height: 1;
@@ -404,6 +404,6 @@ export const Line = styled.div`
 
   &.accent {
     color: ${ACCENT};
-    font-weight: 900;
+  // font-weight: 900;
   }
 `;

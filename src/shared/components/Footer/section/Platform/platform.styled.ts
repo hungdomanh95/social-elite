@@ -141,14 +141,14 @@ export const TitleStack = styled.div`
 `;
 
 export const TitleLine = styled.div`
-  font-weight: 800;
-  letter-spacing: -0.8px;
+  // font-weight: 800;
+  // letter-spacing: -0.8px;
   line-height: 0.92;
   font-size: clamp(44px, 4.2vw, 72px);
 
   @media (max-width: ${bp.md}px) {
     line-height: 1;
-    letter-spacing: -0.5px;
+  // letter-spacing: -0.5px;
   }
 `;
 
@@ -207,8 +207,8 @@ export const Dot = styled.span`
 
 export const FeatureText = styled.span`
   color: rgba(255, 255, 255, 0.82);
-  font-weight: 500;
-  letter-spacing: 0.1px;
+  // font-weight: 500;
+  // letter-spacing: 0.1px;
   line-height: 1.55;
   font-size: 16px;
 

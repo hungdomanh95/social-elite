@@ -75,9 +75,9 @@ export const BrandLogo = styled.img`
 `;
 
 export const BrandText = styled.div`
-  font-weight: 900;
+  // font-weight: 900;
   font-size: 54px;
-  letter-spacing: -0.5px;
+  // letter-spacing: -0.5px;
   line-height: 1;
 
   .white {
@@ -117,14 +117,14 @@ export const InfoRow = styled.div`
 
 export const InfoLabel = styled.span`
   min-width: 64px;
-  font-weight: 700;
+  // font-weight: 700;
   color: rgba(255, 255, 255, 0.78);
 `;
 
 export const InfoValue = styled.a`
   text-decoration: none;
   color: var(--accent);
-  font-weight: 700;
+  // font-weight: 700;
 
   &:hover {
     filter: brightness(1.05);

@@ -59,8 +59,8 @@ export const HeroInner = styled.div`
 
 export const HeroTitle = styled.h1`
   margin: 0;
-  font-weight: 800;
-  letter-spacing: -0.035em;
+  // font-weight: 800;
+  // letter-spacing: -0.035em;
   line-height: 1.02;
   font-size: clamp(44px, 5.3vw, 92px);
 
@@ -90,7 +90,7 @@ export const HeroButton = styled.button`
   border-radius: 999px;
 
   padding: 10px 16px;
-  font-weight: 700;
+  // font-weight: 700;
   font-size: 12px;
 
   box-shadow: 0 10px 24px rgba(30, 215, 95, 0.18);
@@ -138,8 +138,8 @@ export const EngineGrid = styled.div`
 
 export const EngineTitle = styled.h2`
   margin: 0;
-  font-weight: 800;
-  letter-spacing: -0.035em;
+  // font-weight: 800;
+  // letter-spacing: -0.035em;
   line-height: 1.02;
   font-size: clamp(42px, 4.6vw, 76px);
 
@@ -198,8 +198,8 @@ export const FeatureContent = styled.div`
 export const FeatureTitle = styled.h3`
   margin: 0 0 6px;
   font-size: 16px;
-  font-weight: 800;
-  letter-spacing: -0.01em;
+  // font-weight: 800;
+  // letter-spacing: -0.01em;
 `;
 
 export const FeatureDesc = styled.p`
@@ -227,8 +227,8 @@ export const ProofSection = styled.section`
 export const ProofTitle = styled.h2`
   margin: 0;
   text-align: center;
-  font-weight: 800;
-  letter-spacing: -0.03em;
+  // font-weight: 800;
+  // letter-spacing: -0.03em;
   line-height: 1.08;
   font-size: clamp(28px, 2.8vw, 44px);
 
@@ -290,7 +290,7 @@ export const CtaGrid = styled.div`
 
 export const CtaTitle = styled.h3`
   margin: 0;
-  font-weight: 400;
+  // font-weight: 400;
   font-size: clamp(34px, 3.2vw, 56px);
   .dark {
     color: #0b0f0c;
@@ -310,9 +310,9 @@ export const CtaButton = styled.button`
 
   padding: 16px 32px;
   border-radius: 999px;
-  letter-spacing: 1.1px;
+  // letter-spacing: 1.1px;
 
-  font-weight: 300;
+  // font-weight: 300;
   font-size: 16px;
 
   box-shadow: 0 12px 28px rgba(0, 0, 0, 0.18);

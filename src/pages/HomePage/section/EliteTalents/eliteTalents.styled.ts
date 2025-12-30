@@ -199,7 +199,7 @@ export const Container = styled.div`
 export const Title = styled.h2`
   margin: 0 0 18px;
   font-size: clamp(28px, 3.2vw, 48px);
-  font-weight: 700;
+  // font-weight: 700;
   text-align: center;
   color: rgba(255, 255, 255, 0.95);
 

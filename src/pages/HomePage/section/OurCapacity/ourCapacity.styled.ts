@@ -82,7 +82,7 @@ export const Header = styled.div`
 
 export const Kicker = styled.div`
   color: rgba(255, 255, 255, 0.9);
-  font-weight: 700;
+  // font-weight: 700;
   font-size: 36px;
   line-height: 1.2;
 
@@ -95,9 +95,9 @@ export const Headline = styled.h2`
   margin: 10px 0 0;
   font-size: clamp(28px, 4.2vw, 44px);
   line-height: 1.05;
-  font-weight: 900;
+  // font-weight: 900;
   color: var(--accent, #00d26a);
-  letter-spacing: -0.02em;
+  // letter-spacing: -0.02em;
 `;
 
 /* ✅ wrapper full-bleed cho Diagram trên mobile */
@@ -130,8 +130,6 @@ export const Diagram = styled.div`
   margin: 0 auto;
   aspect-ratio: 1 / 1;
   overflow: visible;
-
-  container-type: inline-size;
 
   --cy: 52.7%;
   --scale: 0.94;
@@ -258,8 +256,8 @@ export const Center = styled.div`
 
 export const CenterTitle = styled.div`
   font-size: clamp(18px, 2.2vw, 26px);
-  font-weight: 900;
-  letter-spacing: 0.02em;
+  // font-weight: 900;
+  // letter-spacing: 0.02em;
   margin-bottom: 10px;
 
   @media (max-width: ${bp.md}px) {
@@ -272,7 +270,7 @@ export const CenterSub = styled.div`
   font-size: clamp(12px, 1.35vw, 16px);
   line-height: 1.35;
   text-align: center;
-  font-weight: 600;
+  // font-weight: 600;
   opacity: 0.95;
 
   @media (max-width: ${bp.md}px) {
@@ -375,7 +373,7 @@ export const NodeIconWrap = styled.div`
 export const NodeText = styled.div`
   color: rgba(255, 255, 255, 0.92);
   font-size: clamp(13px, 1.25vw, 16px);
-  font-weight: 500;
+  // font-weight: 500;
   text-align: center;
   white-space: pre-line;
   line-height: 1.25;
