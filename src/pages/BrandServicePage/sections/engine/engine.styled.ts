@@ -136,12 +136,12 @@ export const FeatureContent = styled.div`
 
 export const FeatureTitle = styled.h3`
   margin: 0 0 6px;
-  font-size: 16px;
+  font-size: 20px;
 `;
 
 export const FeatureDesc = styled.p`
   margin: 0;
-  font-size: 13px;
+  font-size: 15px;
   line-height: 1.6;
   color: rgba(11, 15, 12, 0.7);
 `;

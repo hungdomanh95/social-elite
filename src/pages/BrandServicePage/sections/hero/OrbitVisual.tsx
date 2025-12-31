@@ -16,7 +16,6 @@ export default function OrbitVisual({ className }: Props) {
     const mediaReduce = window.matchMedia?.("(prefers-reduced-motion: reduce)");
     if (mediaReduce?.matches) return;
 
-    // parallax nhẹ cho cả cụm (mượt bằng lerp)
     let tx = 0,
       ty = 0; // target
     let cx = 0,
@@ -77,7 +76,6 @@ export default function OrbitVisual({ className }: Props) {
 
         <S.WhiteMini />
 
-        {/* ✅ đúng ảnh gốc: chỉ 2 square, KHÔNG có mutedArc/diamond */}
         <S.SquareOutline />
         <S.RoundedSquare />
       </S.Center>
