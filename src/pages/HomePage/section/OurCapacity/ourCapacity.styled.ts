@@ -60,14 +60,14 @@ export const Container = styled.div`
   position: relative;
   z-index: 1;
 
-  width: min(1180px, calc(100% - 40px));
+  width: min(1240px, calc(100% - 40px));
   margin: 0 auto;
 
   /* ✅ quan trọng: KHÔNG clip ở container để Bleed thoát ra */
   /* overflow-x: hidden; */
 
   @media (max-width: ${bp.md}px) {
-    width: min(1180px, calc(100% - 28px));
+    width: min(1240px, calc(100% - 28px));
   }
 `;
 

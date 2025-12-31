@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, useCallback } from "react";
 import { useLocation } from "react-router-dom";
 import * as S from "./header.styled";
 import Black_BG from "@/assets/images/Black_BG.png";
@@ -20,8 +20,18 @@ export default function Header() {
     []
   );
 
-  useEffect(() => setOpen(false), [location.pathname]);
+  const scrollToTop = useCallback(() => {
+    const reduce = window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
+    window.scrollTo({ top: 0, left: 0, behavior: reduce ? "auto" : "smooth" });
+  }, []);
 
+  // đóng mobile menu + scroll top khi đổi route
+  useEffect(() => {
+    setOpen(false);
+    scrollToTop();
+  }, [location.pathname, scrollToTop]);
+
+  // lock scroll khi mở menu mobile
   useEffect(() => {
     if (!open) return;
     const prev = document.body.style.overflow;
@@ -31,6 +41,7 @@ export default function Header() {
     };
   }, [open]);
 
+  // ESC để đóng menu
   useEffect(() => {
     if (!open) return;
     const onKeyDown = (e: KeyboardEvent) => {
@@ -44,9 +55,8 @@ export default function Header() {
     <S.Wrap>
       <S.Glow aria-hidden />
       <S.Inner>
-        {/* CỤM GIỮA: Logo + Menu + CTA (giống hình) */}
         <S.CenterRow>
-          <S.Logo to="/" aria-label="Social Elite">
+          <S.Logo to="/" aria-label="Social Elite" onClick={scrollToTop}>
             <S.LogoImg src={Black_BG} alt="socialelite" />
           </S.Logo>
 
@@ -55,6 +65,7 @@ export default function Header() {
               <S.MenuLink
                 key={m.to}
                 to={m.to}
+                onClick={scrollToTop}
                 className={({ isActive }) => (isActive ? "active" : "")}
               >
                 {m.label}
@@ -64,13 +75,13 @@ export default function Header() {
 
           <S.Cta
             to="/contact-us"
+            onClick={scrollToTop}
             className={({ isActive }) => (isActive ? "active" : "")}
           >
             Contact Us
           </S.Cta>
         </S.CenterRow>
 
-        {/* Mobile */}
         <S.Hamburger
           type="button"
           aria-label="Open menu"
@@ -87,7 +98,14 @@ export default function Header() {
         <S.MobileOverlay role="dialog" aria-modal="true" onClick={() => setOpen(false)}>
           <S.MobilePanel onClick={(e) => e.stopPropagation()}>
             <S.MobileTop>
-              <S.MobileBrand to="/" onClick={() => setOpen(false)} aria-label="Social Elite">
+              <S.MobileBrand
+                to="/"
+                onClick={() => {
+                  scrollToTop();
+                  setOpen(false);
+                }}
+                aria-label="Social Elite"
+              >
                 <img src={Black_BG} alt="socialelite" />
               </S.MobileBrand>
 
@@ -101,6 +119,7 @@ export default function Header() {
                 <S.MobileLink
                   key={m.to}
                   to={m.to}
+                  onClick={scrollToTop}
                   className={({ isActive }) => (isActive ? "active" : "")}
                 >
                   {m.label}
@@ -110,6 +129,7 @@ export default function Header() {
 
             <S.MobileCta
               to="/contact-us"
+              onClick={scrollToTop}
               className={({ isActive }) => (isActive ? "active" : "")}
             >
               Contact Us

@@ -38,6 +38,6 @@ export const Container = styled.div`
   margin: 0 auto;
 
   @media (max-width: ${bp.md}px) {
-    width: min(1180px, calc(100% - 32px));
+    width: min(1240px, calc(100% - 32px));
   }
 `;

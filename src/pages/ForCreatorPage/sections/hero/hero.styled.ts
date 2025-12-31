@@ -33,13 +33,13 @@ export const HeroInner = styled.div`
   gap: clamp(26px, 3.6vw, 48px);
 
   @media (max-width: ${bp.lg}px) {
-    width: min(1180px, calc(100% - 48px));
+    width: min(1240px, calc(100% - 48px));
     padding: 54px 0 56px;
     gap: 22px;
   }
 
   @media (max-width: ${bp.md}px) {
-    width: min(1180px, calc(100% - 28px));
+    width: min(1240px, calc(100% - 28px));
   }
 `;
 
@@ -163,7 +163,7 @@ export const StatNumber = styled.div`
 `;
 
 export const StatLabel = styled.div`
-  font-size: clamp(14px, 1.35vw, 32px);
+  font-size: clamp(14px, 1.5vw, 48px);
   color: rgba(255, 255, 255, 0.86);
   line-height: 1.25;
 `;

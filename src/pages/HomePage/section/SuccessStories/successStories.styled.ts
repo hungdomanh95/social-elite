@@ -47,22 +47,27 @@ export const Section = styled.section`
 `;
 
 export const Container = styled.div`
-  width: min(1180px, calc(100% - 40px));
+  max-width: 1320px;
   margin: 0 auto;
 
+  /* giống Ecosystem */
   @media (max-width: ${bp.md}px) {
-    width: min(1180px, calc(100% - 28px));
+    padding: 0 16px;
   }
 `;
 
 export const Top = styled.div`
+  width: 100%;
+  max-width: 900px;   /* chỉnh theo ý, vd 860/900/980 */
+  margin: 0 auto 22px;
+
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
   gap: 18px;
-  margin-bottom: 22px;
 
   @media (max-width: ${bp.md}px) {
+    max-width: 100%;
     align-items: flex-start;
     flex-direction: column;
     gap: 14px;

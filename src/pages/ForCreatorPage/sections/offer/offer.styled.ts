@@ -63,12 +63,12 @@ export const OfferInner = styled.div`
   position: relative;
   z-index: 1;
 
-  width: min(1180px, calc(100% - 64px));
+  width: min(1240px, calc(100% - 64px));
   margin: 0 auto;
   padding: 64px 0 72px;
 
   @media (max-width: ${bp.md}px) {
-    width: min(1180px, calc(100% - 28px));
+    width: min(1240px, calc(100% - 28px));
     padding: 54px 0 60px;
   }
 `;

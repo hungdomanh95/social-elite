@@ -1,11 +1,22 @@
 import TickerMarquee from "@/shared/components/TickerMarquee";
+import { TICKER_TRENDING } from "@/pages/HomePage/mockData";
 
 import type { LucideIcon } from "lucide-react";
-import { TrendingUp, Briefcase, Cpu, Users, Monitor, Share2, ShoppingBag, Layers, BadgeCheck, Globe } from "lucide-react";
+import {
+  TrendingUp,
+  Briefcase,
+  Cpu,
+  Users,
+  Monitor,
+
+  Network,
+  ShoppingBag,
+  Layers,
+  CircleCheck,
+  Globe,
+} from "lucide-react";
 
 import * as S from "./engine.styled";
-import { Container } from "../../brandService.styled";
-import { TICKER_TRENDING } from "@/pages/HomePage/mockData";
 
 type Feature = {
   icon: "network" | "bag" | "stack" | "check" | "globe";
@@ -42,14 +53,14 @@ const FEATURES: Feature[] = [
 ];
 
 const FEATURE_ICONS: Record<Feature["icon"], LucideIcon> = {
-  network: Share2,
+  network: Network,
   bag: ShoppingBag,
   stack: Layers,
-  check: BadgeCheck,
+  check: CircleCheck,
   globe: Globe,
 };
 
-// Nếu mockData dùng chuỗi icon như "TrendingUp" | "Briefcase"...
+// ticker icons theo mockData (string)
 const TICKER_ICONS: Record<string, LucideIcon> = {
   TrendingUp,
   Briefcase,
@@ -66,27 +77,25 @@ function TickerIcon({ name }: { name: string }) {
 export default function SocialCommerceEngine() {
   return (
     <S.EngineSection>
-      <S.TickerWrap>
-        <TickerMarquee
-          items={TICKER_TRENDING.map(({ label, icon }) => (
-            <S.TickerItem key={label}>
-              <TickerIcon name={String(icon)} />
-              <span>{label}</span>
-            </S.TickerItem>
-          ))}
-          durationSec={50}
-          gapPx={56}
-        />
-      </S.TickerWrap>
+      <S.EngineContainer>
+        <S.TickerWrap>
+          <TickerMarquee
+            items={TICKER_TRENDING.map(({ label, icon }) => (
+              <S.TickerItem key={label}>
+                <TickerIcon name={String(icon)} />
+                <span>{label}</span>
+              </S.TickerItem>
+            ))}
+            durationSec={50}
+            gapPx={56}
+          />
+        </S.TickerWrap>
 
-      <Container>
         <S.EngineRow>
           <S.EngineTitle data-reveal>
-            Our Complete
-            <br />
-            <span className="accent">Social Commerce</span>
-            <br />
-            Engine
+            <span className="line">Our Complete</span>
+            <span className="line accent">Social Commerce</span>
+            <span className="line">Engine</span>
           </S.EngineTitle>
 
           <S.FeatureGrid data-reveal>
@@ -95,7 +104,7 @@ export default function SocialCommerceEngine() {
               return (
                 <S.FeatureItem key={f.title}>
                   <S.FeatureIcon aria-hidden="true">
-                    <IconCmp size={22} />
+                    <IconCmp size={18} />
                   </S.FeatureIcon>
 
                   <S.FeatureContent>
@@ -107,7 +116,7 @@ export default function SocialCommerceEngine() {
             })}
           </S.FeatureGrid>
         </S.EngineRow>
-      </Container>
+      </S.EngineContainer>
     </S.EngineSection>
   );
 }
