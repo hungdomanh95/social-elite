@@ -114,23 +114,26 @@ export const Section = styled.section`
 
 
 export const Container = styled.div`
-  max-width: 1320px;
+  /* ✅ gutter đồng nhất giữa các section */
+  width: min(1320px, calc(100% - 80px));
   margin: 0 auto;
+
   display: flex;
-  justify-content: center;
-  /* padding: 0 128px; */
+  justify-content: flex-start;
+  align-items: flex-start;
 
   @media (max-width: ${bp.md}px) {
-    padding: 0 16px;
+    width: min(1320px, calc(100% - 28px));
   }
 `;
 
 export const Content = styled.div`
-  /* max-width: 860px; */
+  width: 100%;
 `;
 
 export const Heading = styled.div`
-  display: grid;
+  display: flex;
+  flex-direction: column;
   gap: 8px;
 `;
 

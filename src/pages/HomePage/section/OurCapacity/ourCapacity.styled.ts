@@ -28,7 +28,7 @@ export const Section = styled.section<{ $bg: string }>`
   margin: 0;
   padding: 72px 0 80px;
 
-  /* ✅ chặn scroll ngang */
+  /* chặn scroll ngang */
   overflow-x: clip;
   @supports not (overflow-x: clip) {
     overflow-x: hidden;
@@ -63,9 +63,6 @@ export const Container = styled.div`
   width: min(1240px, calc(100% - 40px));
   margin: 0 auto;
 
-  /* ✅ quan trọng: KHÔNG clip ở container để Bleed thoát ra */
-  /* overflow-x: hidden; */
-
   @media (max-width: ${bp.md}px) {
     width: min(1240px, calc(100% - 28px));
   }
@@ -82,7 +79,6 @@ export const Header = styled.div`
 
 export const Kicker = styled.div`
   color: rgba(255, 255, 255, 0.9);
-  // font-weight: 700;
   font-size: 36px;
   line-height: 1.2;
 
@@ -95,57 +91,79 @@ export const Headline = styled.h2`
   margin: 10px 0 0;
   font-size: clamp(28px, 4.2vw, 44px);
   line-height: 1.05;
-  // font-weight: 900;
   color: var(--accent, #00d26a);
-  // letter-spacing: -0.02em;
 `;
 
-/* ✅ wrapper full-bleed cho Diagram trên mobile */
+/* ✅ FIX cắt góc iOS: dưới 640px bỏ full-bleed 100vw */
 export const Bleed = styled.div`
   width: 100%;
   margin: 0 auto;
+  overflow: visible;
 
   @media (max-width: ${bp.md}px) {
     width: 100vw;
     position: relative;
     left: 50%;
     transform: translateX(-50%);
-
-    /* ✅ safe padding 12px mỗi bên, không dùng calc */
     padding-left: max(12px, env(safe-area-inset-left));
     padding-right: max(12px, env(safe-area-inset-right));
     box-sizing: border-box;
   }
+
+  @media (max-width: 640px) {
+    width: 100%;
+    position: static;
+    left: auto;
+    transform: none;
+    padding-left: 0;
+    padding-right: 0;
+  }
 `;
 
-/**
- * ✅ Diagram:
- * - desktop: theo container
- * - mobile: full width trong Bleed (100%) nhưng nodeSize giới hạn để không cắt
- */
 export const Diagram = styled.div`
   position: relative;
 
-  width: clamp(320px, 62vw, 880px);
+  /* viewport height (dvh ưu tiên) */
+  --vh: 100vh;
+  @supports (height: 100dvh) {
+    --vh: 100dvh;
+  }
+
+  /* bound theo height để Orbit luôn trọn vẹn */
+  --orbitReserve: clamp(220px, 30vh, 360px);
+  --orbitSafePad: clamp(14px, 3.5vh, 40px);
+  --orbitHBound: max(240px, calc(var(--vh) - var(--orbitReserve) - var(--orbitSafePad)));
+
+  /* desktop/tablet: theo width */
+  --d0: clamp(320px, 62vw, 880px);
+  --d: min(var(--d0), var(--orbitHBound));
+
+  width: var(--d);
   margin: 0 auto;
   aspect-ratio: 1 / 1;
   overflow: visible;
 
+  /* ✅ Orbit typography */
+  font-family:
+    "Plus Jakarta Sans";
+    /* ui-sans-serif,
+    system-ui,
+    -apple-system,
+    "Segoe UI",
+    Roboto,
+    Helvetica,
+    Arial,
+    "Apple Color Emoji",
+    "Segoe UI Emoji"; */
+
   --cy: 52.7%;
   --scale: 0.94;
 
-  /* fallback */
-  --centerSize: clamp(180px, 26vw, 280px);
-  --nodeSize: clamp(150px, 20vw, 220px);
-  --nodePad: 18px;
-  --nodeGap: 14px;
-
-  @supports (width: 1cqw) {
-    --centerSize: clamp(180px, 30cqw, 280px);
-    --nodeSize: clamp(150px, 22cqw, 220px);
-    --nodePad: clamp(14px, 2cqw, 18px);
-    --nodeGap: clamp(10px, 1.6cqw, 14px);
-  }
+  /* ✅ size theo --d để giữ đúng UI khi height/width thay đổi */
+  --centerSize: clamp(112px, calc(var(--d) * 0.42), 220px);
+  --nodeSize: clamp(78px, calc(var(--d) * 0.29), 160px);
+  --nodePad: clamp(10px, calc(var(--d) * 0.022), 16px);
+  --nodeGap: clamp(7px, calc(var(--d) * 0.015), 12px);
 
   filter: drop-shadow(0 22px 60px rgba(0, 0, 0, 0.55));
 
@@ -154,25 +172,28 @@ export const Diagram = styled.div`
   }
 
   @media (max-width: ${bp.md}px) {
-    width: 100%;
-    --scale: 1; /* ✅ orbit full width */
-
-    @supports (width: 1cqw) {
-      /* ✅ giới hạn max node để không bị cắt 2 bên */
-      --centerSize: clamp(128px, 32cqw, 178px);
-      --nodeSize: clamp(96px, 26cqw, 118px);
-
-      --nodePad: clamp(10px, 2.6cqw, 13px);
-      --nodeGap: clamp(6px, 1.9cqw, 9px);
-    }
+    --d0: 100%;
+    --d: min(var(--d0), var(--orbitHBound));
+    width: var(--d);
+    --scale: 1;
   }
 
-  @media (max-width: 390px) {
-    --scale: 0.98;
-    @supports (width: 1cqw) {
-      --centerSize: clamp(124px, 34cqw, 170px);
-      --nodeSize: clamp(92px, 28cqw, 112px);
-    }
+  /* ✅ dưới sm: 640px -> GIỮ CỐ ĐỊNH, không co theo vw nữa */
+  @media (max-width: 640px) {
+    --dFixed: 360px;
+    --d: min(var(--dFixed), calc(100vw - 32px), var(--orbitHBound));
+    width: var(--d);
+    --scale: 1;
+  }
+
+  @media (max-height: 640px) {
+    --scale: 0.92;
+    --orbitReserve: clamp(200px, 28vh, 320px);
+  }
+
+  @media (max-height: 560px) {
+    --scale: 0.90;
+    --orbitReserve: clamp(180px, 26vh, 300px);
   }
 `;
 
@@ -182,6 +203,8 @@ export const Stage = styled.div`
 
   transform: scale(var(--scale));
   transform-origin: 50% var(--cy);
+
+  will-change: transform;
 `;
 
 export const Orbit = styled.div`
@@ -206,7 +229,7 @@ export const Lines = styled.svg`
   polyline {
     fill: none;
     stroke: var(--accent, #00d26a);
-    stroke-width: 0.28;        /* ✅ dày hơn 0.22 */
+    stroke-width: 0.28;
     opacity: 0.95;
     stroke-linecap: round;
     stroke-linejoin: round;
@@ -215,7 +238,7 @@ export const Lines = styled.svg`
 
   @media (max-width: 768px) {
     polyline {
-      stroke-width: 0.32;      /* ✅ mobile dày thêm chút */
+      stroke-width: 0.32;
     }
   }
 `;
@@ -255,28 +278,21 @@ export const Center = styled.div`
 `;
 
 export const CenterTitle = styled.div`
-  font-size: clamp(18px, 2.2vw, 26px);
-  // font-weight: 900;
-  // letter-spacing: 0.02em;
-  margin-bottom: 10px;
+  /* ✅ chỉ bold ALL-IN-ONE */
+  font-weight: 800;
+  letter-spacing: 0.04em;
 
-  @media (max-width: ${bp.md}px) {
-    font-size: 18px;
-    margin-bottom: 8px;
-  }
+  font-size: clamp(14px, calc(var(--d) * 0.032), 22px);
+  margin-bottom: clamp(6px, calc(var(--d) * 0.012), 10px);
 `;
 
 export const CenterSub = styled.div`
-  font-size: clamp(12px, 1.35vw, 16px);
-  line-height: 1.35;
-  text-align: center;
-  // font-weight: 600;
+  font-weight: 400;
   opacity: 0.95;
 
-  @media (max-width: ${bp.md}px) {
-    font-size: 12px; /* ✅ mobile nhỏ chữ */
-    line-height: 1.25;
-  }
+  font-size: clamp(10px, calc(var(--d) * 0.018), 14px);
+  line-height: 1.32;
+  text-align: center;
 `;
 
 export const Node = styled.div`
@@ -290,7 +306,6 @@ export const Node = styled.div`
   height: var(--nodeSize);
   border-radius: 999px;
 
-  /* ✅ opaque để không thấy line xuyên qua */
   background: radial-gradient(
     circle at 50% 35%,
     rgba(18, 18, 18, 1),
@@ -353,37 +368,35 @@ export const NodeContent = styled.div`
 `;
 
 export const NodeIconWrap = styled.div`
+  /* ✅ icon = màu chủ đạo */
   color: var(--accent, #00d26a);
   display: inline-flex;
   align-items: center;
   justify-content: center;
 
-  svg {
-    filter: drop-shadow(0 0 10px rgba(0, 210, 106, 0.22));
+  /* ✅ force SVG inherit currentColor */
+  svg,
+  svg * {
+    stroke: currentColor;
+  }
+  svg [fill]:not([fill="none"]) {
+    fill: currentColor;
   }
 
-  @media (max-width: ${bp.md}px) {
-    svg {
-      width: 22px;
-      height: 22px;
-    }
+  svg {
+    filter: drop-shadow(0 0 10px rgba(0, 210, 106, 0.22));
   }
 `;
 
 export const NodeText = styled.div`
   color: rgba(255, 255, 255, 0.92);
-  font-size: clamp(13px, 1.25vw, 16px);
-  // font-weight: 500;
+  font-weight: 400;
+
+  font-size: clamp(10px, calc(var(--d) * 0.016), 13px);
   text-align: center;
   white-space: pre-line;
-  line-height: 1.25;
+  line-height: 1.22;
 
   max-width: 90%;
   word-break: break-word;
-
-  @media (max-width: ${bp.md}px) {
-    font-size: 11.5px; /* ✅ nhỏ chữ mobile */
-    line-height: 1.15;
-    max-width: 92%;
-  }
 `;

@@ -1,18 +1,25 @@
+import Platform from "./section/Platform";
 import Contact from "./section/Contact";
 import FooterBottom from "./section/FooterBottom";
-import Platform from "./section/Platform";
+
+import Background_Pattern from "@/assets/images/Background_Pattern.png";
+import * as S from "./footer.styled";
 
 export default function Footer() {
   return (
-    <div>
-      {/* ===== Platform Block ===== */}
-      <Platform />
+    <S.Wrap>
+      {/* ===== Platform + Contact (has pattern background) ===== */}
+      <S.TopArea $pattern={Background_Pattern}>
+        <S.TopInner>
+          <Platform />
+          <Contact />
+        </S.TopInner>
+      </S.TopArea>
 
-      {/* ===== Contact Block ===== */}
-      <Contact />
-
-      {/* ===== Footer Block ===== */}
-      <FooterBottom />
-    </div>
+      {/* ===== Footer Bottom (solid) ===== */}
+      <S.BottomArea>
+        <FooterBottom />
+      </S.BottomArea>
+    </S.Wrap>
   );
 }

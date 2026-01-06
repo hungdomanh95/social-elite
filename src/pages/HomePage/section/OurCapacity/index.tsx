@@ -18,16 +18,14 @@ const deg2rad = (deg: number) => (deg * Math.PI) / 180;
 const OurCapacity: React.FC = () => {
   const maskId = React.useId();
 
-  /**
-   * Regular pentagon khớp layout hình:
-   * top y ≈ 14, bottom y ≈ 84  -> CY ≈ 52.7, R ≈ 38.7
-   */
   const CX = 50;
   const CY = 52.7;
-  const R = 38.7;
+
+  // ✅ spacing thoáng đúng UI + an toàn cho màn hẹp (SE/375px)
+  const R = 40.0;
 
   const vertices = useMemo(() => {
-    const angles = [-90, -18, 54, 126, 198];
+    const angles = [-90, -18, 54, 126, 198]; // top -> clockwise
     return angles.map((a) => ({
       x: CX + R * Math.cos(deg2rad(a)),
       y: CY + R * Math.sin(deg2rad(a)),
@@ -39,9 +37,9 @@ const OurCapacity: React.FC = () => {
     return `${pts.join(", ")}, ${pts[0]}`;
   }, [vertices]);
 
-  // ✅ tăng radius “hole” để line không chạm mép circle => không còn vệt xanh lọt vào
-const HOLE_OUTER = 11.8;   // 11.5–12.5 tuỳ mắt
-const HOLE_CENTER = 16.2;  // 15.5–16.8 tuỳ mắt
+  // ✅ mask để line chạm đẹp vào node/center
+  const HOLE_OUTER = 12.6;
+  const HOLE_CENTER = 18.5;
 
   return (
     <S.Section $bg={BG_Capacity}>
@@ -51,17 +49,9 @@ const HOLE_CENTER = 16.2;  // 15.5–16.8 tuỳ mắt
           <S.Headline>Comprehensive Set Of Service</S.Headline>
         </S.Header>
 
-        {/* ✅ full-bleed wrapper cho mobile */}
         <S.Bleed>
-          <S.Diagram
-            style={
-              {
-                ["--cy" as any]: `${CY}%`,
-              } as React.CSSProperties
-            }
-          >
+          <S.Diagram style={{ ["--cy" as any]: `${CY}%` } as React.CSSProperties}>
             <S.Stage>
-              {/* Center đứng yên */}
               <S.Center>
                 <S.CenterTitle>ALL-IN-ONE</S.CenterTitle>
                 <S.CenterSub>
@@ -73,17 +63,12 @@ const HOLE_CENTER = 16.2;  // 15.5–16.8 tuỳ mắt
                 </S.CenterSub>
               </S.Center>
 
-              {/* Orbit xoay: line + nodes */}
               <S.Orbit style={{ ["--dur" as any]: "22s" } as React.CSSProperties}>
                 <S.Lines viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden>
                   <defs>
                     <mask id={maskId} maskUnits="userSpaceOnUse">
                       <rect x="0" y="0" width="100" height="100" fill="white" />
-
-                      {/* cut center */}
                       <circle cx={CX} cy={CY} r={HOLE_CENTER} fill="black" />
-
-                      {/* cut outer nodes */}
                       {vertices.map((p, idx) => (
                         <circle key={idx} cx={p.x} cy={p.y} r={HOLE_OUTER} fill="black" />
                       ))}
@@ -110,7 +95,6 @@ const HOLE_CENTER = 16.2;  // 15.5–16.8 tuỳ mắt
                     >
                       <S.NodeInner>
                         <S.NodeShell>
-                          {/* counter-rotate để nội dung không xoay */}
                           <S.NodeContent>
                             <S.NodeIconWrap>
                               <Icon name={item.icon} size={26} />

@@ -47,19 +47,17 @@ export const Section = styled.section`
 `;
 
 export const Container = styled.div`
-  max-width: 1320px;
+  width: min(1320px, calc(100% - 80px));
   margin: 0 auto;
 
-  /* giống Ecosystem */
   @media (max-width: ${bp.md}px) {
-    padding: 0 16px;
+    width: min(1320px, calc(100% - 28px));
   }
 `;
 
 export const Top = styled.div`
   width: 100%;
-  max-width: 900px;   /* chỉnh theo ý, vd 860/900/980 */
-  margin: 0 auto 22px;
+  margin: 0 0 22px;
 
   display: flex;
   align-items: flex-end;
@@ -67,12 +65,12 @@ export const Top = styled.div`
   gap: 18px;
 
   @media (max-width: ${bp.md}px) {
-    max-width: 100%;
     align-items: flex-start;
     flex-direction: column;
     gap: 14px;
   }
 `;
+
 
 export const Left = styled.div`
   display: flex;

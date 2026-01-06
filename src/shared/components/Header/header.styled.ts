@@ -7,12 +7,13 @@ export const Wrap = styled.header`
   position: sticky;
   top: 0;
   z-index: 50;
+  isolation: isolate;
 
   height: var(--header-h, 64px);
   overflow: hidden;
 
   /* Glass base */
-  background: rgba(10, 13, 11, 0.42);
+  background: rgba(10, 13, 11, 0.38);
   border-bottom: 1px solid rgba(255, 255, 255, 0.14);
 
   /* Glass blur */
@@ -29,6 +30,7 @@ export const Wrap = styled.header`
     content: "";
     position: absolute;
     inset: 0;
+    z-index: 1;
     pointer-events: none;
     background: linear-gradient(
       180deg,
@@ -39,34 +41,67 @@ export const Wrap = styled.header`
     opacity: 0.65;
   }
 
+  /* dark tint để giống UI (đọc chữ tốt hơn) */
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    pointer-events: none;
+    background:
+      linear-gradient(90deg, rgba(0, 0, 0, 0.42), rgba(0, 0, 0, 0.18) 42%, rgba(0, 0, 0, 0.32)),
+      linear-gradient(180deg, rgba(0, 0, 0, 0.22), transparent 60%);
+  }
+
   /* fallback nếu browser không support blur */
   @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
     background: rgba(10, 13, 11, 0.88);
   }
 `;
 
-export const Glow = styled.div`
+/* ✅ Thay Glow bằng ảnh NavTop */
+export const NavTop = styled.img`
   position: absolute;
-  inset: -2px;
+  inset: 0;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+
   pointer-events: none;
+  user-select: none;
 
-  /* Glass-friendly glow: nhẹ, trong, không “đục” */
-  background:
-    radial-gradient(900px 220px at 86% 35%, rgba(30, 215, 96, 0.32), transparent 66%),
-    radial-gradient(700px 220px at 100% 0%, rgba(30, 215, 96, 0.18), transparent 62%),
-    radial-gradient(520px 240px at 95% 100%, rgba(30, 215, 96, 0.12), transparent 62%),
-    radial-gradient(circle at 12% 60%, transparent 0 54px, rgba(255, 255, 255, 0.08) 55px 56px, transparent 57px 240px);
+  /* giống UI: dịu, chìm vào nền */
+  opacity: 0.72;
+  filter: saturate(1.1) contrast(1.05);
 
-  opacity: 0.9;
-  filter: blur(0.2px);
+  /* nhẹ nhàng “blend” (nếu browser support) */
+  mix-blend-mode: screen;
+
+  /* subtle motion (rất nhẹ, hiện đại) */
+  transform: translateZ(0);
+  will-change: transform;
+
+  @media (prefers-reduced-motion: no-preference) {
+    animation: navtop-drift 10s ease-in-out infinite alternate;
+  }
+
+  @keyframes navtop-drift {
+    from {
+      transform: translate3d(0, 0, 0) scale(1.02);
+    }
+    to {
+      transform: translate3d(-10px, -2px, 0) scale(1.02);
+    }
+  }
 `;
-
 
 export const Inner = styled.div`
   position: relative;
-  height: var(--header-h, 64px);
+  z-index: 3;
 
-  max-width: var(--container, 1180px);
+  height: var(--header-h, 64px);
+  max-width: var(--container, 1200px);
   margin: 0 auto;
   padding: 0 22px;
 
@@ -112,14 +147,9 @@ export const Nav = styled.nav`
 export const MenuLink = styled(NavLink)`
   position: relative;
   text-decoration: none;
-
-  font-size: 16px; /* yêu cầu */
-  // font-weight: 500;
-  // letter-spacing: 0.1px;
-
+  font-size: 16px;
   color: rgba(255, 255, 255, 0.78);
   padding: 8px 4px;
-
   transition: color 180ms ease;
 
   &:hover {
@@ -156,9 +186,7 @@ export const MenuLink = styled(NavLink)`
 
 export const Cta = styled(NavLink)`
   text-decoration: none;
-
-  font-size: 16px; /* yêu cầu */
-  // font-weight: 700;
+  font-size: 16px;
   letter-spacing: 0.1px;
 
   padding: 10px 22px;
@@ -191,7 +219,6 @@ export const Cta = styled(NavLink)`
 
 export const Hamburger = styled.button`
   display: none;
-
   width: 42px;
   height: 42px;
   border-radius: 999px;
@@ -221,7 +248,7 @@ export const Hamburger = styled.button`
   }
 `;
 
-/* Mobile */
+/* Mobile (giữ nguyên của bạn) */
 export const MobileOverlay = styled.div`
   position: fixed;
   inset: 0;
@@ -236,12 +263,8 @@ export const MobileOverlay = styled.div`
   animation: header-fade 180ms ease both;
 
   @keyframes header-fade {
-    from {
-      opacity: 0;
-    }
-    to {
-      opacity: 1;
-    }
+    from { opacity: 0; }
+    to { opacity: 1; }
   }
 `;
 
@@ -269,14 +292,8 @@ export const MobilePanel = styled.div`
   animation: header-slide 220ms ease both;
 
   @keyframes header-slide {
-    from {
-      transform: translateX(14px);
-      opacity: 0;
-    }
-    to {
-      transform: translateX(0);
-      opacity: 1;
-    }
+    from { transform: translateX(14px); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
   }
 `;
 
@@ -329,9 +346,7 @@ export const MobileLink = styled(NavLink)`
   padding: 12px 12px;
   border-radius: 14px;
 
-  font-size: 16px; /* đồng bộ */
-  // font-weight: 600;
-
+  font-size: 16px;
   color: rgba(255, 255, 255, 0.88);
   background: rgba(255, 255, 255, 0.03);
   border: 1px solid rgba(255, 255, 255, 0.06);
@@ -359,7 +374,6 @@ export const MobileCta = styled(NavLink)`
   text-decoration: none;
 
   font-size: 16px;
-  // font-weight: 800;
   letter-spacing: 0.1px;
 
   padding: 12px 16px;

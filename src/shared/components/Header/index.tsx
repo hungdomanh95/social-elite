@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState, useCallback } from "react";
 import { useLocation } from "react-router-dom";
 import * as S from "./header.styled";
 import Black_BG from "@/assets/images/Black_BG.png";
+import NavTop from "@/assets/images/NavTop.png";
 
 type MenuItem = { label: string; to: string };
 
@@ -53,7 +54,7 @@ export default function Header() {
 
   return (
     <S.Wrap>
-      <S.Glow aria-hidden />
+      <S.NavTop aria-hidden src={NavTop} alt="" />
       <S.Inner>
         <S.CenterRow>
           <S.Logo to="/" aria-label="Social Elite" onClick={scrollToTop}>

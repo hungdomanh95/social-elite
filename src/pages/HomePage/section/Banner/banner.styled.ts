@@ -29,7 +29,7 @@ export const SoundTag = styled.div`
 
   // font-weight: 800;
   // letter-spacing: 0.08em;
-  text-transform: uppercase;
+  /* text-transform: uppercase; */
   line-height: 1;
 
   pointer-events: none;

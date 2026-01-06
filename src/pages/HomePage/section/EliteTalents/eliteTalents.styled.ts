@@ -11,7 +11,7 @@ export const Section = styled.section`
 `;
 
 export const Container = styled.div`
-  width: min(1320px, calc(100% - 40px));
+  width: min(1320px, calc(100% - 80px));
   margin: 0 auto;
 
   display: flex;
@@ -35,18 +35,21 @@ export const Container = styled.div`
   }
 `;
 
+
 export const Title = styled.h2`
-  flex: 0 0 50%;          /* ✅ nằm trong nửa trái */
+  flex: 0 0 50%;
   display: flex;
-  justify-content: center; /* ✅ center trong nửa trái */
+  justify-content: flex-start; /* ✅ bám line trái */
   margin: 0 0 18px;
+
   font-size: clamp(28px, 3.2vw, 48px);
   font-weight: 600;
   text-align: left;
   color: rgba(255, 255, 255, 0.95);
 
   .inner {
-    width: min(560px, 100%); /* ✅ giống “center của 50%” như hình */
+    width: 100%;
+    max-width: 560px;
     display: block;
   }
 
@@ -56,11 +59,7 @@ export const Title = styled.h2`
 
   @media (max-width: ${bp.lg}px) {
     flex: 0 0 100%;
-    justify-content: flex-start;
-
-    .inner {
-      width: auto;
-    }
+    .inner { max-width: none; }
   }
 `;
 

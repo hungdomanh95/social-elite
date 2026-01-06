@@ -151,7 +151,7 @@ export default function Banner({
     if (r.width && r.height) tagSizeRef.current = { w: r.width, h: r.height };
   }, [active, muted]);
 
-  const label = muted ? "SOUND ON" : "SOUND OFF";
+  const label = muted ? "Sound On" : "Sound Off";
 
   return (
     <S.Section>
