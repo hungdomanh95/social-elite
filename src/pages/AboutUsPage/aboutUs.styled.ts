@@ -1,10 +1,6 @@
 import styled from "styled-components";
 
-const bp = {
-  md: 768,
-  lg: 1024,
-};
-
+const bp = { md: 768, lg: 1024 };
 const ACCENT = "var(--accent, #22c55e)";
 
 export const Page = styled.main`
@@ -12,6 +8,7 @@ export const Page = styled.main`
   background: #000;
   color: #fff;
   overflow-x: hidden;
+  font-family: "Plus Jakarta Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial;
 `;
 
 export const Container = styled.div`
@@ -24,24 +21,38 @@ export const Container = styled.div`
 `;
 
 /* =========================
-   HERO
+   HERO (About Us)
 ========================= */
 export const Hero = styled.section`
   width: 100%;
   background:
-    radial-gradient(900px 220px at 50% 0%, rgba(34, 197, 94, 0.14), transparent 62%),
+    radial-gradient(900px 260px at 50% 0%, rgba(34, 197, 94, 0.14), transparent 62%),
     linear-gradient(180deg, #0a0a0a 0%, #000 100%);
-  padding: clamp(44px, 5vw, 64px) 0;
-  display: grid;
-  place-items: center;
+  padding: 44px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+
+  @media (max-width: ${bp.md}px) {
+    padding: 34px 0;
+  }
 `;
 
 export const HeroTitle = styled.h1`
   margin: 0;
-  // font-weight: 800;
-  // letter-spacing: -0.02em;
   color: ${ACCENT};
-  font-size: clamp(44px, 5.2vw, 84px);
+  font-weight: 800;
+  letter-spacing: -0.02em;
   line-height: 1;
+
+  /* nhìn giống App.png */
+  font-size: 84px;
+
+  @media (max-width: ${bp.lg}px) {
+    font-size: 72px;
+  }
+  @media (max-width: ${bp.md}px) {
+    font-size: 56px;
+  }
 `;

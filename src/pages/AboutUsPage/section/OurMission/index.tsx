@@ -6,7 +6,7 @@ type OurMissionProps = {};
 const OurMission: React.FC<OurMissionProps> = () => {
   return (
     <S.MissionSection>
-      <S.MissionContainer>
+      <S.Container>
         <S.SectionHeading>
           <span className="bar" aria-hidden />
           <span className="text">Our Mission</span>
@@ -42,7 +42,7 @@ const OurMission: React.FC<OurMissionProps> = () => {
             </p>
           </S.MissionRight>
         </S.MissionCard>
-      </S.MissionContainer>
+      </S.Container>
     </S.MissionSection>
   )
 }
