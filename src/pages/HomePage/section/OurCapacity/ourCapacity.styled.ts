@@ -26,7 +26,7 @@ export const Section = styled.section<{ $bg: string }>`
   position: relative;
   width: 100%;
   margin: 0;
-  padding: 72px 0 80px;
+  padding: 36px 0 80px;
 
   /* chặn scroll ngang */
   overflow-x: clip;
@@ -158,7 +158,7 @@ export const Diagram = styled.div`
 
   font-family: var(--font-body);
 
-  --cy: 52.7%;
+  --cy: 56%;
   --scale: 1;
 
   /* ✅ size theo --d để giữ đúng UI khi height/width thay đổi */
@@ -186,6 +186,12 @@ export const Diagram = styled.div`
     --d: min(var(--dFixed), calc(100vw - 32px), var(--orbitHBound));
     width: var(--d);
     --scale: 1;
+
+    /* ✅ nhỏ nhẹ node/center để “thoáng” + SE/375 an toàn */
+    --centerSize: clamp(96px, calc(var(--d) * 0.4), 180px);
+    --nodeSize: clamp(70px, calc(var(--d) * 0.25), 128px);
+    --nodePad: clamp(10px, calc(var(--d) * 0.022), 14px);
+    --nodeGap: clamp(7px, calc(var(--d) * 0.015), 10px);
   }
 
   @media (max-height: 640px) {
