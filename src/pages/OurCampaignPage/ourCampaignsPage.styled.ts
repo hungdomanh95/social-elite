@@ -58,35 +58,41 @@ export const TitleBar = styled.span`
 
 export const Title = styled.h1`
   margin: 0;
-  font-size: clamp(26px, 2.1vw, 32px);
-  line-height: 1.12;
+  font-size: var(--text-4xl);
+  line-height: var(--leading-head, 1.15);
   letter-spacing: -0.02em;
-  font-weight: 700;
+  font-weight: var(--fw-semibold);
   color: ${ACCENT};
 `;
 
 export const TopAction = styled.button`
-  border: none;
+ appearance: none;
+  border: 0;
   cursor: pointer;
 
   display: inline-flex;
   align-items: center;
-  gap: 10px;
+  justify-content: center;
+  gap: 12px;
 
-  padding: 12px 16px;
+  background: var(--accent);
+  color: #0b0f0c;
   border-radius: 999px;
 
-  background: ${ACCENT};
-  color: #06270f;
-  font-size: 14px;
-  font-weight: 600;
+  padding: 10px 26px;
+  font-size: var(--text-xs);
+  font-family: var(--font-body);
+  /* font-weight:var(--fw-medium); */
 
-  box-shadow: 0 12px 28px rgba(34, 197, 94, 0.16);
-  transition: transform 160ms ease, box-shadow 160ms ease;
+  box-shadow: 0 12px 28px rgba(30, 215, 95, 0.18);
+  transition: transform 160ms ease, filter 160ms ease;
 
   &:hover {
     transform: translateY(-1px);
-    box-shadow: 0 16px 38px rgba(34, 197, 94, 0.22);
+    filter: brightness(1.02);
+  }
+  &:active {
+    transform: translateY(0);
   }
 `;
 
@@ -147,11 +153,11 @@ export const Tag = styled.span`
   align-items: center;
   justify-content: center;
 
-  padding: 7px 12px;
+  padding: 4px 12px;
   border-radius: 999px;
 
-  font-size: 12px;
-  font-weight: 600;
+  font-size: var(--text-xs);
+  /* font-weight: var(--fw-semibold); */
   letter-spacing: 0.03em;
 
   background: rgba(2, 6, 23, 0.03);
@@ -161,16 +167,12 @@ export const Tag = styled.span`
 
 export const CardTitle = styled.h3`
   margin: 0;
-  font-size: clamp(18px, 1.35vw, 22px);
-  line-height: 1.22;
-  font-weight: 700;
-  letter-spacing: -0.02em;
+  font-size: var(--text-sm);
 `;
 
 export const CardDesc = styled.p`
   margin: 10px 0 0;
-  font-size: clamp(15px, 1.05vw, 16px);
-  line-height: 1.6;
+  font-size: var(--text-xs);
   color: rgba(15, 23, 42, 0.56);
 `;
 
@@ -189,8 +191,9 @@ export const CTATitle = styled.h2`
   margin: 0;
   text-align: center;
   font-size: clamp(28px, 2.6vw, 38px);
-  font-weight: 700;
+  font-weight: var(--fw-bold);
   letter-spacing: -0.03em;
+  line-height: var(--leading-display, 1.05);
   color: rgba(255, 255, 255, 0.92);
 `;
 
@@ -202,12 +205,12 @@ export const CTADesc = styled.p`
   margin: 12px auto 18px;
   text-align: center;
   max-width: 72ch;
-  font-size: 16px;
-  line-height: 1.65;
+  font-size: var(--text-base, 16px);
+  line-height: var(--leading-relaxed, 1.625);
   color: rgba(255, 255, 255, 0.62);
 
   @media (max-width: ${bp.md}px) {
-    font-size: 15px;
+    font-size: var(--text-sm, 14px);
   }
 `;
 
@@ -224,8 +227,8 @@ export const CTAButton = styled.button`
 
   background: ${ACCENT};
   color: #06270f;
-  font-size: 14px;
-  font-weight: 600;
+  font-size: var(--text-sm, 14px);
+  font-weight: var(--fw-semibold);
 
   margin: 0 auto;
   display: flex;

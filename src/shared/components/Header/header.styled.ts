@@ -101,9 +101,9 @@ export const Inner = styled.div`
   z-index: 3;
 
   height: var(--header-h, 64px);
-  max-width: var(--container, 1200px);
+  max-width: var(--container-max, 1320px);
   margin: 0 auto;
-  padding: 0 22px;
+  padding: 0 var(--container-pad, 40px);
 
   display: flex;
   align-items: center;
@@ -111,7 +111,7 @@ export const Inner = styled.div`
 
   @media (max-width: ${bp.md}px) {
     justify-content: space-between;
-    padding: 0 16px;
+    padding: 0 var(--container-pad, 16px);
   }
 `;
 
@@ -119,7 +119,7 @@ export const Inner = styled.div`
 export const CenterRow = styled.div`
   display: flex;
   align-items: center;
-  gap: 26px;
+  gap: var(--space-6, 24px);
 `;
 
 export const Logo = styled(Link)`
@@ -137,7 +137,7 @@ export const LogoImg = styled.img`
 export const Nav = styled.nav`
   display: flex;
   align-items: center;
-  gap: 22px;
+  gap: var(--space-6, 24px);
 
   @media (max-width: ${bp.md}px) {
     display: none;
@@ -147,10 +147,11 @@ export const Nav = styled.nav`
 export const MenuLink = styled(NavLink)`
   position: relative;
   text-decoration: none;
-  font-size: 16px;
+  font-size: var(--text-sm);
   color: rgba(255, 255, 255, 0.78);
-  padding: 8px 4px;
+  padding: var(--space-2, 8px) var(--space-1, 4px);
   transition: color 180ms ease;
+  font-weight: var(--fw-semibold);
 
   &:hover {
     color: rgba(255, 255, 255, 0.92);
@@ -185,31 +186,33 @@ export const MenuLink = styled(NavLink)`
 `;
 
 export const Cta = styled(NavLink)`
-  text-decoration: none;
-  font-size: 16px;
-  letter-spacing: 0.1px;
+   appearance: none;
+  border: 0;
+  cursor: pointer;
 
-  padding: 10px 22px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+
+  background: var(--accent);
+  color: #0b0f0c;
   border-radius: 999px;
 
-  color: #07140b;
-  background: var(--accent, #1ed760);
+  padding: 8px 26px;
+  font-size: var(--text-xs);
+  font-family: var(--font-body);
+  /* font-weight:var(--fw-medium); */
 
-  box-shadow:
-    0 10px 26px rgba(30, 215, 96, 0.22),
-    0 0 0 1px rgba(30, 215, 96, 0.28) inset;
-
+  box-shadow: 0 12px 28px rgba(30, 215, 95, 0.18);
   transition: transform 160ms ease, filter 160ms ease;
 
   &:hover {
-    filter: brightness(1.02);
     transform: translateY(-1px);
+    filter: brightness(1.02);
   }
-
-  &.active {
-    box-shadow:
-      0 12px 30px rgba(30, 215, 96, 0.26),
-      0 0 0 2px rgba(30, 215, 96, 0.35) inset;
+  &:active {
+    transform: translateY(0);
   }
 
   @media (max-width: ${bp.md}px) {
@@ -219,8 +222,8 @@ export const Cta = styled(NavLink)`
 
 export const Hamburger = styled.button`
   display: none;
-  width: 42px;
-  height: 42px;
+  width: var(--space-11, 44px);
+  height: var(--space-11, 44px);
   border-radius: 999px;
   border: 1px solid rgba(255, 255, 255, 0.08);
   background: rgba(255, 255, 255, 0.04);
@@ -271,7 +274,7 @@ export const MobileOverlay = styled.div`
 export const MobilePanel = styled.div`
   width: min(420px, 92vw);
   height: 100%;
-  padding: 18px;
+  padding: var(--space-5, 20px);
 
   background: #0a0d0b;
   border-left: 1px solid rgba(255, 255, 255, 0.08);
@@ -317,8 +320,8 @@ export const MobileBrand = styled(Link)`
 `;
 
 export const CloseBtn = styled.button`
-  width: 42px;
-  height: 42px;
+  width: var(--space-11, 44px);
+  height: var(--space-11, 44px);
   border-radius: 999px;
   border: 1px solid rgba(255, 255, 255, 0.08);
   background: rgba(255, 255, 255, 0.04);
@@ -337,16 +340,16 @@ export const MobileNav = styled.nav`
   position: relative;
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  margin-top: 18px;
+  gap: var(--space-3, 12px);
+  margin-top: var(--space-5, 20px);
 `;
 
 export const MobileLink = styled(NavLink)`
   text-decoration: none;
-  padding: 12px 12px;
-  border-radius: 14px;
+  padding: var(--space-3, 12px);
+  border-radius: var(--radius-md, 12px);
 
-  font-size: 16px;
+  font-size: var(--text-base, 16px);
   color: rgba(255, 255, 255, 0.88);
   background: rgba(255, 255, 255, 0.03);
   border: 1px solid rgba(255, 255, 255, 0.06);
@@ -369,14 +372,14 @@ export const MobileLink = styled(NavLink)`
 export const MobileCta = styled(NavLink)`
   position: relative;
   display: block;
-  margin-top: 18px;
+  margin-top: var(--space-5, 20px);
   text-align: center;
   text-decoration: none;
 
-  font-size: 16px;
+  font-size: var(--text-base, 16px);
   letter-spacing: 0.1px;
 
-  padding: 12px 16px;
+  padding: var(--space-3, 12px) var(--space-4, 16px);
   border-radius: 999px;
 
   color: #07140b;

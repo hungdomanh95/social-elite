@@ -25,22 +25,24 @@ export const Hero = styled.section`
   width: 100%;
   background: #070b09;
   border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-`;
-
-export const HeroInner = styled(SharedContainer)`
-  padding: 64px 0 54px;
-
+   padding: 56px 0;
   @media (max-width: ${bp.md}px) {
     padding: 54px 0 44px;
   }
 `;
 
+export const HeroInner = styled(SharedContainer)`
+
+
+
+`;
+
 export const HeroTitle = styled.h1`
   margin: 0;
   font-size: clamp(44px, 4.2vw, 56px);
-  line-height: 1.04;
+  line-height: var(--leading-display, 1.05);
   letter-spacing: -0.03em;
-  font-weight: 700;
+  font-weight: var(--fw-bold);
   color: ${ACCENT};
 `;
 
@@ -137,17 +139,16 @@ export const PostBody = styled.div`
 
 export const PostTitle = styled.h3`
   margin: 0;
-  font-size: clamp(18px, 1.35vw, 22px);
-  line-height: 1.22;
-  letter-spacing: -0.02em;
-  font-weight: 700;
+  font-family: var(--font-display);
+  font-size: var(--text-xl);
+  font-weight: var(--fw-semibold);
   color: rgba(15, 23, 42, 0.92);
 `;
 
 export const PostExcerpt = styled.p`
   margin: 10px 0 16px;
-  font-size: clamp(15px, 1.05vw, 16px);
-  line-height: 1.62;
+  font-size: var(--text-xs);
+  line-height: var(--leading-relaxed, 1.625);
   color: ${MUTED};
   max-width: 70ch;
 `;
@@ -157,10 +158,10 @@ export const ReadMore = styled.a`
   align-items: center;
   gap: 10px;
 
-  font-size: 14px;
+  font-size: var(--text-xs);
   color: ${ACCENT};
   text-decoration: none;
-  font-weight: 600;
+  font-weight: var(--fw-semibold);
 
   svg {
     transition: transform 160ms ease;
@@ -180,8 +181,8 @@ export const SideCard = styled.div`
 `;
 
 export const SideTitle = styled.div`
-  font-weight: 700;
-  font-size: 16px;
+  font-weight: var(--fw-semibold);
+  font-size: var(--text-base, 16px);
   letter-spacing: -0.01em;
   color: rgba(15, 23, 42, 0.9);
   margin-bottom: 12px;
@@ -195,7 +196,7 @@ export const RelatedList = styled.div`
 
 export const RelatedItem = styled.a`
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   gap: 12px;
   text-decoration: none;
   color: inherit;
@@ -226,17 +227,16 @@ export const RelatedInfo = styled.div`
 `;
 
 export const RelatedName = styled.div`
-  font-size: 14px;
-  font-weight: 700;
-  line-height: 1.25;
+  font-size: var(--text-xs, 14px);
+  font-weight: var(--fw-semibold);
+  line-height: var(--leading-tight, 1.25);
   color: rgba(15, 23, 42, 0.9);
 `;
 
 export const RelatedDesc = styled.div`
-  font-size: 13px;
-  line-height: 1.45;
+  font-size: var(--text-xs);
   color: ${TEXT};
-
+ line-height: var(--leading-tight, 1.25);
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
@@ -262,8 +262,8 @@ export const CatRow = styled.button<{ $active?: boolean }>`
   align-items: center;
   justify-content: space-between;
 
-  font-size: 14px;
-  font-weight: 600;
+  font-size: var(--text-xs);
+  font-weight: var(--fw-semibold);
 
   transition: transform 160ms ease, background 160ms ease, border-color 160ms ease;
 
@@ -286,8 +286,8 @@ export const CatCount = styled.span<{ $active?: boolean }>`
   background: ${({ $active }) => ($active ? "rgba(255, 255, 255, 0.35)" : "rgba(2, 6, 23, 0.06)")};
   color: rgba(15, 23, 42, 0.7);
 
-  font-size: 12px;
-  font-weight: 700;
+  font-size: var(--text-xs, 12px);
+  font-weight: var(--fw-semibold);
 `;
 
 export const SearchWrap = styled.div`
@@ -318,7 +318,9 @@ export const SearchInput = styled.input`
   background: transparent;
   width: 100%;
 
-  font-size: 14px;
+  font-size: var(--text-xs);
+  line-height: var(--leading-normal, 1.5);
+  font-weight: var(--fw-regular);
   color: rgba(15, 23, 42, 0.85);
 
   &::placeholder {

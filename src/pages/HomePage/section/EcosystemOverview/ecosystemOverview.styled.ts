@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { Container as BaseContainer } from "@/shared/components/Container";
 
 const bp = {
   md: 768,
@@ -113,18 +114,10 @@ export const Section = styled.section`
 `;
 
 
-export const Container = styled.div`
-  /* ✅ gutter đồng nhất giữa các section */
-  width: min(1320px, calc(100% - 80px));
-  margin: 0 auto;
-
+export const Container = styled(BaseContainer)`
   display: flex;
   justify-content: flex-start;
   align-items: flex-start;
-
-  @media (max-width: ${bp.md}px) {
-    width: min(1320px, calc(100% - 28px));
-  }
 `;
 
 export const Content = styled.div`
@@ -139,19 +132,22 @@ export const Heading = styled.div`
 
 export const TitleLine = styled.div`
   /* font-weight: 600; */
-  font-size: clamp(46px, 5.2vw, 72px); /* ✅ max 72px */
+  font-family: var(--font-display);
+  font-weight: var(--fw-regular);
+  font-size: var(--h-64);
   // letter-spacing: -1px;
   line-height: 1.02; /* ✅ giữ gọn khi chữ to */
   color: rgba(255, 255, 255, 0.92);
 `;
 
 export const TitleLineAccent = styled.div`
-  /* font-weight: 600; */
-  font-size: clamp(46px, 5.2vw, 72px); /* ✅ max 72px */
-  // letter-spacing: -1px;
+  font-family: var(--font-display);
+  font-weight: var(--fw-regular);
+  font-size: var(--h-64);
   line-height: 1.02;
   color: var(--accent);
 `;
+
 export const CTARow = styled.div`
   margin-top: 14px;
 `;
@@ -160,11 +156,13 @@ export const CTAButton = styled.button`
   border: 0;
   cursor: pointer;
 
-  padding: 8px 14px;
+  padding: 14px 20px;
   border-radius: 999px;
 
-    // font-weight: 800;
-  font-size: 12px;
+  font-size: var(--text-sx, 12px);
+  line-height: var(--leading-tight, 1.25);
+  font-weight: var(--fw-semibold);
+  font-family: var(--font-body);
   // letter-spacing: 0.2px;
 
   color: #0b1a10;
@@ -181,7 +179,7 @@ export const CTAButton = styled.button`
 `;
 
 export const Badges = styled.div`
-  margin-top: 18px;
+  margin-top: var(--space-14);
   display: grid;
   gap: 6px;
 
@@ -191,11 +189,8 @@ export const Badges = styled.div`
 `;
 
 export const Badge = styled.div`
-  font-size: 24px;
-  line-height: 1.4;
-    // font-weight: 700;
-  // letter-spacing: 0.1px;
-  color: rgba(255, 255, 255,1);
+  font-size: var(--text-2xl, 24px);
+  font-weight: var(--fw-semibold);
 `;
 
 export const BadgeAccent = styled.span`
@@ -205,13 +200,8 @@ export const BadgeAccent = styled.span`
 
 export const Stats = styled.div`
   margin-top: 26px;
-  /* display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 80px; */
   display: flex;
-  justify-content: center;
-  gap: 80px;
-  /* max-width: 760px; */
+  justify-content: space-between;
 
   @media (max-width: ${bp.md}px) {
     grid-template-columns: 1fr;
@@ -223,21 +213,22 @@ export const Stats = styled.div`
 export const StatCard = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 4px;
   justify-content: center;
   align-items: center;
 `;
 
 export const StatNumber = styled.div`
-  font-size: clamp(40px, 6.2vw, 96px);
-    // font-weight: 600;
-  // letter-spacing: -0.8px;
-  line-height: 1;
+  font-family: var(--font-body);
+  font-weight: var(--fw-bold);
+  font-size: var(--text-8xl);
+  line-height: var(--leading-none, 1);
   color: var(--accent);
 `;
 
 export const StatLabel = styled.div`
-  font-size: 24px;
+  font-size: var(--text-2xl, 24px);
   color: rgba(255, 255, 255, 1);
-  line-height: 1.35;
+  line-height: var(--leading-snug, 1.375);
+  text-align: center;
 `;

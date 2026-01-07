@@ -1,4 +1,5 @@
 import styled, { keyframes, css } from "styled-components";
+import { Container as BaseContainer } from "@/shared/components/Container";
 
 const bp = { sm: 640, md: 768, lg: 1024 };
 
@@ -16,7 +17,7 @@ export const Section = styled.section`
   position: relative;
   width: 100%;
   margin: 0;
-  padding: 68px 0 56px;
+  padding: var(--space-16, 64px) 0 var(--space-14, 56px);
 
   background:
     radial-gradient(900px 520px at 35% 10%, rgba(0, 210, 106, 0.08), transparent 62%),
@@ -42,32 +43,25 @@ export const Section = styled.section`
   }
 
   @media (max-width: ${bp.md}px) {
-    padding: 52px 0 46px;
+    padding: var(--space-12, 48px) 0 var(--space-10, 40px);
   }
 `;
 
-export const Container = styled.div`
-  width: min(1320px, calc(100% - 80px));
-  margin: 0 auto;
-
-  @media (max-width: ${bp.md}px) {
-    width: min(1320px, calc(100% - 28px));
-  }
-`;
+export const Container = styled(BaseContainer)``;
 
 export const Top = styled.div`
   width: 100%;
-  margin: 0 0 22px;
+  margin: 0 0 var(--space-6, 24px);
 
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
-  gap: 18px;
+  gap: var(--space-4, 16px);
 
   @media (max-width: ${bp.md}px) {
     align-items: flex-start;
     flex-direction: column;
-    gap: 14px;
+    gap: var(--space-3, 12px);
   }
 `;
 
@@ -75,7 +69,7 @@ export const Top = styled.div`
 export const Left = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: var(--space-3, 12px);
 `;
 
 export const Pill = styled.div`
@@ -83,12 +77,12 @@ export const Pill = styled.div`
   align-items: center;
   width: fit-content;
 
-  padding: 7px 12px;
+  padding: var(--space-1) var(--space-3);
   border-radius: 999px;
 
-  font-size: 12px;
-  // font-weight: 700;
-  // letter-spacing: 0.02em;
+  font-size: var(--text-xs);
+  font-weight: var(--fw-bold);
+
   color: rgba(0, 210, 106, 0.95);
 
   background: rgba(0, 210, 106, 0.10);
@@ -98,14 +92,10 @@ export const Pill = styled.div`
 export const Heading = styled.h2`
   margin: 0;
   color: #ffffff;
-  // font-weight: 900;
-  // letter-spacing: -0.02em;
-  line-height: 1.05;
-
-  font-size: clamp(34px, 4.4vw, 54px);
+  font-size: var(--text-4xl);
 
   @media (max-width: ${bp.md}px) {
-    font-size: clamp(28px, 8vw, 44px);
+    font-size: clamp(24px, 7vw, 36px);
   }
 `;
 
@@ -116,11 +106,10 @@ const viewAllBase = css`
   justify-content: center;
   white-space: nowrap;
 
-  padding: 10px 16px;
+  padding: var(--space-3, 12px) var(--space-4, 16px);
   border-radius: 999px;
-  // font-weight: 800;
-  font-size: 13px;
-
+  font-size: var(--text-xs);
+  font-weight: var(--fw-semibold) ;
   background: var(--accent, #00d26a);
   color: #06130b;
   border: 0;
@@ -152,7 +141,7 @@ export const ViewAllLink = styled.a`
 export const Grid = styled.div`
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 22px;
+  gap: var(--space-6, 24px);
 
   @media (max-width: ${bp.lg}px) {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -180,7 +169,7 @@ export const Grid = styled.div`
 export const Card = styled.div<{ $clickable?: boolean }>`
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: var(--space-2, 8px);
 
   color: inherit;
   text-decoration: none;
@@ -213,16 +202,16 @@ export const Thumb = styled.div<{ $src?: string }>`
 export const CardTitle = styled.div`
   color: rgba(255, 255, 255,1);
   // font-weight: 800;
-  font-size: 16px;
+  font-size: var(--text-base, 16px);
   // letter-spacing: -0.01em;
 
   @media (max-width: ${bp.md}px) {
-    font-size: 15px;
+    font-size: var(--text-sm, 14px);
   }
 `;
 
 export const CardMeta = styled.div`
   color: rgba(255, 255, 255,1);
-  font-size: 12px;
-  line-height: 1.25;
+  font-size: var(--text-xs, 12px);
+  line-height: var(--leading-tight, 1.25);
 `;

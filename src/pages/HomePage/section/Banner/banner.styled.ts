@@ -30,7 +30,7 @@ export const SoundTag = styled.div`
   // font-weight: 800;
   // letter-spacing: 0.08em;
   /* text-transform: uppercase; */
-  line-height: 1;
+  line-height: var(--leading-none, 1);
 
   pointer-events: none;
   user-select: none;
@@ -69,10 +69,10 @@ export const SoundDot = styled.span`
 `;
 
 export const SoundText = styled.span`
-  font-size: 16px;
+  font-size: var(--text-base, 16px);
 
   @media (max-width: ${bp.md}px) {
-    font-size: 15px;
+    font-size: var(--text-sm, 14px);
   }
 `;
 

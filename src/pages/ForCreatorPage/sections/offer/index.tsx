@@ -16,17 +16,17 @@ export default function Offer({ bgSrc }: Props) {
 
   const offerTop = useMemo<OfferItem[]>(
     () => [
-      { icon: <Icon name="Users" />, label: "Talent Management" },
-      { icon: <Icon name="DollarSign" />, label: "Social Seller Strategy" },
-      { icon: <Icon name="Handshake" />, label: "Brand Collaboration" },
+      { icon: <Icon name="Users" size={28} />, label: "Talent Management" },
+      { icon: <Icon name="DollarSign" size={28}  />, label: "Social Seller Strategy" },
+      { icon: <Icon name="Handshake" size={28}  />, label: "Brand Collaboration" },
     ],
     []
   );
 
   const offerBottom = useMemo<OfferItem[]>(
     () => [
-      { icon: <Icon name="TrendingUp" />, label: "Revenue Maximization" },
-      { icon: <Icon name="Film" />, label: "Content Production and Operation" },
+      { icon: <Icon name="TrendingUp" size={28}  />, label: "Revenue Maximization" },
+      { icon: <Icon name="Film" size={28}  />, label: "Content Production and Operation" },
     ],
     []
   );

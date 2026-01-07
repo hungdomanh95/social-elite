@@ -11,13 +11,11 @@ const Platform: React.FC<PlatformProps> = () => {
         {/* ===== LEFT GROUP (title + left list) ===== */}
         <S.LeftGroup>
           <S.TitleBlock>
-            <S.TitleStack>
               <S.TitleLine>
                 our <S.TitleAccent>elite™</S.TitleAccent>
               </S.TitleLine>
               <S.TitleLine>network</S.TitleLine>
               <S.TitleLine>platform</S.TitleLine>
-            </S.TitleStack>
           </S.TitleBlock>
 
           <S.ListLeft>

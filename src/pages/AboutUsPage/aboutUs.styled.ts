@@ -8,7 +8,7 @@ export const Page = styled.main`
   background: #000;
   color: #fff;
   overflow-x: hidden;
-  font-family: "Plus Jakarta Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+  font-family: var(--font-body);
 `;
 
 export const Container = styled.div`
@@ -42,17 +42,14 @@ export const Hero = styled.section`
 export const HeroTitle = styled.h1`
   margin: 0;
   color: ${ACCENT};
-  font-weight: 800;
-  letter-spacing: -0.02em;
-  line-height: 1;
+  font-weight: var(--fw-regular);
 
-  /* nhìn giống App.png */
-  font-size: 84px;
+  font-size: var(--text-7xl);
 
   @media (max-width: ${bp.lg}px) {
-    font-size: 72px;
+    font-size: var(--text-6xl, 60px);
   }
   @media (max-width: ${bp.md}px) {
-    font-size: 56px;
+    font-size: var(--text-5xl, 48px);
   }
 `;

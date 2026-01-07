@@ -1,7 +1,5 @@
 import styled from "styled-components";
 
-const bp = { md: 768 };
-
 export const Page = styled.main`
   --accent: #1ed75f;
   width: 100%;
@@ -30,14 +28,5 @@ export const Page = styled.main`
       transform: none;
       animation: none;
     }
-  }
-`;
-
-export const Container = styled.div`
-  width: min(1180px, calc(100% - 80px));
-  margin: 0 auto;
-
-  @media (max-width: ${bp.md}px) {
-    width: min(1240px, calc(100% - 32px));
   }
 `;

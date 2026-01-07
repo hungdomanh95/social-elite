@@ -1,19 +1,16 @@
 import styled from "styled-components";
+import { Container as BaseContainer } from "@/shared/components/Container";
 
 const bp = {
   md: 768,
   lg: 1024,
 };
 
-export const Container = styled.div`
+export const Container = styled(BaseContainer)`
   position: relative;
-  max-width: var(--container);
-  margin: 0 auto;
-  padding: 0 20px;
-
-  @media (max-width: ${bp.md}px) {
-    padding: 0 16px;
-  }
+  display: flex;
+  max-width: 786px;
+  justify-content: space-between;
 `;
 
 
@@ -34,43 +31,48 @@ export const ContactBlock = styled.section`
   }
 `;
 
-export const ContactGrid = styled.div`
-  display: grid;
-  grid-template-columns: 1fr 1.6fr;
-  gap: 36px;
-  align-items: center;
+// export const ContactGrid = styled.div`
+//   display: flex;
+//   align-items: center;
+//   justify-content: space-between;
+//   gap: 36px;
 
-  @media (max-width: ${bp.lg}px) {
-    grid-template-columns: 1fr 1.4fr;
-    gap: 28px;
-  }
+//   @media (max-width: ${bp.lg}px) {
+//     gap: 28px;
+//   }
 
-  @media (max-width: ${bp.md}px) {
-    grid-template-columns: 1fr;
-    gap: 22px;
-  }
+//   @media (max-width: ${bp.md}px) {
+//     flex-direction: column;
+//     align-items: stretch;
+//     gap: 22px;
+//   }
+// `;
+
+export const ContactTitle = styled.div`
+  /* flex: 1 1 0; */
+  min-width: 0;
 `;
-
-export const ContactTitle = styled.div``;
 
 export const ContactHeading = styled.h2`
   margin: 0;
-  font-size: 64px;
-  line-height: 1.05;
-  // letter-spacing: -1px;
-  // font-weight: 700;
+  font-family: var(--font-display);
+  font-size: var(--text-5xl);
+  font-weight: var(--fw-regular);
   color: var(--accent-3);
   @media (max-width: ${bp.lg}px) {
-    font-size: 38px;
+    font-size: var(--text-4xl);
   }
 
   @media (max-width: ${bp.md}px) {
-    font-size: 32px;
+    font-size: var(--text-2xl);
   }
 `;
 
 export const Form = styled.div`
-  display: grid;
+  flex: 1.6 1 0;
+  min-width: 0;
+  display: flex;
+  /* flex-direction: column; */
   gap: 18px;
 
   @media (max-width: ${bp.md}px) {
@@ -79,30 +81,34 @@ export const Form = styled.div`
 `;
 
 export const Row2 = styled.div`
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+  display: flex;
   gap: 22px;
+  margin-bottom: 12px;
 
   @media (max-width: ${bp.md}px) {
-    grid-template-columns: 1fr;
+    flex-direction: column;
     gap: 14px;
   }
 `;
 
 export const Field = styled.div`
-  display: grid;
+  flex: 1 1 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
   gap: 8px;
 `;
 
 export const Label = styled.div`
-  font-size: 18px;
+  font-size: var(--text-sm);
+  line-height: var(--leading-tight, 1.25);
+  font-weight: var(--fw-medium);
   // font-weight: 700;
   // letter-spacing: 0.2px;
   text-transform: lowercase;
-  color: rgba(255, 255, 255, 1);
 
   @media (max-width: ${bp.md}px) {
-    font-size: 12px;
+    font-size: var(--text-xs, 12px);
   }
 `;
 
@@ -112,7 +118,7 @@ const baseInput = `
   background: transparent;
   border: none;
   outline: none;
-  padding: 10px 0;
+  font-size: 12px;
 
   border-bottom: 2px solid rgba(255, 255, 255, 0.18);
 
@@ -147,7 +153,7 @@ export const Textarea = styled.textarea`
 export const Actions = styled.div`
   display: flex;
   justify-content: center;
-  padding-top: 8px;
+  padding-top: var(--space-8);
 
   @media (max-width: ${bp.md}px) {
     justify-content: flex-start;
@@ -157,26 +163,16 @@ export const Actions = styled.div`
 export const SendBtn = styled.button`
   border: none;
   cursor: pointer;
+  font-size: var(--text-xs);
+  line-height: var(--leading-tight, 1.25);
+  font-weight: var(--fw-semibold);
 
   padding: 12px 22px;
   border-radius: var(--radius-xl);
-  // font-weight: 600;
   letter-spacing: 0.2px;
 
   color: #000000;
   background: var(--accent-3);
-  /* box-shadow: var(--shadow-accent); */
-
-  /* &:hover {
-    filter: brightness(1.03);
-  }
-
-  &:disabled {
-    cursor: not-allowed;
-    opacity: 0.55;
-    filter: none;
-  } */
-
   @media (max-width: ${bp.md}px) {
     padding: 11px 18px;
   }

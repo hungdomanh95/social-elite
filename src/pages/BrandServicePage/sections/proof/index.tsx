@@ -1,5 +1,5 @@
+import { Container } from "@/shared/components/Container";
 import * as S from "./proof.styled";
-import { Container } from "../../brandService.styled";
 
 export default function ProofGrid() {
   const blocks = Array.from({ length: 45 }, (_, i) => i);

@@ -1,5 +1,5 @@
+import { Container } from "@/shared/components/Container";
 import * as S from "./bottomCta.styled";
-import { Container } from "../../brandService.styled";
 
 type Props = {
   onContactClick?: () => void;

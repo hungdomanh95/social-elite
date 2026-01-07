@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { Container as BaseContainer } from "@/shared/components/Container";
 
 const bp = {
   sm: 480,
@@ -6,14 +7,8 @@ const bp = {
   lg: 1024,
 };
 
-export const Container = styled.div`
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 0 24px;
+export const Container = styled(BaseContainer)`
 
-  @media (max-width: ${bp.md}px) {
-    padding: 0 16px;
-  }
 `;
 
 export const FooterBar = styled.footer`
@@ -24,31 +19,33 @@ export const FooterBar = styled.footer`
 `;
 
 export const FooterTop = styled.div`
-  display: grid;
-  grid-template-columns: auto minmax(420px, 1fr) auto;
+  display: flex;
   align-items: center;
-  column-gap: 64px;
+  justify-content: space-between;
+  gap: 64px;
 
-  padding: 96px 34px;
+  padding: var(--space-16) 0;
 
   @media (max-width: ${bp.lg}px) {
-    grid-template-columns: auto minmax(340px, 1fr) auto;
-    column-gap: 56px;
-    padding: 40px 0 30px;
+    gap: 56px;
+    padding: var(--space-10, 40px) 0 var(--space-7, 28px);
   }
 
   @media (max-width: ${bp.md}px) {
-    grid-template-columns: 1fr;
-    row-gap: 18px;
-    padding: 28px 0 22px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 18px;
+    padding: var(--space-7, 28px) 0 var(--space-6, 24px);
   }
 `;
 
 export const FooterTopLeft = styled.div`
-  display: contents;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  min-width: 0;
 
   @media (max-width: ${bp.md}px) {
-    display: flex;
     flex-direction: column;
     align-items: flex-start;
     gap: 14px;
@@ -61,7 +58,7 @@ export const Brand = styled.div`
 `;
 
 export const BrandLogo = styled.img`
-  height: 48px;
+  height: 32px;
   width: auto;
   display: block;
 
@@ -76,9 +73,10 @@ export const BrandLogo = styled.img`
 
 export const BrandText = styled.div`
   // font-weight: 900;
-  font-size: 54px;
+  font-family: var(--font-display);
+  font-size: var(--text-5xl, 48px);
   // letter-spacing: -0.5px;
-  line-height: 1;
+  line-height: var(--leading-none, 1);
 
   .white {
     color: #fff;
@@ -88,16 +86,17 @@ export const BrandText = styled.div`
   }
 
   @media (max-width: ${bp.lg}px) {
-    font-size: 38px;
+    font-size: var(--text-4xl, 36px);
   }
 
   @media (max-width: ${bp.md}px) {
-    font-size: 34px;
+    font-size: var(--text-3xl, 30px);
   }
 `;
 
 export const Info = styled.div`
-  display: grid;
+  display: flex;
+  flex-direction: column;
   gap: 10px;
 
   @media (max-width: ${bp.md}px) {
@@ -111,20 +110,21 @@ export const InfoRow = styled.div`
   align-items: baseline;
   flex-wrap: wrap;
 
-  font-size: 14px;
-  line-height: 1.3;
+  font-family: var(--font-body);
+  font-size: var(--text-xs);
+  line-height: var(--leading-normal, 1.5);
 `;
 
 export const InfoLabel = styled.span`
   min-width: 64px;
-  // font-weight: 700;
-  color: rgba(255, 255, 255, 0.78);
+  font-weight: var(--fw-semibold);
+
 `;
 
 export const InfoValue = styled.a`
   text-decoration: none;
   color: var(--accent);
-  // font-weight: 700;
+  font-weight: var(--fw-semibold);
 
   &:hover {
     filter: brightness(1.05);
@@ -133,6 +133,7 @@ export const InfoValue = styled.a`
 `;
 
 export const InfoText = styled.span`
+  font-weight: var(--fw-regular);
   color: rgba(255, 255, 255, 0.8);
 `;
 
@@ -141,6 +142,7 @@ export const Socials = styled.div`
   justify-content: flex-end;
   align-items: center;
   gap: 12px;
+  flex: 0 0 auto;
 
   @media (max-width: ${bp.md}px) {
     justify-content: flex-start;
@@ -197,17 +199,17 @@ export const Line = styled.div`
 `;
 
 export const FooterBottom = styled.div`
-  padding: 18px 0 22px;
+  padding: var(--space-5, 20px) 0 var(--space-6, 24px);
   display: flex;
   justify-content: center;
 
   @media (max-width: ${bp.md}px) {
-    padding: 16px 0 20px;
+    padding: var(--space-4, 16px) 0 var(--space-5, 20px);
   }
 `;
 
 export const Copyright = styled.div`
-  font-size: 15px;
+  font-size: var(--text-xs, 14px);
   color: rgba(255, 255, 255, 0.55);
   text-align: center;
 `;

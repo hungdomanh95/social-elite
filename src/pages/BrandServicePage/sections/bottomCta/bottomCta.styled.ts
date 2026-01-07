@@ -44,9 +44,10 @@ export const CtaButton = styled.button`
   background: #ffffff;
   color: #0b0f0c;
 
-  padding: 16px 32px;
   border-radius: 999px;
-  font-size: 16px;
+  padding: 12px 26px;
+  font-size: var(--text-xs);
+  font-family: var(--font-body);
 
   box-shadow: 0 12px 28px rgba(0, 0, 0, 0.18);
   transition: transform 160ms ease, filter 160ms ease;

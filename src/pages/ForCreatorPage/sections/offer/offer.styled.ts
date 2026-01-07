@@ -1,3 +1,4 @@
+import { Container } from "@/shared/components/Container";
 import styled, { keyframes } from "styled-components";
 
 const bp = { md: 768, lg: 1024 };
@@ -59,11 +60,10 @@ export const OfferSection = styled.section<{ $bg: string }>`
   }
 `;
 
-export const OfferInner = styled.div`
+export const OfferInner = styled(Container)`
   position: relative;
   z-index: 1;
 
-  width: min(1240px, calc(100% - 64px));
   margin: 0 auto;
   padding: 64px 0 72px;
 
@@ -114,8 +114,8 @@ export const OfferRow = styled.div`
 
 /* ✅ Declare OfferIcon FIRST */
 export const OfferIcon = styled.div`
-  width: 46px;
-  height: 46px;
+  width: 72px;
+  height: 72px;
   border-radius: 999px;
   background: var(--accent, #22c55e);
   color: #ffffff;
@@ -171,9 +171,10 @@ export const OfferItem = styled.div`
 
 export const OfferText = styled.div`
   color: #0b0f0c;
-  font-size: 18px;
+  font-size: var(--text-lg, 18px);
+  font-family: var(--font-display);
 
   @media (max-width: ${bp.md}px) {
-    font-size: 16px;
+    font-size: var(--text-base, 16px);
   }
 `;

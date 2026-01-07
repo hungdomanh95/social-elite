@@ -13,7 +13,7 @@ export default function Header() {
   const menu: MenuItem[] = useMemo(
     () => [
       { label: "About Us", to: "/about-us" },
-      { label: "For Brand", to: "/brand-service" },
+      { label: "Brand Service", to: "/brand-service" },
       { label: "For Creator", to: "/for-creator" },
       { label: "Blog", to: "/blog" },
       { label: "Our Campaign", to: "/our-campaign" },

@@ -7,10 +7,9 @@ export const Wrap = styled.div`
 export const Title = styled.div`
   text-align: center;
   color: var(--accent);
-  // font-weight: 800;
-  // letter-spacing: 0.2px;
-  /* margin-bottom: 14px; */
-  margin-top: 14px;
+  font-size: var(--text-2xl);
+  font-weight: var(--fw-semibold);
+  margin-top: var(--space-7);
 `;
 
 export const Marquee = styled.div`
@@ -84,7 +83,7 @@ export const Item = styled.span`
 
   /* default “text look” (item custom vẫn ok vì node tự style) */
   // font-weight: 850;
-  font-size: 12px;
+  font-size: var(--text-xs, 12px);
   // letter-spacing: 0.28px;
   color: rgba(255, 255, 255, 0.85);
   text-transform: uppercase;

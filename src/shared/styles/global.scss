@@ -19,22 +19,166 @@
   --shadow-accent: 0 10px 24px rgba(34, 197, 94, 0.22);
 
   /* layout */
-  --container: 1200px;
+  /* container */
+  --container-max: 1028px;
+  --container: var(--container-max); /* legacy alias */
+  --container-pad: 40px;
   --header-h: 64px;
   --radius-md: 12px;
   --radius-xl: 999px;
 
-  /* ========== FONT (global) ========== */
-  --font-sans: "Cal Sans", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  /* =========================
+     SPACING — Tailwind-like scale
+     (1 = 4px)
+  ========================= */
+  --space-0: 0px;
+  --space-1: 0.25rem; /* 4px */
+  --space-2: 0.5rem; /* 8px */
+  --space-3: 0.75rem; /* 12px */
+  --space-4: 1rem; /* 16px */
+  --space-5: 1.25rem; /* 20px */
+  --space-6: 1.5rem; /* 24px */
+  --space-7: 1.75rem; /* 28px */
+  --space-8: 2rem; /* 32px */
+  --space-9: 2.25rem; /* 36px */
+  --space-10: 2.5rem; /* 40px */
+  --space-11: 2.75rem; /* 44px */
+  --space-12: 3rem; /* 48px */
+  --space-14: 3.5rem; /* 56px */
+  --space-16: 4rem; /* 64px */
+  --space-18: 4.5rem; /* 72px */
+  --space-20: 5rem; /* 80px */
+  --space-24: 6rem; /* 96px */
 
-  /* ========== TYPE SCALE (global) ========== */
-  --fs-body: 17px;
-  --fs-sm: 14px;
-  --fs-xs: 12px;
+  /* =========================
+     FONT
+  ========================= */
+  --font-display: "Cal Sans", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  --font-body: "Plus Jakarta Sans", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
 
-  --fs-h1: clamp(40px, 4.2vw, 64px);
-  --fs-h2: clamp(32px, 3.2vw, 48px);
-  --fs-h3: clamp(24px, 2.4vw, 32px);
+  /* Weight (giữ ít mức để khỏi “lung tung”) */
+  --fw-regular: 400;
+  --fw-medium: 500;
+  --fw-semibold: 600;
+  --fw-bold: 700;
+  --fw-extrabold: 800;
+  --fw-black: 900;
+
+  /* =========================
+     TYPOGRAPHY — Tailwind-like scale
+     Format: font-size / line-height
+  ========================= */
+  --text-xs: 0.75rem; /* 12px */     --lh-xs: 1rem; /* 16px */
+  --text-sm: 0.875rem; /* 14px */    --lh-sm: 1.25rem; /* 20px */
+  --text-base: 1rem; /* 16px */      --lh-base: 1.5rem; /* 24px */
+  --text-lg: 1.125rem; /* 18px */    --lh-lg: 1.75rem; /* 28px */
+  --text-xl: 1.25rem; /* 20px */     --lh-xl: 1.75rem; /* 28px */
+  --text-2xl: 1.5rem; /* 24px */     --lh-2xl: 2rem; /* 32px */
+  --text-3xl: 1.875rem; /* 30px */   --lh-3xl: 2.25rem; /* 36px */
+  --text-4xl: 2.25rem; /* 36px */    --lh-4xl: 2.5rem; /* 40px */
+  --text-5xl: 3rem; /* 48px */       --lh-5xl: 1;
+  --text-6xl: 3.75rem; /* 60px */    --lh-6xl: 1;
+  --text-7xl: 4.5rem; /* 72px */     --lh-7xl: 1;
+  --text-8xl: 6rem; /* 96px */       --lh-8xl: 1;
+  --text-9xl: 8rem; /* 128px */      --lh-9xl: 1;
+
+  --leading-none: 1;
+  --leading-display: 1.05;
+  --leading-head: 1.15;
+  --leading-tight: 1.25;
+  --leading-snug: 1.375;
+  --leading-normal: 1.5;
+  --leading-relaxed: 1.625;
+  --leading-loose: 2;
+
+  /* =========================
+     TEXT STYLES — HEADING (theo hình)
+     Format: font-size / line-height
+     (Auto => normal)
+  ========================= */
+  --h-128: 128px;
+  --lh-h-128: normal; /* 128/Auto */
+
+  --h-96: 96px;
+  --lh-h-96: 100px; /* 96/100 */
+
+  --h-64: 64px;
+  --lh-h-64: normal; /* 64/Auto */
+
+  --h-48: 48px;
+  --lh-h-48: normal; /* 48/Auto */
+
+  --h-48-tight: 48px;
+  --lh-h-48-tight: 40px; /* 48/40 */
+
+  --h-32: 32px;
+  --lh-h-32: normal; /* 32/Auto */
+
+  --h-24: 24px;
+  --lh-h-24: 24px; /* 24/24 */
+
+  --h-20: 20px;
+  --lh-h-20: 20px; /* 20/20 */
+
+  --h-16: 16px;
+  --lh-h-16: 20px; /* 16/20 */
+
+  --h-12: 12px;
+  --lh-h-12: 16px; /* 12/16 */
+
+  /* =========================
+     TEXT STYLES — BODY (theo hình)
+     (hình chỉ show size, nên mình set line-height “chuẩn đọc”)
+  ========================= */
+  --b-36: var(--text-4xl);
+  --lh-b-36: var(--lh-4xl);
+
+  --b-20: var(--text-xl);
+  --lh-b-20: var(--lh-xl);
+
+  --b-18: var(--text-lg);
+  --lh-b-18: var(--lh-lg);
+
+  --b-16: var(--text-base);
+  --lh-b-16: var(--lh-base);
+
+  --b-14: var(--text-sm);
+  --lh-b-14: var(--lh-sm);
+
+  --b-12: var(--text-xs);
+  --lh-b-12: var(--lh-xs);
+
+  /* =========================
+     TEXT STYLES — METRIC (theo hình)
+  ========================= */
+  --m-xl: 140px;
+  --lh-m-xl: 100px; /* 140/100 */
+
+  --m-l: 28px;
+  --lh-m-l: 32px; /* 28/32 */
+
+  --m-m: 24px;
+  --lh-m-m: 28px; /* 24/28 */
+
+  --m-s: 16px;
+  --lh-m-s: 20px; /* 16/20 */
+
+  /* =========================
+     Aliases (nếu bạn đang dùng các biến cũ)
+  ========================= */
+  --fs-body: var(--b-16);
+  --fs-sm: var(--b-14);
+  --fs-xs: var(--b-12);
+
+  --fs-h1: var(--h-64);
+  --fs-h2: var(--h-48);
+  --fs-h3: var(--h-32);
+}
+
+@media (max-width: 768px) {
+  :root {
+    --container-pad: 16px;
+  }
 }
 
 /* ========== Reset ========== */
@@ -60,13 +204,14 @@ html {
 
 body {
   min-height: 100vh;
-  line-height: 1.5;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
 
-  font-family: var(--font-sans);
-  font-size: var(--fs-body);
+  font-family: var(--font-body);
+  font-size: var(--b-16);
+  line-height: var(--lh-b-16);
+  font-weight: var(--fw-regular);
 
   margin: 0;
   background: var(--bg);
@@ -103,31 +248,83 @@ textarea {
   resize: vertical;
 }
 
-/* Text overflow safety */
-p,
 h1,
 h2,
 h3,
 h4,
 h5,
 h6 {
-  overflow-wrap: break-word;
-  font-weight: 400;
+  font-family: var(--font-display);
+  font-weight: var(--fw-regular);
+  margin: 0;
 }
 
-/* Optional: set default heading sizes (nếu bạn muốn đồng bộ toàn project) */
+/* mapping cơ bản (bạn có thể đổi tuỳ page) */
 h1 {
-  font-size: var(--fs-h1);
-  line-height: 1.05;
+  font-size: var(--h-64);
+  line-height: var(--lh-h-64);
 }
 h2 {
-  font-size: var(--fs-h2);
-  line-height: 1.1;
+  font-size: var(--h-48);
+  line-height: var(--lh-h-48);
 }
 h3 {
-  font-size: var(--fs-h3);
-  line-height: 1.15;
+  font-size: var(--h-32);
+  line-height: var(--lh-h-32);
 }
+h4 {
+  font-size: var(--h-24);
+  line-height: var(--lh-h-24);
+}
+h5 {
+  font-size: var(--h-20);
+  line-height: var(--lh-h-20);
+}
+h6 {
+  font-size: var(--h-16);
+  line-height: var(--lh-h-16);
+}
+
+p {
+  margin: 0;
+  font-size: var(--b-16);
+  line-height: var(--lh-b-16);
+}
+
+/* =========================
+   OPTIONAL: Utility classes
+   (dùng nhanh trong styled-components / JSX)
+========================= */
+.t-h128 { font-size: var(--h-128); line-height: var(--lh-h-128); font-family: var(--font-display); }
+.t-h96  { font-size: var(--h-96);  line-height: var(--lh-h-96);  font-family: var(--font-display); }
+.t-h64  { font-size: var(--h-64);  line-height: var(--lh-h-64);  font-family: var(--font-display); }
+.t-h48  { font-size: var(--h-48);  line-height: var(--lh-h-48);  font-family: var(--font-display); }
+.t-h48t { font-size: var(--h-48-tight); line-height: var(--lh-h-48-tight); font-family: var(--font-display); }
+.t-h32  { font-size: var(--h-32);  line-height: var(--lh-h-32);  font-family: var(--font-display); }
+.t-h24  { font-size: var(--h-24);  line-height: var(--lh-h-24);  font-family: var(--font-display); }
+.t-h20  { font-size: var(--h-20);  line-height: var(--lh-h-20);  font-family: var(--font-display); }
+.t-h16  { font-size: var(--h-16);  line-height: var(--lh-h-16);  font-family: var(--font-display); }
+.t-h12  { font-size: var(--h-12);  line-height: var(--lh-h-12);  font-family: var(--font-display); }
+
+.t-b36 { font-size: var(--b-36); line-height: var(--lh-b-36); font-family: var(--font-body); }
+.t-b20 { font-size: var(--b-20); line-height: var(--lh-b-20); font-family: var(--font-body); }
+.t-b18 { font-size: var(--b-18); line-height: var(--lh-b-18); font-family: var(--font-body); }
+.t-b16 { font-size: var(--b-16); line-height: var(--lh-b-16); font-family: var(--font-body); }
+.t-b14 { font-size: var(--b-14); line-height: var(--lh-b-14); font-family: var(--font-body); }
+.t-b12 { font-size: var(--b-12); line-height: var(--lh-b-12); font-family: var(--font-body); }
+
+.t-mxl { font-size: var(--m-xl); line-height: var(--lh-m-xl); font-family: var(--font-display); }
+.t-ml  { font-size: var(--m-l);  line-height: var(--lh-m-l);  font-family: var(--font-display); }
+.t-mm  { font-size: var(--m-m);  line-height: var(--lh-m-m);  font-family: var(--font-display); }
+.t-ms  { font-size: var(--m-s);  line-height: var(--lh-m-s);  font-family: var(--font-display); }
+
+/* “bold” có kiểm soát */
+.fw-regular { font-weight: var(--fw-regular); }
+.fw-medium { font-weight: var(--fw-medium); }
+.fw-semibold { font-weight: var(--fw-semibold); }
+.fw-bold { font-weight: var(--fw-bold); }
+.fw-extrabold { font-weight: var(--fw-extrabold); }
+.fw-black { font-weight: var(--fw-black); }
 
 /* Lists / links */
 ul,

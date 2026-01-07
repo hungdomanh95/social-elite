@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { Container as BaseContainer } from "@/shared/components/Container";
 
 const bp = { md: 768, lg: 1024, xl: 1280 };
 
@@ -6,32 +7,13 @@ export const EngineSection = styled.section`
   background: #eff7f4;
   color: #0b0f0c;
 
-  padding: 56px 0 72px;
+  padding-bottom: var(--space-9);
 
-  @media (max-width: ${bp.lg}px) {
-    padding: 48px 0 64px;
-  }
-  @media (max-width: ${bp.md}px) {
-    padding: 38px 0 52px;
-  }
 `;
 
-/* ✅ container riêng cho Engine để màn >1560px không bị bó gọn */
-export const EngineContainer = styled.div`
-  max-width: 1380px;
-  margin: 0 auto;
-
-  /* màn càng to càng có breathing room */
-  padding: 0 clamp(24px, 5vw, 120px);
-
-  @media (max-width: ${bp.md}px) {
-    padding: 0 16px;
-  }
-
-  /* extra nới khi màn cực lớn */
-  @media (min-width: 1600px) {
-    max-width: 1480px;
-  }
+export const EngineContainer = styled(BaseContainer)`
+  max-width: 1100px;
+  padding:0;
 `;
 
 export const TickerWrap = styled.div`
@@ -49,13 +31,15 @@ export const TickerItem = styled.span`
   color: #0b0f0c;
 
   span {
-    font-size: 16px;
-    line-height: 1;
+    font-size: var(--text-2xl);
+    line-height: var(--leading-none, 1);
+    font-family: var(--font-body);
+    font-weight: var(--fw-semibold);
   }
 
   @media (max-width: ${bp.md}px) {
     span {
-      font-size: 14px;
+      font-size: var(--text-sm, 14px);
     }
   }
 `;
@@ -65,8 +49,10 @@ export const EngineRow = styled.div`
   align-items: flex-start;
   justify-content: space-between;
 
-  /* ✅ gap co giãn theo viewport => màn lớn nhìn “đều” */
-  gap: clamp(40px, 5vw, 96px);
+  /* ✅ gap co giãn theo viewport => màn lớn nhìn “đều”
+  gap: clamp(40px, 5vw, 96px); */
+
+  gap:var(--space-5);
 
   @media (max-width: ${bp.lg}px) {
     flex-direction: column;
@@ -80,10 +66,10 @@ export const EngineTitle = styled.h2`
   display: flex;
   flex-direction: column;
 
-  font-family: "Cal Sans", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
-  font-weight: 400;
+  font-family: var(--font-display);
+  font-weight: var(--fw-regular);
   letter-spacing: -0.02em;
-  line-height: 0.98;
+  line-height: var(--leading-none, 1);
 
   font-size: clamp(42px, 4.2vw, 72px);
 
@@ -113,10 +99,10 @@ export const EngineTitle = styled.h2`
 
 export const FeatureGrid = styled.div`
   --cols: 2;
-  --gapX: 34px;
-  --gapY: 22px;
+  --gapX: var(--space-7);
+  --gapY: var(--space-5);
 
-  flex: 1 1 auto;
+  /* flex: 1 1 auto; */
 
   display: flex;
   flex-wrap: wrap;
@@ -205,33 +191,33 @@ export const FeatureContent = styled.div`
 export const FeatureTitle = styled.h3`
   margin: 0 0 6px;
 
-  font-family: "Cal Sans", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
-  font-weight: 400;
+  font-family: var(--font-display);
+  font-weight: var(--fw-regular);
 
-  font-size: 18px;
-  line-height: 1.15;
+  font-size: var(--text-base);
+  line-height: var(--leading-head, 1.15);
   letter-spacing: -0.01em;
   color: #0b0f0c;
 
   @media (max-width: ${bp.md}px) {
-    font-size: 17px;
+    font-size: var(--text-base, 16px);
   }
 `;
 
 export const FeatureDesc = styled.p`
   margin: 0;
 
-  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
-  font-weight: 400;
+  font-family: var(--font-body);
+  font-weight: var(--fw-regular);
 
-  font-size: 14px;
-  line-height: 1.65;
+  font-size: var(--text-xs);
+  line-height: var(--leading-relaxed, 1.625);
   letter-spacing: 0;
 
   color: #0e632c;
 
   @media (max-width: ${bp.md}px) {
-    font-size: 13px;
-    line-height: 1.6;
+    font-size: var(--text-sm, 14px);
+    line-height: var(--leading-relaxed, 1.625);
   }
 `;

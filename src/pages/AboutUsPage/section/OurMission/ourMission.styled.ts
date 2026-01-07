@@ -1,9 +1,9 @@
 import styled from "styled-components";
-export { Container } from "@/shared/components/Container";
+import { Container as BaseContainer } from "@/shared/components/Container";
 
 const bp = { md: 768, lg: 1024 };
 const ACCENT = "var(--accent, #22c55e)";
-const FONT = '"Plus Jakarta Sans", ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial';
+const FONT = "var(--font-body)";
 
 export const MissionSection = styled.section`
   width: 100%;
@@ -14,6 +14,10 @@ export const MissionSection = styled.section`
   @media (max-width: ${bp.md}px) {
     padding: 42px 0 56px;
   }
+`;
+
+export const Container = styled(BaseContainer)`
+  max-width: 1100px;
 `;
 
 export const SectionHeading = styled.div`
@@ -32,15 +36,14 @@ export const SectionHeading = styled.div`
 
   .text {
     color: ${ACCENT};
-    font-size: 58px;
-    line-height: 1.05;
-    letter-spacing: -0.01em;
-    font-weight: 600;
+    font-family: var(--font-display);
+    font-size: var(--text-5xl);
+    font-weight: var(--fw-regular);
   }
 
   @media (max-width: ${bp.md}px) {
     .text {
-      font-size: 40px;
+      font-size: var(--text-4xl, 36px);
     }
   }
 `;
@@ -74,47 +77,47 @@ export const MissionCard = styled.div`
 
 export const MissionLeft = styled.div`
   flex: 0 0 auto;
+  line-height: var(--leading-display, 1.05);
 `;
 
 export const MissionKicker = styled.div`
   color: ${ACCENT};
-  font-size: 96px;
-  line-height: 1;
-  letter-spacing: -0.02em;
+  font-family: var(--font-display);
+  font-size: var(--text-7xl);
 
   @media (max-width: ${bp.md}px) {
-    font-size: 64px;
+    font-size: var(--h-64, 64px);
   }
 `;
 
 export const MissionMain = styled.div`
   margin-top: 10px;
   color: #fff;
-  font-size: 64px;
-  line-height: 1.06;
+  font-family: var(--font-display);
+  font-size: var(--h-64, 64px);
+  line-height: var(--leading-display, 1.05);
   letter-spacing: -0.02em;
 
   @media (max-width: ${bp.md}px) {
-    font-size: 44px;
+    font-size: var(--text-5xl, 48px);
   }
 `;
 
 export const MissionRight = styled.div`
   flex: 1 1 auto;
-  color: rgba(255, 255, 255, 0.76);
-  font-size: 20px;
-  line-height: 1.65;
 
   p {
     margin: 0 0 18px;
+    font-size: var(--text-sm);
+    line-height: var(--leading-relaxed, 1.625);
   }
   p:last-child {
     margin-bottom: 0;
   }
 
   @media (max-width: ${bp.md}px) {
-    font-size: 14px;
-    line-height: 1.7;
+    font-size: var(--text-sm, 14px);
+    line-height: var(--leading-relaxed, 1.625);
 
     p {
       margin-bottom: 14px;

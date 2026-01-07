@@ -1,5 +1,6 @@
 
 import styled from "styled-components";
+import { Container as BaseContainer } from "@/shared/components/Container";
 
 const bp = { md: 768, lg: 1024 };
 
@@ -10,10 +11,7 @@ export const Section = styled.section`
   background: #050707;
 `;
 
-export const Container = styled.div`
-  width: min(1320px, calc(100% - 80px));
-  margin: 0 auto;
-
+export const Container = styled(BaseContainer)`
   display: flex;
   align-items: flex-end;
   justify-content: flex-start;
@@ -21,10 +19,6 @@ export const Container = styled.div`
   &::after {
     content: "";
     flex: 0 0 50%;
-  }
-
-  @media (max-width: ${bp.md}px) {
-    width: min(1320px, calc(100% - 28px));
   }
 
   @media (max-width: ${bp.lg}px) {
@@ -42,8 +36,8 @@ export const Title = styled.h2`
   justify-content: flex-start; /* ✅ bám line trái */
   margin: 0 0 18px;
 
-  font-size: clamp(28px, 3.2vw, 48px);
-  font-weight: 600;
+  font-size: var(--text-4xl);
+  font-weight: var(--fw-semibold);
   text-align: left;
   color: rgba(255, 255, 255, 0.95);
 

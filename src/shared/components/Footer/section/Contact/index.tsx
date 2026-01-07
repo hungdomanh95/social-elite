@@ -40,12 +40,11 @@ const Contact: React.FC<ContactProps> = (props) => {
   return (
     <S.ContactBlock>
       <S.Container>
-        <S.ContactGrid>
+
           <S.ContactTitle>
             <S.ContactHeading>Contact Us</S.ContactHeading>
           </S.ContactTitle>
-
-          <S.Form>
+          <div style={{display:"flex", flexDirection:"column" , width:"55%"}}>
             <S.Row2>
               <S.Field>
                 <S.Label>name</S.Label>
@@ -76,7 +75,6 @@ const Contact: React.FC<ContactProps> = (props) => {
                 placeholder="Tell us what you need help with"
               />
             </S.Field>
-
             <S.Actions>
               <S.SendBtn
                 type="button"
@@ -88,8 +86,8 @@ const Contact: React.FC<ContactProps> = (props) => {
                 {submitting ? "Sending..." : "Send Us a Message"}
               </S.SendBtn>
             </S.Actions>
-          </S.Form>
-        </S.ContactGrid>
+          </div>
+
       </S.Container>
     </S.ContactBlock>
   );

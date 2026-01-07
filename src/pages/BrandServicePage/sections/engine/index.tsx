@@ -71,13 +71,12 @@ const TICKER_ICONS: Record<string, LucideIcon> = {
 
 function TickerIcon({ name }: { name: string }) {
   const Cmp = TICKER_ICONS[name] ?? TrendingUp;
-  return <Cmp size={16} color="var(--accent)" />;
+  return <Cmp size={20} color="var(--accent)" />;
 }
 
 export default function SocialCommerceEngine() {
   return (
     <S.EngineSection>
-      <S.EngineContainer>
         <S.TickerWrap>
           <TickerMarquee
             items={TICKER_TRENDING.map(({ label, icon }) => (
@@ -90,6 +89,7 @@ export default function SocialCommerceEngine() {
             gapPx={56}
           />
         </S.TickerWrap>
+      <S.EngineContainer>
 
         <S.EngineRow>
           <S.EngineTitle data-reveal>

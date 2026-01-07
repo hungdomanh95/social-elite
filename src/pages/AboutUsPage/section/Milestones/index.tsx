@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useMemo, useRef } from "react";
+import React from "react";
 import * as S from "./milestones.styled";
 import { MILESTONES, type MilestoneItem, type Side } from "./mockup";
 
@@ -7,114 +7,58 @@ type MilestonesProps = {
 };
 
 const Milestones: React.FC<MilestonesProps> = ({ items = MILESTONES }) => {
-  const timelineRef = useRef<HTMLDivElement | null>(null);
-  const rowRefs = useRef<Array<HTMLDivElement | null>>([]);
-
-  const normalized = useMemo(() => {
-    return items.map((m, idx) => ({
-      ...m,
-      side: (m.side ?? (idx % 2 === 0 ? "left" : "right")) as Side,
-    }));
-  }, [items]);
-
-  useLayoutEffect(() => {
-    const timeline = timelineRef.current;
-    if (!timeline) return;
-
-    const compute = () => {
-      const cs = window.getComputedStyle(timeline);
-
-      // --cycle có dạng "6s"
-      const cycleRaw = cs.getPropertyValue("--cycle").trim();
-      const cycle = Math.max(0.1, parseFloat(cycleRaw || "6"));
-
-      const nodeYRaw = cs.getPropertyValue("--nodeY").trim(); // "74px"
-      const nodeY = Math.max(0, parseFloat(nodeYRaw || "0"));
-
-      const tRect = timeline.getBoundingClientRect();
-      const height = tRect.height;
-
-      // dot chạy từ nodeY tới (height - nodeY)
-      const travel = Math.max(1, height - nodeY * 2);
-
-      const lastIdx = normalized.length - 1;
-
-      normalized.forEach((_, idx) => {
-        const rowEl = rowRefs.current[idx];
-        if (!rowEl) return;
-
-        const rRect = rowEl.getBoundingClientRect();
-        // vị trí node (tính từ top timeline)
-        const y = (rRect.top - tRect.top) + nodeY;
-
-        // progress 0..1 theo đường chạy dot
-        const p = Math.min(1, Math.max(0, (y - nodeY) / travel));
-
-        // delay theo progress
-        let d = p * cycle;
-
-        // tránh đụng frame reset cuối cycle => kéo sớm 1 chút
-        if (idx === lastIdx) d = Math.min(d, cycle - 0.25);
-
-        rowEl.style.setProperty("--d", `${d}s`);
-      });
-    };
-
-    // chạy 2 lần cho chắc sau font/layout settle
-    const raf1 = requestAnimationFrame(() => {
-      compute();
-      requestAnimationFrame(compute);
-    });
-
-    const ro = new ResizeObserver(() => compute());
-    ro.observe(timeline);
-    rowRefs.current.forEach((el) => el && ro.observe(el));
-
-    window.addEventListener("resize", compute);
-
-    return () => {
-      cancelAnimationFrame(raf1);
-      ro.disconnect();
-      window.removeEventListener("resize", compute);
-    };
-  }, [normalized]);
+  const CYCLE = 6; // phải khớp --cycle trong css
 
   return (
     <S.MilestonesSection>
       <S.Container>
         <S.MilestonesHeading>
-          <span className="bar" aria-hidden />
           <div className="stack">
-            <div className="top">Key Milestones</div>
-            <div className="bottom">of Social Elite</div>
+            <span className="bar" aria-hidden />
+            <div>
+              <div className="top">Key Milestones</div>
+              <div className="bottom">of Social Elite</div>
+            </div>
           </div>
         </S.MilestonesHeading>
 
-        <S.Timeline ref={timelineRef} aria-label="Key Milestones timeline">
+        <S.Timeline aria-label="Key Milestones timeline">
           <S.TimelineList>
-            {normalized.map((m, idx) => (
-              <S.Row
-                key={m.year}
-                $side={m.side}
-                ref={(el) => {
-                  rowRefs.current[idx] = el;
-                }}
-              >
-                <S.Node aria-hidden />
-                <S.Arm $side={m.side} aria-hidden />
+            {items.map((m, idx) => {
+              const side: Side = m.side ?? (idx % 2 === 0 ? "left" : "right");
 
-                <S.Content $side={m.side}>
-                  <S.Year>{m.year}</S.Year>
-                  <S.Lines>
-                    {m.lines.map((l) => (
-                      <S.Line key={l.key} className={l.accent ? "accent" : ""}>
-                        {l.content}
-                      </S.Line>
-                    ))}
-                  </S.Lines>
-                </S.Content>
-              </S.Row>
-            ))}
+              // SYNC: dot chạy từ item đầu -> item cuối theo cycle
+              const denom = Math.max(items.length - 1, 1);
+              let delay = (idx / denom) * CYCLE;
+
+              // tránh trường hợp delay == CYCLE (bị wrap về 0)
+              if (idx === items.length - 1 && items.length > 1) {
+                delay = Math.max(CYCLE - 0.25, 0);
+              }
+
+              return (
+                <S.Row
+                  key={m.year}
+                  $side={side}
+                  style={{ ["--d" as any]: `${delay}s` }}
+                >
+                  <S.Node aria-hidden />
+                  <S.Arm $side={side} aria-hidden />
+
+                  <S.Content $side={side}>
+                    <S.Year>{m.year}</S.Year>
+
+                    <S.Lines>
+                      {m.lines.map((l) => (
+                        <S.Line key={l.key} className={l.accent ? "accent" : ""}>
+                          {l.content}
+                        </S.Line>
+                      ))}
+                    </S.Lines>
+                  </S.Content>
+                </S.Row>
+              );
+            })}
           </S.TimelineList>
         </S.Timeline>
       </S.Container>

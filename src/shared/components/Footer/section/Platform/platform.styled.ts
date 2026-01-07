@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { Container as BaseContainer } from "@/shared/components/Container";
 
 const bp = {
   md: 768,
@@ -6,150 +7,112 @@ const bp = {
 };
 
 export const Platform = styled.section`
-  background: var(--footer-bg);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05),
+  background: transparent;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.05),
     inset 0 -1px 0 rgba(0, 0, 0, 0.2);
-  padding: 84px 0 70px;
+  padding: var(--space-20, 80px) 0 var(--space-18, 72px);
 
   @media (max-width: ${bp.lg}px) {
-    padding: 72px 0 58px;
+    padding: var(--space-18, 72px) 0 var(--space-14, 56px);
   }
 
   @media (max-width: ${bp.md}px) {
-    padding: 56px 0 44px;
+    padding: var(--space-14, 56px) 0 var(--space-11, 44px);
   }
 `;
 
-/**
- * Desktop: grid 2x2 để canh thẳng hàng như ảnh trên.
- * Mobile: chuyển sang flex-column để LeftGroup / RightGroup là 2 block độc lập.
- */
-export const Inner = styled.div`
-  max-width: 1320px;
-  margin: 0 auto;
-  padding: 0 24px;
+export const Inner = styled(BaseContainer)`
+  /* ===== key: đồng bộ chiều cao "hàng trên" để 2 list nằm ngang nhau ===== */
+  /* --platform-top-h: clamp(240px, 20vw, 320px); */
 
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-areas:
-    "title image"
-    "listL listR";
-  column-gap: clamp(48px, 6vw, 140px);
-  row-gap: clamp(34px, 4.2vw, 72px);
-
-  align-items: start;
-  justify-items: center;
-
-  @media (max-width: ${bp.lg}px) {
-    padding: 0 18px;
-  }
+  display: flex;
+  max-width: 786px;
+  gap:16px;
+  /* align-items: flex-start; */
+  /* justify-content: space-between; */
 
   @media (max-width: ${bp.md}px) {
-    display: flex;
+    --platform-top-h: auto;
     flex-direction: column;
     gap: 28px;
-    justify-items: unset;
   }
 `;
 
-/**
- * Key: Desktop dùng display: contents để con participate vào grid.
- * Mobile chuyển về flex để giữ “nội dung đi cùng nhau”.
- */
 export const LeftGroup = styled.div`
-  display: contents;
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 
   @media (max-width: ${bp.md}px) {
-    display: flex;
-    flex-direction: column;
     gap: 18px;
   }
 `;
 
 export const RightGroup = styled.div`
-  display: contents;
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  gap:40px;
 
   @media (max-width: ${bp.md}px) {
-    display: flex;
-    flex-direction: column;
     gap: 18px;
   }
 `;
 
 export const TitleBlock = styled.div`
-  grid-area: title;
-  justify-self: center;
   width: 100%;
   max-width: 520px;
-
   @media (max-width: ${bp.md}px) {
+    height: auto;
     max-width: 100%;
   }
 `;
 
 export const ImageBlock = styled.div`
-  grid-area: image;
-  justify-self: center;
   width: 100%;
   max-width: 740px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-start;
 
   @media (max-width: ${bp.lg}px) {
     max-width: 640px;
   }
 
   @media (max-width: ${bp.md}px) {
+    height: auto;
     max-width: 100%;
+    justify-content: flex-start;
   }
 `;
 
 export const ListLeft = styled.div`
-  grid-area: listL;
   width: 100%;
   max-width: 520px;
-  justify-self: center;
 
   @media (max-width: ${bp.md}px) {
     max-width: 100%;
-    justify-self: unset;
   }
 `;
 
 export const ListRight = styled.div`
-  grid-area: listR;
   width: 100%;
   max-width: 520px;
-  justify-self: center;
 
   @media (max-width: ${bp.md}px) {
     max-width: 100%;
-    justify-self: unset;
-  }
-`;
-
-export const TitleStack = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-
-  @media (max-width: ${bp.lg}px) {
-    gap: 6px;
-  }
-
-  @media (max-width: ${bp.md}px) {
-    gap: 4px;
   }
 `;
 
 export const TitleLine = styled.div`
-  // font-weight: 800;
-  // letter-spacing: -0.8px;
-  line-height: 0.92;
-  font-size: clamp(44px, 4.2vw, 72px);
+  font-family: var(--font-display);
+  font-weight: var(--fw-regular);
+  font-size: var(--text-4xl);
+  font-size: 44px;
+  line-height: 36px;
 
-  @media (max-width: ${bp.md}px) {
-    line-height: 1;
-  // letter-spacing: -0.5px;
-  }
 `;
 
 export const TitleAccent = styled.span`
@@ -157,14 +120,17 @@ export const TitleAccent = styled.span`
 `;
 
 export const ImageLeftFooter = styled.img`
-  width: 100%;
-  height: auto;
+  width: 98%;
+  height: 100%;
+  object-fit: contain;
+  object-position: right top;
+
   display: block;
-  transform: translateY(6px);
   filter: drop-shadow(0 18px 50px rgba(0, 0, 0, 0.45));
 
   @media (max-width: ${bp.md}px) {
-    transform: none;
+    width: 100%;
+    height: auto;
   }
 `;
 
@@ -173,7 +139,8 @@ export const FeatureList = styled.ul`
   padding: 0;
   list-style: none;
 
-  display: grid;
+  display: flex;
+  flex-direction: column;
   gap: 14px;
 
   @media (max-width: ${bp.lg}px) {
@@ -206,17 +173,16 @@ export const Dot = styled.span`
 `;
 
 export const FeatureText = styled.span`
-  color: rgba(255, 255, 255, 0.82);
-  // font-weight: 500;
-  // letter-spacing: 0.1px;
-  line-height: 1.55;
-  font-size: 16px;
+  font-family: var(--font-body);
+  font-weight: var(--fw-regular);
+  line-height: var(--leading-display);
+  font-size: var(--text-xs);
 
   @media (max-width: ${bp.lg}px) {
-    font-size: 15px;
+    font-size: var(--text-sm, 14px);
   }
 
   @media (max-width: ${bp.md}px) {
-    font-size: 14px;
+    font-size: var(--text-sm, 14px);
   }
 `;

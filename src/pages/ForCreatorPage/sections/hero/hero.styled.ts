@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { Container } from "@/shared/components/Container";
 
 const bp = { md: 768, lg: 1024 };
 
@@ -20,12 +21,12 @@ export const HeroSection = styled.section`
   }
 `;
 
-export const HeroInner = styled.div`
+export const HeroInner = styled(Container)`
   position: relative;
-  width: min(1240px, calc(100% - 80px));
   margin: 0 auto;
-  padding: clamp(56px, 6.4vw, 96px) 0 clamp(56px, 6.2vw, 92px);
-
+  padding-top: var(--space-24) ;
+  /* padding: clamp(56px, 6.4vw, 96px) 0 clamp(56px, 6.2vw, 92px); */
+  margin-bottom: var(--space-24);
   display: flex;
   flex-direction: column;
 
@@ -85,10 +86,11 @@ export const VisualArea = styled.div`
 
 export const H1 = styled.h1`
   margin: 0;
-  line-height: 1.02;
+  font-family: var(--font-display);
+  line-height: var(--leading-display, 1.05);
   letter-spacing: -0.03em;
-  font-weight: 400;
-  font-size: clamp(44px, 5.1vw, 82px);
+  font-weight: var(--fw-regular);
+  font-size: var(--text-6xl);
 
   span {
     display: block;
@@ -99,28 +101,36 @@ export const H1 = styled.h1`
   }
 `;
 
+
 export const CTAButton = styled.button`
-  margin-top: 20px;
-  height: 40px;
-  padding: 0 18px;
-  border-radius: 999px;
+  margin-top: 30px;
+  appearance: none;
   border: 0;
-  outline: none;
   cursor: pointer;
 
-  background: var(--accent, #22c55e);
-  color: #07130b;
-  font-weight: 700;
-  font-size: 13px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
 
-  box-shadow: 0 14px 32px rgba(34, 197, 94, 0.18);
+  background: var(--accent);
+  color: #0b0f0c;
+  border-radius: 999px;
 
-  &:active {
-    transform: translateY(1px);
+  padding: 10px 36px;
+  font-size: var(--text-xs);
+  font-family: var(--font-body);
+  /* font-weight:var(--fw-medium); */
+
+  box-shadow: 0 12px 28px rgba(30, 215, 95, 0.18);
+  transition: transform 160ms ease, filter 160ms ease;
+
+  &:hover {
+    transform: translateY(-1px);
+    filter: brightness(1.02);
   }
-
-  @media (max-width: ${bp.md}px) {
-    height: 38px;
+  &:active {
+    transform: translateY(0);
   }
 `;
 
@@ -155,15 +165,17 @@ export const StatCard = styled.div`
 `;
 
 export const StatNumber = styled.div`
-  font-weight: 500;
-  letter-spacing: -0.02em;
-  line-height: 1;
-  color: var(--accent, #22c55e);
-  font-size: clamp(64px, 6.8vw, 112px);
+  font-family: var(--font-body);
+  font-weight: var(--fw-bold);
+  font-size: var(--text-8xl);
+  line-height: var(--leading-none, 1);
+  color: var(--accent);
 `;
 
 export const StatLabel = styled.div`
-  font-size: clamp(14px, 1.5vw, 48px);
-  color: rgba(255, 255, 255, 0.86);
-  line-height: 1.25;
+  font-size: var(--text-2xl, 24px);
+  color: rgba(255, 255, 255, 1);
+  line-height: var(--leading-snug, 1.375);
+  text-align: center;
 `;
+

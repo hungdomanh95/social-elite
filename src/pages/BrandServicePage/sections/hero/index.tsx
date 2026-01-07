@@ -1,5 +1,3 @@
-import { ArrowRight } from "lucide-react";
-import { Container } from "../../brandService.styled";
 import * as S from "./hero.styled";
 
 // ✅ sửa path OrbitVisual theo project của bạn
@@ -12,15 +10,13 @@ type Props = {
 export default function BrandServiceHero({ onContactClick }: Props) {
   return (
     <S.HeroSection>
-      <Container>
+      <S.Container>
         <S.HeroRow>
           <S.HeroCopy>
             <S.HeroTitle data-reveal>
               Accelerating
               <br />
-              business
-              <br />
-              through
+              business through
               <br />
               <span className="accent">authentic voices</span>
               <br />
@@ -30,7 +26,6 @@ export default function BrandServiceHero({ onContactClick }: Props) {
             <S.HeroActions data-reveal>
               <S.HeroButton type="button" onClick={onContactClick}>
                 <span>Get in touch!</span>
-                <ArrowRight size={18} />
               </S.HeroButton>
             </S.HeroActions>
           </S.HeroCopy>
@@ -39,7 +34,7 @@ export default function BrandServiceHero({ onContactClick }: Props) {
             <OrbitVisual />
           </S.HeroVisual>
         </S.HeroRow>
-      </Container>
+      </S.Container>
     </S.HeroSection>
   );
 }

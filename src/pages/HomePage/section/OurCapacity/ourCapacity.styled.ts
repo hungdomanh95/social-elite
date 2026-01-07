@@ -43,10 +43,21 @@ export const Section = styled.section<{ $bg: string }>`
     content: "";
     position: absolute;
     inset: 0;
-    background:
-      radial-gradient(900px 520px at 50% 55%, rgba(0, 210, 106, 0.10), transparent 60%),
-      radial-gradient(340px 260px at 15% 6%, rgba(0, 210, 106, 0.12), transparent 70%),
-      radial-gradient(260px 220px at 92% 78%, rgba(0, 210, 106, 0.10), transparent 72%),
+    background: radial-gradient(
+        900px 520px at 50% 55%,
+        rgba(0, 210, 106, 0.1),
+        transparent 60%
+      ),
+      radial-gradient(
+        340px 260px at 15% 6%,
+        rgba(0, 210, 106, 0.12),
+        transparent 70%
+      ),
+      radial-gradient(
+        260px 220px at 92% 78%,
+        rgba(0, 210, 106, 0.1),
+        transparent 72%
+      ),
       linear-gradient(180deg, rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.68));
     pointer-events: none;
   }
@@ -78,19 +89,18 @@ export const Header = styled.div`
 `;
 
 export const Kicker = styled.div`
-  color: rgba(255, 255, 255, 0.9);
-  font-size: 36px;
-  line-height: 1.2;
+  font-size: var(--text-2xl);
+  font-weight: var(--fw-semibold);
 
   @media (max-width: ${bp.md}px) {
-    font-size: 32px;
+    font-size: var(--text-xl);
   }
 `;
 
 export const Headline = styled.h2`
   margin: 10px 0 0;
-  font-size: clamp(28px, 4.2vw, 44px);
-  line-height: 1.05;
+  font-size: var(--text-4xl);
+  font-weight: var(--fw-regular);
   color: var(--accent, #00d26a);
 `;
 
@@ -132,7 +142,10 @@ export const Diagram = styled.div`
   /* bound theo height để Orbit luôn trọn vẹn */
   --orbitReserve: clamp(220px, 30vh, 360px);
   --orbitSafePad: clamp(14px, 3.5vh, 40px);
-  --orbitHBound: max(240px, calc(var(--vh) - var(--orbitReserve) - var(--orbitSafePad)));
+  --orbitHBound: max(
+    240px,
+    calc(var(--vh) - var(--orbitReserve) - var(--orbitSafePad))
+  );
 
   /* desktop/tablet: theo width */
   --d0: clamp(320px, 62vw, 880px);
@@ -143,21 +156,10 @@ export const Diagram = styled.div`
   aspect-ratio: 1 / 1;
   overflow: visible;
 
-  /* ✅ Orbit typography */
-  font-family:
-    "Plus Jakarta Sans";
-    /* ui-sans-serif,
-    system-ui,
-    -apple-system,
-    "Segoe UI",
-    Roboto,
-    Helvetica,
-    Arial,
-    "Apple Color Emoji",
-    "Segoe UI Emoji"; */
+  font-family: var(--font-body);
 
   --cy: 52.7%;
-  --scale: 0.94;
+  --scale: 1;
 
   /* ✅ size theo --d để giữ đúng UI khi height/width thay đổi */
   --centerSize: clamp(112px, calc(var(--d) * 0.42), 220px);
@@ -192,7 +194,7 @@ export const Diagram = styled.div`
   }
 
   @media (max-height: 560px) {
-    --scale: 0.90;
+    --scale: 0.9;
     --orbitReserve: clamp(180px, 26vh, 300px);
   }
 `;
@@ -262,8 +264,7 @@ export const Center = styled.div`
   align-items: center;
   justify-content: center;
 
-  box-shadow:
-    0 0 0 1px rgba(0, 210, 106, 0.6) inset,
+  box-shadow: 0 0 0 1px rgba(0, 210, 106, 0.6) inset,
     0 30px 70px rgba(0, 0, 0, 0.55);
 
   &::before {
@@ -271,7 +272,11 @@ export const Center = styled.div`
     position: absolute;
     inset: -26px;
     border-radius: inherit;
-    background: radial-gradient(circle, rgba(0, 210, 106, 0.55), transparent 62%);
+    background: radial-gradient(
+      circle,
+      rgba(0, 210, 106, 0.55),
+      transparent 62%
+    );
     animation: ${glow} 2200ms ease-in-out infinite;
     z-index: -1;
   }
@@ -279,7 +284,7 @@ export const Center = styled.div`
 
 export const CenterTitle = styled.div`
   /* ✅ chỉ bold ALL-IN-ONE */
-  font-weight: 800;
+  font-weight: var(--fw-bold);
   letter-spacing: 0.04em;
 
   font-size: clamp(14px, calc(var(--d) * 0.032), 22px);
@@ -287,11 +292,11 @@ export const CenterTitle = styled.div`
 `;
 
 export const CenterSub = styled.div`
-  font-weight: 400;
+  font-weight: var(--fw-regular);
   opacity: 0.95;
 
   font-size: clamp(10px, calc(var(--d) * 0.018), 14px);
-  line-height: 1.32;
+  line-height: var(--leading-snug, 1.375);
   text-align: center;
 `;
 
@@ -315,8 +320,7 @@ export const Node = styled.div`
 
   border: 1.6px solid var(--accent, #00d26a);
 
-  box-shadow:
-    0 0 0 1px rgba(0, 210, 106, 0.12) inset,
+  box-shadow: 0 0 0 1px rgba(0, 210, 106, 0.12) inset,
     0 0 26px rgba(0, 210, 106, 0.12);
 
   &::after {
@@ -324,7 +328,7 @@ export const Node = styled.div`
     position: absolute;
     inset: 8px;
     border-radius: inherit;
-    border: 1px solid rgba(0, 210, 106, 0.10);
+    border: 1px solid rgba(0, 210, 106, 0.1);
     pointer-events: none;
   }
 `;
@@ -390,12 +394,12 @@ export const NodeIconWrap = styled.div`
 
 export const NodeText = styled.div`
   color: rgba(255, 255, 255, 0.92);
-  font-weight: 400;
+  font-weight: var(--fw-regular);
 
   font-size: clamp(10px, calc(var(--d) * 0.016), 13px);
   text-align: center;
   white-space: pre-line;
-  line-height: 1.22;
+  line-height: var(--leading-tight, 1.25);
 
   max-width: 90%;
   word-break: break-word;

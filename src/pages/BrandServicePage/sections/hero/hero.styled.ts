@@ -1,6 +1,11 @@
 import styled from "styled-components";
+import { Container as  BaseContainer} from "@/shared/components/Container";
 
 const bp = { md: 768, lg: 1024 };
+
+export const Container = styled(BaseContainer)`
+
+`;
 
 export const HeroSection = styled.section`
   position: relative;
@@ -60,7 +65,7 @@ export const HeroTitle = styled.h1`
   margin: 0;
   line-height: 1.02;
   letter-spacing: -0.02em;
-  font-size: clamp(54px, 5.6vw, 96px);
+  font-size: var(--text-6xl);
 
   .accent {
     color: var(--accent);
@@ -93,8 +98,10 @@ export const HeroButton = styled.button`
   color: #0b0f0c;
   border-radius: 999px;
 
-  padding: 16px 26px;
-  font-size: 14px;
+  padding: 12px 26px;
+  font-size: var(--text-xs);
+  font-family: var(--font-body);
+  /* font-weight:var(--fw-medium); */
 
   box-shadow: 0 12px 28px rgba(30, 215, 95, 0.18);
   transition: transform 160ms ease, filter 160ms ease;
