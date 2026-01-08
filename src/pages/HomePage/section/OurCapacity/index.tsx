@@ -14,68 +14,129 @@ const orderedKeys = [
 ] as const;
 
 const deg2rad = (deg: number) => (deg * Math.PI) / 180;
-const clamp = (min: number, v: number, max: number) => Math.max(min, Math.min(max, v));
+const clamp = (min: number, v: number, max: number) =>
+  Math.max(min, Math.min(max, v));
 
 const OurCapacity: React.FC = () => {
   const maskId = React.useId();
 
-  // ===== measure Diagram size => derive R/CY safely
-  const diagramRef = useRef<HTMLDivElement | null>(null);
-  const [dPx, setDPx] = useState(0);
+  const sectionRef = useRef<HTMLElement | null>(null);
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const headerRef = useRef<HTMLDivElement | null>(null);
 
+  const [headerPx, setHeaderPx] = useState(0);
+  const [dBoundPx, setDBoundPx] = useState(0);
+
+  // ✅ compute max square for Diagram that fits inside 1 viewport (after header/padding/gap)
   useLayoutEffect(() => {
-    const el = diagramRef.current;
-    if (!el) return;
+    const sectionEl = sectionRef.current;
+    const containerEl = containerRef.current;
+    const headerEl = headerRef.current;
+    if (!sectionEl || !containerEl || !headerEl) return;
 
-    const measure = () => setDPx(el.getBoundingClientRect().width || 0);
+    const measure = () => {
+      const secRect = sectionEl.getBoundingClientRect();
+      const headRect = headerEl.getBoundingClientRect();
+      const contRect = containerEl.getBoundingClientRect();
+
+      const secStyle = window.getComputedStyle(sectionEl);
+      const contStyle = window.getComputedStyle(containerEl);
+
+      const padTop = parseFloat(secStyle.paddingTop || "0") || 0;
+      const padBottom = parseFloat(secStyle.paddingBottom || "0") || 0;
+
+      const gapStr = contStyle.rowGap || contStyle.gap || "0";
+      const gapPx = parseFloat(gapStr) || 0;
+
+      // buffer thêm để tránh bị “cấn” do browser bar/status bar
+      const safety = 28;
+
+      const availH =
+        secRect.height - padTop - padBottom - headRect.height - gapPx - safety;
+      const availW = contRect.width;
+
+      // ✅ shrink nhẹ 0.96 để chừa mép (tránh line/node sát biên)
+      const d = Math.floor(
+        clamp(240, Math.min(availW, availH) * 0.96, 880)
+      );
+
+      setHeaderPx(Math.round(headRect.height));
+      setDBoundPx(d);
+    };
+
     measure();
 
     const ro = new ResizeObserver(() => measure());
-    ro.observe(el);
+    ro.observe(sectionEl);
+    ro.observe(containerEl);
+    ro.observe(headerEl);
 
-    return () => ro.disconnect();
+    window.addEventListener("orientationchange", measure);
+    return () => {
+      ro.disconnect();
+      window.removeEventListener("orientationchange", measure);
+    };
   }, []);
 
+  // ✅ core: enforce TOP + BOTTOM inside Diagram (0..100)
   const metrics = useMemo(() => {
-    const d = dPx || 880; // fallback for first paint
-    const isSmall = d <= 420; //sc; // roughly maps to <= 640 layout in your setup
+    const d = dBoundPx || 720;
+    const isSmall = d <= 420;
 
-    // must match styled.ts vars
-    const centerSizePx = isSmall ? clamp(96, d * 0.4, 180) : clamp(112, d * 0.42, 220);
-    const nodeSizePx = isSmall ? clamp(70, d * 0.25, 128) : clamp(78, d * 0.29, 160);
+    // sizes (px) -> viewBox units
+    const centerSizePx = isSmall
+      ? clamp(78, d * 0.30, 150)
+      : clamp(88, d * 0.32, 176);
 
-    // convert px -> viewBox units (0..100)
+    const nodeSizePx = isSmall
+      ? clamp(52, d * 0.195, 104)
+      : clamp(58, d * 0.215, 124);
+
     const centerR = (centerSizePx / d) * 50;
     const nodeR = (nodeSizePx / d) * 50;
 
-    const gap = isSmall ? 2.6 : 2.2; // space between center-ring and node-ring
-    const pad = isSmall ? 2.6 : 2.2; // safe padding to keep top node inside Diagram
+    const pad = isSmall ? 3.0 : 2.6;
+    const gap = isSmall ? 2.2 : 1.9;
 
-    // spacious radius, but never collide with center
-    let R = Math.max(isSmall ? 44 : 46, centerR + nodeR + gap);
-    R = Math.min(R, 48.5); // cap to avoid overstretch look
+    // R mong muốn (thoáng)
+    let RDesired = centerR + nodeR + gap;
+    // R không vượt quá cap (đỡ “căng”)
+    const RCapVisual = 47.0;
 
-    // push orbit down enough so TOP node never spills into header area
-    let CY = 56; // baseline slightly lower than 52.7
-    CY = Math.max(CY, R + nodeR + pad);
-    CY = Math.min(CY, 66.5); // prevent going too low visually
+    // ✅ R bắt buộc để không vượt biên TOP/BOTTOM:
+    // cần tồn tại CY sao cho:
+    //   CY >= R + nodeR + pad
+    //   CY <= 100 - (R + nodeR + pad)
+    // => 2*(R + nodeR + pad) <= 100  => R <= 50 - nodeR - pad
+    const RCapFit = 50 - nodeR - pad;
 
-    // after clamping CY, ensure R still fits safely on top
-    const RmaxTop = CY - nodeR - pad;
-    R = Math.min(R, RmaxTop);
+    let R = Math.min(RDesired, RCapVisual, RCapFit);
 
-    // holes follow real sizes (mask line ends nicely at rings)
-    const HOLE_OUTER = nodeR + 1.2;
-    const HOLE_CENTER = centerR + 1.4;
+    // nếu R quá nhỏ, vẫn giữ một mức tối thiểu cho layout đỡ “bẹp”
+    R = Math.max(R, isSmall ? 36.5 : 38.0);
 
-    return { R, CY, HOLE_OUTER, HOLE_CENTER };
-  }, [dPx]);
+    // sau khi đặt min, phải cap lại để đảm bảo fit (phòng trường hợp min vượt cap)
+    R = Math.min(R, RCapFit);
+
+    // clamp CY để vừa TOP/BOTTOM
+    const minCY = R + nodeR + pad;
+    const maxCY = 100 - (R + nodeR + pad);
+
+    // prefer hơi thấp giống design nhưng không vượt maxCY
+    const preferredCY = 54.5;
+    const CY = clamp(minCY, preferredCY, maxCY);
+
+    const HOLE_OUTER = nodeR + 1.05;
+    const HOLE_CENTER = centerR + 1.15;
+
+    return { d, R, CY, HOLE_OUTER, HOLE_CENTER };
+  }, [dBoundPx]);
 
   const CX = 50;
   const CY = metrics.CY;
 
   const vertices = useMemo(() => {
-    const angles = [-90, -18, 54, 126, 198]; // top -> clockwise
+    const angles = [-90, -18, 54, 126, 198];
     return angles.map((a) => ({
       x: CX + metrics.R * Math.cos(deg2rad(a)),
       y: CY + metrics.R * Math.sin(deg2rad(a)),
@@ -87,18 +148,27 @@ const OurCapacity: React.FC = () => {
     return `${pts.join(", ")}, ${pts[0]}`;
   }, [vertices]);
 
+  const iconSize = useMemo(() => {
+    return Math.round(clamp(18, metrics.d * 0.03, 26));
+  }, [metrics.d]);
+
   return (
-    <S.Section $bg={BG_Capacity}>
-      <S.Container>
-        <S.Header>
+    <S.Section ref={sectionRef} $bg={BG_Capacity}>
+      <S.Container ref={containerRef}>
+        <S.Header ref={headerRef}>
           <S.Kicker>Our Capacity</S.Kicker>
           <S.Headline>Comprehensive Set Of Service</S.Headline>
         </S.Header>
 
         <S.Bleed>
           <S.Diagram
-            ref={diagramRef}
-            style={{ ["--cy" as any]: `${CY}%` } as React.CSSProperties}
+            style={
+              {
+                ["--cy" as any]: `${CY}%`,
+                ["--headerH" as any]: `${headerPx}px`,
+                ["--dBound" as any]: `${metrics.d}px`,
+              } as React.CSSProperties
+            }
           >
             <S.Stage>
               <S.Center>
@@ -117,11 +187,7 @@ const OurCapacity: React.FC = () => {
                   <defs>
                     <mask id={maskId} maskUnits="userSpaceOnUse">
                       <rect x="0" y="0" width="100" height="100" fill="white" />
-
-                      {/* center hole */}
                       <circle cx={CX} cy={CY} r={metrics.HOLE_CENTER} fill="black" />
-
-                      {/* node holes */}
                       {vertices.map((p, idx) => (
                         <circle
                           key={idx}
@@ -138,7 +204,9 @@ const OurCapacity: React.FC = () => {
                 </S.Lines>
 
                 {orderedKeys.map((key, idx) => {
-                  const item = CAPACITY_ITEMS.find((x) => x.key === key)!;
+                  const item = CAPACITY_ITEMS.find((x) => x.key === key);
+                  if (!item) return null;
+
                   const p = vertices[idx];
 
                   return (
@@ -156,7 +224,7 @@ const OurCapacity: React.FC = () => {
                         <S.NodeShell>
                           <S.NodeContent>
                             <S.NodeIconWrap>
-                              <Icon name={item.icon} size={26} />
+                              <Icon name={item.icon} size={iconSize} />
                             </S.NodeIconWrap>
                             <S.NodeText>{item.title}</S.NodeText>
                           </S.NodeContent>
