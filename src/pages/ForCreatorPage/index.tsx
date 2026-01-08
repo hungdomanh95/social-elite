@@ -1,3 +1,4 @@
+import EliteTalents from "../HomePage/section/EliteTalents";
 import Hero from "./sections/hero";
 import Offer from "./sections/offer";
 
@@ -13,6 +14,7 @@ export default function ForCreator({ onJoinClick }: Props) {
     <>
       <Hero onJoinClick={onJoinClick} />
       <Offer bgSrc={BG_Offer} />
+      <EliteTalents/>
     </>
   );
 }

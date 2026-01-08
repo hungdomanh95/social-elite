@@ -1,6 +1,6 @@
 import React from "react";
 import * as S from "./eliteTalents.styled";
-import Talents from "@/assets/images/talents/Talents1.png";
+import Talents from "@/assets/images/talents/Talents.png";
 
 const EliteTalents: React.FC = () => {
   return (

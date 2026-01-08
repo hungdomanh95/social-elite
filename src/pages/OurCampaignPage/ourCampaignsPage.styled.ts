@@ -82,7 +82,7 @@ export const TopAction = styled.button`
   padding: 10px 26px;
   font-size: var(--text-xs);
   font-family: var(--font-body);
-  /* font-weight:var(--fw-medium); */
+  font-weight:var(--fw-semibold);
 
   box-shadow: 0 12px 28px rgba(30, 215, 95, 0.18);
   transition: transform 160ms ease, filter 160ms ease;

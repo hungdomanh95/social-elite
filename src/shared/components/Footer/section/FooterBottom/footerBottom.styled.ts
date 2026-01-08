@@ -124,7 +124,7 @@ export const InfoLabel = styled.span`
 export const InfoValue = styled.a`
   text-decoration: none;
   color: var(--accent);
-  font-weight: var(--fw-semibold);
+  /* font-weight: var(--fw-semibold); */
 
   &:hover {
     filter: brightness(1.05);

@@ -70,6 +70,7 @@ export const SoundDot = styled.span`
 
 export const SoundText = styled.span`
   font-size: var(--text-base, 16px);
+  font-weight: var(--fw-semibold);
 
   @media (max-width: ${bp.md}px) {
     font-size: var(--text-sm, 14px);

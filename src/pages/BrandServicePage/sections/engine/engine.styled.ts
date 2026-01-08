@@ -52,7 +52,7 @@ export const EngineRow = styled.div`
   /* ✅ gap co giãn theo viewport => màn lớn nhìn “đều”
   gap: clamp(40px, 5vw, 96px); */
 
-  gap:var(--space-5);
+  gap:var(--space-10);
 
   @media (max-width: ${bp.lg}px) {
     flex-direction: column;

@@ -102,7 +102,7 @@ export const Field = styled.div`
 export const Label = styled.div`
   font-size: var(--text-sm);
   line-height: var(--leading-tight, 1.25);
-  font-weight: var(--fw-medium);
+  font-weight: var(--fw-semibold);
   // font-weight: 700;
   // letter-spacing: 0.2px;
   text-transform: lowercase;

@@ -289,8 +289,8 @@ export const Center = styled.div`
 `;
 
 export const CenterTitle = styled.div`
-  /* ✅ chỉ bold ALL-IN-ONE */
-  font-weight: var(--fw-bold);
+  font-family: var(--font-display);
+  font-weight: var(--fw-semibold);
   letter-spacing: 0.04em;
 
   font-size: clamp(14px, calc(var(--d) * 0.032), 22px);
@@ -298,10 +298,9 @@ export const CenterTitle = styled.div`
 `;
 
 export const CenterSub = styled.div`
-  font-weight: var(--fw-regular);
-  opacity: 0.95;
-
-  font-size: clamp(10px, calc(var(--d) * 0.018), 14px);
+  font-family: "Plus Jakarta Sans";
+  font-weight: 500;
+  font-size: var(--text-xs);
   line-height: var(--leading-snug, 1.375);
   text-align: center;
 `;

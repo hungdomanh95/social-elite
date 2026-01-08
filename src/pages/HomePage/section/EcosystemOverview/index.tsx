@@ -107,7 +107,7 @@ const EcosystemOverview: React.FC<Props> = ({
             style={{ display: "inline-flex", gap: 10, alignItems: "center" }}
           >
             <Icon name={icon} size={16} color="var(--accent)" />
-            <span style={{ fontSize: 20 }}>{label}</span>
+            <span style={{ fontSize: 20, fontWeight: 600 }}>{label}</span>
           </span>
         ))}
         durationSec={50}

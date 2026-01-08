@@ -200,10 +200,8 @@ export const Thumb = styled.div<{ $src?: string }>`
 `;
 
 export const CardTitle = styled.div`
-  color: rgba(255, 255, 255,1);
-  // font-weight: 800;
+  font-weight: var(--fw-semibold);
   font-size: var(--text-base, 16px);
-  // letter-spacing: -0.01em;
 
   @media (max-width: ${bp.md}px) {
     font-size: var(--text-sm, 14px);
@@ -211,7 +209,7 @@ export const CardTitle = styled.div`
 `;
 
 export const CardMeta = styled.div`
-  color: rgba(255, 255, 255,1);
+  color: #F6FDF9;
   font-size: var(--text-xs, 12px);
   line-height: var(--leading-tight, 1.25);
 `;
