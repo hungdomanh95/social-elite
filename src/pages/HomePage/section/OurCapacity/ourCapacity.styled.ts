@@ -40,7 +40,7 @@ export const Section = styled.section<{ $bg: string }>`
   padding: var(--padTop) 0 var(--padBottom);
   box-sizing: border-box;
 
-  /* ✅ quan trọng: không cho “đè” */
+  /* ✅ không cho “đè” */
   overflow: hidden;
 
   display: flex;
@@ -158,11 +158,12 @@ export const Diagram = styled.div`
   font-family: var(--font-body);
 
   --cy: 54.5%;
-  /* ✅ shrink nhẹ toàn stage để luôn có mép an toàn */
   --scale: 0.98;
 
   --centerSize: clamp(78px, calc(var(--d) * 0.32), 176px);
-  --nodeSize: clamp(52px, calc(var(--d) * 0.215), 124px);
+
+  /* ✅ Node to hơn 1 xíu */
+  --nodeSize: clamp(62px, calc(var(--d) * 0.235), 132px);
 
   --nodePad: clamp(9px, calc(var(--d) * 0.02), 14px);
   --nodeGap: clamp(6px, calc(var(--d) * 0.014), 10px);
@@ -176,7 +177,7 @@ export const Diagram = styled.div`
   @media (max-width: 640px) {
     --scale: 0.965;
     --centerSize: clamp(76px, calc(var(--d) * 0.30), 160px);
-    --nodeSize: clamp(50px, calc(var(--d) * 0.195), 112px);
+    --nodeSize: clamp(56px, calc(var(--d) * 0.205), 112px);
   }
 `;
 
@@ -252,7 +253,11 @@ export const Center = styled.div`
     position: absolute;
     inset: clamp(-18px, calc(var(--centerSize) * -0.14), -12px);
     border-radius: inherit;
-    background: radial-gradient(circle, rgba(0, 210, 106, 0.46), transparent 62%);
+    background: radial-gradient(
+      circle,
+      rgba(0, 210, 106, 0.46),
+      transparent 62%
+    );
     animation: ${glow} 2200ms ease-in-out infinite;
     z-index: -1;
   }

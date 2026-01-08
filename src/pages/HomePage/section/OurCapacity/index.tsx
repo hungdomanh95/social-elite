@@ -55,10 +55,8 @@ const OurCapacity: React.FC = () => {
         secRect.height - padTop - padBottom - headRect.height - gapPx - safety;
       const availW = contRect.width;
 
-      // ✅ shrink nhẹ 0.96 để chừa mép (tránh line/node sát biên)
-      const d = Math.floor(
-        clamp(240, Math.min(availW, availH) * 0.96, 880)
-      );
+      // ✅ shrink nhẹ để chừa mép an toàn
+      const d = Math.floor(clamp(240, Math.min(availW, availH) * 0.96, 880));
 
       setHeaderPx(Math.round(headRect.height));
       setDBoundPx(d);
@@ -85,12 +83,13 @@ const OurCapacity: React.FC = () => {
 
     // sizes (px) -> viewBox units
     const centerSizePx = isSmall
-      ? clamp(78, d * 0.30, 150)
+      ? clamp(78, d * 0.3, 150)
       : clamp(88, d * 0.32, 176);
 
+    // ✅ Node to hơn 1 xíu (so với bản ổn trước)
     const nodeSizePx = isSmall
-      ? clamp(52, d * 0.195, 104)
-      : clamp(58, d * 0.215, 124);
+      ? clamp(56, d * 0.205, 112)
+      : clamp(62, d * 0.235, 132);
 
     const centerR = (centerSizePx / d) * 50;
     const nodeR = (nodeSizePx / d) * 50;
@@ -98,36 +97,35 @@ const OurCapacity: React.FC = () => {
     const pad = isSmall ? 3.0 : 2.6;
     const gap = isSmall ? 2.2 : 1.9;
 
-    // R mong muốn (thoáng)
+    // R mong muốn
     let RDesired = centerR + nodeR + gap;
-    // R không vượt quá cap (đỡ “căng”)
+
+    // cap nhìn đẹp
     const RCapVisual = 47.0;
 
-    // ✅ R bắt buộc để không vượt biên TOP/BOTTOM:
-    // cần tồn tại CY sao cho:
-    //   CY >= R + nodeR + pad
-    //   CY <= 100 - (R + nodeR + pad)
-    // => 2*(R + nodeR + pad) <= 100  => R <= 50 - nodeR - pad
+    // ✅ fit top+bottom: R <= 50 - nodeR - pad
     const RCapFit = 50 - nodeR - pad;
 
     let R = Math.min(RDesired, RCapVisual, RCapFit);
 
-    // nếu R quá nhỏ, vẫn giữ một mức tối thiểu cho layout đỡ “bẹp”
-    R = Math.max(R, isSmall ? 36.5 : 38.0);
+    // mức tối thiểu để layout không quá “bẹp”
+    R = Math.max(R, isSmall ? 35.5 : 37.0);
 
-    // sau khi đặt min, phải cap lại để đảm bảo fit (phòng trường hợp min vượt cap)
+    // luôn phải cap theo fit
     R = Math.min(R, RCapFit);
 
-    // clamp CY để vừa TOP/BOTTOM
     const minCY = R + nodeR + pad;
     const maxCY = 100 - (R + nodeR + pad);
 
-    // prefer hơi thấp giống design nhưng không vượt maxCY
+    // prefer hơi thấp giống design
     const preferredCY = 54.5;
     const CY = clamp(minCY, preferredCY, maxCY);
 
-    const HOLE_OUTER = nodeR + 1.05;
-    const HOLE_CENTER = centerR + 1.15;
+    // ✅ Line sát vòng tròn:
+    // giảm hole để line đi sát vào node (node che lên nên nhìn “dính”)
+    const HOLE_OUTER = Math.max(0, nodeR - 0.25);
+    // center cũng giảm nhẹ để polyline không bị hụt (center che lên anyway)
+    const HOLE_CENTER = Math.max(0, centerR - 0.35);
 
     return { d, R, CY, HOLE_OUTER, HOLE_CENTER };
   }, [dBoundPx]);
@@ -187,7 +185,9 @@ const OurCapacity: React.FC = () => {
                   <defs>
                     <mask id={maskId} maskUnits="userSpaceOnUse">
                       <rect x="0" y="0" width="100" height="100" fill="white" />
+
                       <circle cx={CX} cy={CY} r={metrics.HOLE_CENTER} fill="black" />
+
                       {vertices.map((p, idx) => (
                         <circle
                           key={idx}
