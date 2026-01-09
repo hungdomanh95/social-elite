@@ -43,7 +43,7 @@ export const Title = styled.h1`
 `;
 
 export const Lead = styled.p`
-  margin: 14px auto 0;
+  margin: 0 auto;
   max-width: 660px;
   font-size: var(--text-sm);
   line-height: 1.7;

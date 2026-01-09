@@ -63,7 +63,10 @@ export default function ContactPage({ onSubmit }: Props) {
           <S.Kicker>CONTACT US</S.Kicker>
           <S.Title>Get In Touch</S.Title>
           <S.Lead>
-            Ready to elevate your brand with influencer marketing and social commerce? We&apos;d love to hear from you.
+            Ready to elevate your brand with influencer marketing and social commerce?
+          </S.Lead>
+          <S.Lead>
+             We&apos;d love to hear from you.
           </S.Lead>
         </S.Hero>
 
