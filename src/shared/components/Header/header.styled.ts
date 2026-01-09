@@ -72,8 +72,8 @@ export const NavTop = styled.img`
   user-select: none;
 
   /* giống UI: dịu, chìm vào nền */
-  opacity: 0.72;
-  filter: saturate(1.1) contrast(1.05);
+  /* opacity: 0.72;
+  filter: saturate(1.1) contrast(1.05); */
 
   /* nhẹ nhàng “blend” (nếu browser support) */
   mix-blend-mode: screen;

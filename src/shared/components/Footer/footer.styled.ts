@@ -36,8 +36,8 @@ export const TopArea = styled.section<{ $pattern: string }>`
     background-repeat: repeat;
     background-size: 980px auto;
     background-position: center;
-    opacity: 0.22;
-    filter: saturate(0) brightness(1.05);
+    /* opacity: 0.22;
+    filter: saturate(0) brightness(1.05); */
     pointer-events: none;
     z-index: 0;
 
