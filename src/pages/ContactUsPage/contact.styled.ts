@@ -295,49 +295,20 @@ export const Actions = styled.div`
 `;
 
 export const Button = styled.button`
-  border: 0;
-  outline: 0;
+   border: none;
   cursor: pointer;
+  font-size: var(--text-xs);
+  line-height: var(--leading-tight, 1.25);
+  font-weight: var(--fw-semibold);
 
   padding: 12px 22px;
-  border-radius: 999px;
+  border-radius: var(--radius-xl);
+  letter-spacing: 0.2px;
 
-  background: var(--accent, #1fd760);
-  color: #050705;
-  font-weight: 800;
-  font-size: var(--text-sm, 13px);
-
-  box-shadow:
-    0 18px 34px rgba(31, 215, 96, 0.18),
-    0 6px 14px rgba(0, 0, 0, 0.18);
-
-  transition: transform 180ms ease, filter 180ms ease;
-
-  &:hover {
-    transform: translateY(-2px);
-    filter: brightness(1.03);
-  }
-
-  &:active {
-    transform: translateY(0);
-  }
-
-  &:disabled {
-    cursor: not-allowed;
-    opacity: 0.7;
-    transform: none;
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    transition: none;
-    &:hover {
-      transform: none;
-    }
-  }
-
-  @media (max-width: ${bp.sm}px) {
-    width: 100%;
-    max-width: 360px;
+  color: #000000;
+  background: var(--accent-3);
+  @media (max-width: ${bp.md}px) {
+    padding: 11px 18px;
   }
 `;
 
