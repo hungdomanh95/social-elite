@@ -124,7 +124,6 @@ export const HeroVisual = styled.div`
   align-items: center;
   justify-content: center;
 
-  /* để OrbitVisual fit full */
   > * {
     width: 100%;
     height: 100%;
@@ -135,8 +134,9 @@ export const HeroVisual = styled.div`
   }
 
   @media (max-width: ${bp.md}px) {
-    width: min(520px, 92%);
+    width: min(420px, 92%);
+    max-width: 420px;
     align-self: center;
-    margin-top: 6px;
+    margin-top: 10px;
   }
 `;

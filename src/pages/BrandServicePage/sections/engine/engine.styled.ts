@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { Container as BaseContainer } from "@/shared/components/Container";
+// import { Container as BaseContainer } from "@/shared/components/Container";
 
 const bp = { md: 768, lg: 1024, xl: 1280 };
 
@@ -8,12 +8,10 @@ export const EngineSection = styled.section`
   color: #0b0f0c;
 
   padding-bottom: var(--space-9);
-
 `;
 
-export const EngineContainer = styled(BaseContainer)`
-  max-width: 1100px;
-  padding:0;
+export const EngineContainer = styled.section`
+  /* giữ padding chuẩn của Container shared để đồng nhất toàn site */
 `;
 
 export const TickerWrap = styled.div`
@@ -46,13 +44,16 @@ export const TickerItem = styled.span`
 
 export const EngineRow = styled.div`
   display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
+  justify-content: center;
+  padding: 24px 96px;
 
-  /* ✅ gap co giãn theo viewport => màn lớn nhìn “đều”
-  gap: clamp(40px, 5vw, 96px); */
+  /* ✅ quan trọng: cho phép wrap để Title không đè qua Grid */
+  /* flex-wrap: wrap; */
 
-  gap:var(--space-10);
+  /* ✅ gap “đẹp” hơn: row/column riêng */
+  gap: clamp(22px, 3vw, 34px) clamp(40px, 5vw, 88px);
+
+  /* không dùng space-between để tránh layout bị “kéo giãn” khó kiểm soát */
 
   @media (max-width: ${bp.lg}px) {
     flex-direction: column;
@@ -73,6 +74,10 @@ export const EngineTitle = styled.h2`
 
   font-size: clamp(42px, 4.2vw, 72px);
 
+  /* ✅ cố định “cột trái” hợp lý để không đè Grid */
+  flex: 0 0 clamp(420px, 40%, 560px);
+  max-width: 560px;
+
   .line {
     display: block;
     white-space: nowrap;
@@ -82,11 +87,10 @@ export const EngineTitle = styled.h2`
     color: var(--accent);
   }
 
-  /* ✅ cân đối hơn ở màn lớn */
-  width: min(560px, 42%);
-
   @media (max-width: ${bp.lg}px) {
-    width: 100%;
+    flex: none;
+    max-width: none;
+
     .line {
       white-space: normal;
     }
@@ -99,10 +103,10 @@ export const EngineTitle = styled.h2`
 
 export const FeatureGrid = styled.div`
   --cols: 2;
-  --gapX: var(--space-7);
-  --gapY: var(--space-5);
 
-  /* flex: 1 1 auto; */
+  /* ✅ spacing thoáng + co giãn theo viewport */
+  --gapX: clamp(28px, 2.8vw, 44px);
+  --gapY: clamp(18px, 2.2vw, 28px);
 
   display: flex;
   flex-wrap: wrap;
@@ -110,16 +114,15 @@ export const FeatureGrid = styled.div`
   row-gap: var(--gapY);
   align-items: flex-start;
 
-  /* ✅ tránh bị quá rộng gây “thô”, nhưng vẫn đủ thoáng ở màn lớn */
+  /* ✅ cột phải: cho phép co giãn nhưng có “mức tối thiểu” để đỡ bí */
+  flex: 1 1 560px;
+  min-width: 0;
+
+  /* ✅ tránh bị quá rộng, giữ đúng feel UI */
   max-width: 760px;
 
   > * {
     flex: 0 0 calc((100% - (var(--cols) - 1) * var(--gapX)) / var(--cols));
-  }
-
-  @media (max-width: ${bp.xl}px) {
-    --gapX: 28px;
-    --gapY: 20px;
   }
 
   @media (max-width: ${bp.md}px) {
@@ -137,7 +140,7 @@ export const FeatureGrid = styled.div`
 
 export const FeatureItem = styled.div`
   display: flex;
-  gap: 12px;
+  gap: 14px;
   align-items: flex-start;
 
   transition: transform 180ms ease;
@@ -157,8 +160,8 @@ export const FeatureItem = styled.div`
 export const FeatureIcon = styled.div`
   flex: 0 0 auto;
 
-  width: 44px;
-  height: 44px;
+  width: 46px;
+  height: 46px;
   border-radius: 999px;
   background: var(--accent);
 

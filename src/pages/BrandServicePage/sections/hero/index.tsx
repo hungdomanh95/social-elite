@@ -31,7 +31,7 @@ export default function BrandServiceHero({ onContactClick }: Props) {
           </S.HeroCopy>
 
           <S.HeroVisual aria-hidden data-reveal>
-            <OrbitVisual />
+            <OrbitVisual scale={1.7} scaleMobile={1.2} />
           </S.HeroVisual>
         </S.HeroRow>
       </S.Container>

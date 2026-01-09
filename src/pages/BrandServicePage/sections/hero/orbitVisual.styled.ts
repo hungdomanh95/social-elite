@@ -26,7 +26,6 @@ const rotateTiny = keyframes`
   to { transform: rotate(360deg); }
 `;
 
-/* ✅ FIX: arc rotate “local”, không dùng translate(-50%, -50%) (tránh gạch đỏ) */
 const arcWhiteRotate = keyframes`
   from { transform: rotate(300deg); }
   to   { transform: rotate(-60deg); }
@@ -37,26 +36,31 @@ const arcGreenRotate = keyframes`
   to   { transform: rotate(120deg); }
 `;
 
-/* ✅ square dưới-trái quay cực chậm, giữ cảm giác tĩnh như UI (tránh lệch/2 square chồng) */
 const squareRotate = keyframes`
   from { transform: rotate(-14deg); }
   to   { transform: rotate(346deg); }
 `;
 
 export const Stage = styled.div`
-  display: none;
-
-  @media (min-width: ${bp.lg}px) {
-    display: block;
-  }
-
   position: relative;
   width: 100%;
-  height: 600px;
-  overflow: hidden;
+  height: 100%;
+
+  /* ✅ nếu parent không set height thì vẫn có size tối thiểu */
+  min-height: 280px;
+
+  overflow: visible;
 
   --px: 0px;
   --py: 0px;
+
+  --safe: clamp(10px, 2vw, 22px);
+  padding-inline: var(--safe);
+  box-sizing: border-box;
+
+  @media (min-width: ${bp.lg}px) {
+    min-height: 520px;
+  }
 `;
 
 export const Center = styled.div`
@@ -64,10 +68,19 @@ export const Center = styled.div`
   left: 50%;
   top: 50%;
 
-  width: min(560px, 72vw);
+  width: min(560px, calc(100% - (var(--safe) * 2)));
   aspect-ratio: 1 / 1;
 
   transform: translate(calc(-50% + var(--px)), calc(-50% + var(--py)));
+  will-change: transform;
+`;
+
+export const Scene = styled.div<{ $scale: number }>`
+  position: absolute;
+  inset: 0;
+
+  transform-origin: 50% 50%;
+  transform: ${({ $scale }) => `scale(${$scale})`};
   will-change: transform;
 `;
 
@@ -86,8 +99,8 @@ export const OuterRing = styled.div`
   position: absolute;
   left: 50%;
   top: 50%;
-  width: 500px;
-  height: 500px;
+  width: 90%;
+  height: 90%;
   border-radius: 999px;
   border: 2px solid rgba(31, 215, 96, 0.20);
 
@@ -100,8 +113,8 @@ export const Glow = styled.div`
   position: absolute;
   left: 50%;
   top: 50%;
-  width: 350px;
-  height: 350px;
+  width: 62%;
+  height: 62%;
   border-radius: 999px;
   background: rgba(31, 215, 96, 0.10);
   filter: blur(24px);
@@ -113,10 +126,10 @@ export const Glow = styled.div`
 
 export const BigDot = styled.div`
   position: absolute;
-  top: 86px;
-  right: 86px;
-  width: 128px;
-  height: 128px;
+  top: 15%;
+  right: 15%;
+  width: clamp(96px, 22%, 128px);
+  height: clamp(96px, 22%, 128px);
   border-radius: 999px;
   background: #1fd760;
 
@@ -126,10 +139,10 @@ export const BigDot = styled.div`
 
 export const SmallDot = styled.div`
   position: absolute;
-  top: 128px;
-  right: 48px;
-  width: 48px;
-  height: 48px;
+  top: 22%;
+  right: 9%;
+  width: clamp(34px, 9%, 48px);
+  height: clamp(34px, 9%, 48px);
   border-radius: 999px;
   background: rgba(31, 215, 96, 0.55);
 
@@ -137,13 +150,12 @@ export const SmallDot = styled.div`
   will-change: transform;
 `;
 
-/* ✅ FIX gạch đỏ: arc trắng quay đúng tâm của chính nó */
 export const ArcWhite = styled.div`
   position: absolute;
-  left: 42px;
-  bottom: 96px;
-  width: 192px;
-  height: 192px;
+  left: 7%;
+  bottom: 17%;
+  width: clamp(150px, 34%, 192px);
+  height: clamp(150px, 34%, 192px);
   border-radius: 999px;
   border: 4px solid rgba(255, 255, 255, 0.20);
 
@@ -155,13 +167,12 @@ export const ArcWhite = styled.div`
   will-change: transform;
 `;
 
-/* ✅ FIX: arc xanh cũng quay đúng tâm (không bị lệch theo translate) */
 export const ArcGreen = styled.div`
   position: absolute;
-  left: 120px;
-  top: 92px;
-  width: 160px;
-  height: 160px;
+  left: 21%;
+  top: 16%;
+  width: clamp(128px, 28%, 160px);
+  height: clamp(128px, 28%, 160px);
   border-radius: 999px;
   border: 6px solid #1fd760;
 
@@ -175,13 +186,12 @@ export const ArcGreen = styled.div`
 
 export const WhiteMini = styled.div`
   position: absolute;
-  right: 118px;
-  bottom: 124px;
-  width: 64px;
-  height: 64px;
+  right: 21%;
+  bottom: 22%;
+  width: clamp(50px, 14%, 64px);
+  height: clamp(50px, 14%, 64px);
   border-radius: 999px;
 
-  /* ✅ vệt chéo như ảnh gốc */
   background: linear-gradient(
     135deg,
     rgba(255, 255, 255, 0.86) 0%,
@@ -195,13 +205,12 @@ export const WhiteMini = styled.div`
   will-change: transform;
 `;
 
-/* ✅ gạch xanh: chỉ còn 1 square dưới-trái (quay rất chậm) */
 export const SquareOutline = styled.div`
   position: absolute;
-  left: 132px;
-  bottom: 42px;
-  width: 80px;
-  height: 80px;
+  left: 23%;
+  bottom: 8%;
+  width: clamp(64px, 16%, 80px);
+  height: clamp(64px, 16%, 80px);
   border: 2px solid rgba(255, 255, 255, 0.30);
 
   transform: rotate(-14deg);
@@ -210,13 +219,12 @@ export const SquareOutline = styled.div`
   will-change: transform;
 `;
 
-/* square bo góc xanh (top-left) */
 export const RoundedSquare = styled.div`
   position: absolute;
-  left: 190px;
-  top: 44px;
-  width: 96px;
-  height: 96px;
+  left: 34%;
+  top: 8%;
+  width: clamp(78px, 20%, 96px);
+  height: clamp(78px, 20%, 96px);
   border: 4px solid rgba(31, 215, 96, 0.40);
   border-radius: 16px;
 
