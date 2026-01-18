@@ -17,6 +17,7 @@ export default function Header() {
       { label: "For Creator", to: "/for-creator" },
       { label: "Blog", to: "/blog" },
       { label: "Our Campaign", to: "/our-campaign" },
+      // { label: "dev", to: "/dev/cms-test" },
     ],
     []
   );

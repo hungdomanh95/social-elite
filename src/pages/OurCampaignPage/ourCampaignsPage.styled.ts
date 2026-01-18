@@ -122,20 +122,32 @@ export const Card = styled.article`
 
 export const CardMedia = styled.div`
   width: 100%;
-  aspect-ratio: 16 / 11;
-  border-radius: 20px;
-  background: rgba(34, 197, 94, 0.18);
+  aspect-ratio: 16 / 9;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.06);
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  overflow: hidden;
 
-  box-shadow: 0 14px 40px rgba(2, 6, 23, 0.05);
-  border: 1px solid rgba(34, 197, 94, 0.16);
-
-  transition: transform 180ms ease, box-shadow 180ms ease;
-
-  ${Card}:hover & {
-    transform: translateY(-2px);
-    box-shadow: 0 18px 54px rgba(2, 6, 23, 0.09);
+  /* overlay để chữ phía dưới ăn vibe hơn */
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0.0),
+      rgba(0, 0, 0, 0.22)
+    );
   }
 `;
+
+export const EmptyState = styled.div`
+  padding: 10px 2px;
+  color: rgba(255, 255, 255, 0.7);
+`;
+
 
 export const CardBody = styled.div`
   padding: 14px 2px 0;

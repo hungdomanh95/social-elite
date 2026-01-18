@@ -25,17 +25,14 @@ export const Hero = styled.section`
   width: 100%;
   background: #070b09;
   border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-   padding: 56px 0;
+  padding: 56px 0;
+
   @media (max-width: ${bp.md}px) {
     padding: 54px 0 44px;
   }
 `;
 
-export const HeroInner = styled(SharedContainer)`
-
-
-
-`;
+export const HeroInner = styled(SharedContainer)``;
 
 export const HeroTitle = styled.h1`
   margin: 0;
@@ -127,6 +124,9 @@ export const PostMedia = styled.div`
   width: 100%;
   aspect-ratio: 16 / 8;
   background: rgba(34, 197, 94, 0.18);
+
+  background-size: cover;
+  background-position: center;
 `;
 
 export const PostBody = styled.div`
@@ -217,6 +217,9 @@ export const RelatedThumb = styled.div`
   height: 46px;
   border-radius: 12px;
   background: rgba(34, 197, 94, 0.18);
+
+  background-size: cover;
+  background-position: center;
 `;
 
 export const RelatedInfo = styled.div`
@@ -236,7 +239,7 @@ export const RelatedName = styled.div`
 export const RelatedDesc = styled.div`
   font-size: var(--text-xs);
   color: ${TEXT};
- line-height: var(--leading-tight, 1.25);
+  line-height: var(--leading-tight, 1.25);
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
@@ -326,4 +329,15 @@ export const SearchInput = styled.input`
   &::placeholder {
     color: rgba(15, 23, 42, 0.45);
   }
+`;
+
+export const EmptyState = styled.div`
+  padding: 10px 2px;
+  color: ${MUTED};
+`;
+
+export const EmptyInline = styled.div`
+  padding: 6px 2px;
+  color: ${MUTED};
+  font-size: 13px;
 `;

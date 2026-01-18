@@ -9,21 +9,29 @@ import ForCreatorPage from "@/pages/ForCreatorPage";
 import BlogPage from "@/pages/BlogPage";
 import OurCampaignPage from "@/pages/OurCampaignPage";
 import ContactUsPage from "@/pages/ContactUsPage";
+import CmsApiTestPage from "@/pages/CmsApiTest";
+import ToastHost from "@/shared/notify/ToastHost";
+import BlogDetailPage from "./pages/BlogPage/BlogDetailPage";
 
 export default function App() {
   return (
-    <Routes>
-      <Route element={<MainLayout />}>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/about-us" element={<AboutUsPage />} />
-        <Route path="/brand-service" element={<BrandServicePage />} />
-        <Route path="/for-creator" element={<ForCreatorPage />} />
-        <Route path="/blog" element={<BlogPage />} />
-        <Route path="/our-campaign" element={<OurCampaignPage />} />
-        <Route path="/contact-us" element={<ContactUsPage />} />
+    <>
+      <Routes>
+        <Route element={<MainLayout />}>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/about-us" element={<AboutUsPage />} />
+          <Route path="/brand-service" element={<BrandServicePage />} />
+          <Route path="/for-creator" element={<ForCreatorPage />} />
+          <Route path="/blog" element={<BlogPage />} />
+          <Route path="/blog/:documentId" element={<BlogDetailPage />} />
+          <Route path="/our-campaign" element={<OurCampaignPage />} />
+          <Route path="/contact-us" element={<ContactUsPage />} />
+          <Route path="/dev/cms-test" element={<CmsApiTestPage />} />
 
-        <Route path="*" element={<Navigate to="/" replace />} />
-      </Route>
-    </Routes>
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Route>
+      </Routes>
+      <ToastHost />
+    </>
   );
 }
