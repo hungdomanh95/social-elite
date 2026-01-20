@@ -8,7 +8,7 @@ const EliteTalents: React.FC = () => {
       <S.Container>
         <S.Title>
           <span className="inner">
-            Our <span className="accent">elite™</span> talents
+            Our <span className="accent">elite™</span> Talents
           </span>
         </S.Title>
       </S.Container>

@@ -12,6 +12,7 @@ import ContactUsPage from "@/pages/ContactUsPage";
 import CmsApiTestPage from "@/pages/CmsApiTest";
 import ToastHost from "@/shared/notify/ToastHost";
 import BlogDetailPage from "./pages/BlogPage/BlogDetailPage";
+import CampaignDetailPage from "./pages/OurCampaignPage/CompainDetail";
 
 export default function App() {
   return (
@@ -25,6 +26,8 @@ export default function App() {
           <Route path="/blog" element={<BlogPage />} />
           <Route path="/blog/:documentId" element={<BlogDetailPage />} />
           <Route path="/our-campaign" element={<OurCampaignPage />} />
+          <Route path="/campaigns/:documentId" element={<CampaignDetailPage />} />
+
           <Route path="/contact-us" element={<ContactUsPage />} />
           <Route path="/dev/cms-test" element={<CmsApiTestPage />} />
 

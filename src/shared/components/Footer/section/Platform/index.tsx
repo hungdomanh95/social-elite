@@ -12,10 +12,10 @@ const Platform: React.FC<PlatformProps> = () => {
         <S.LeftGroup>
           <S.TitleBlock>
               <S.TitleLine>
-                our <S.TitleAccent>elite™</S.TitleAccent>
+                Our <S.TitleAccent>elite™</S.TitleAccent>
               </S.TitleLine>
-              <S.TitleLine>network</S.TitleLine>
-              <S.TitleLine>platform</S.TitleLine>
+              <S.TitleLine>Network</S.TitleLine>
+              <S.TitleLine>Platform</S.TitleLine>
           </S.TitleBlock>
 
           <S.ListLeft>

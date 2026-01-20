@@ -38,7 +38,7 @@ export const HeroTitle = styled.h1`
   margin: 0;
   font-size: clamp(44px, 4.2vw, 56px);
   line-height: var(--leading-display, 1.05);
-  letter-spacing: -0.03em;
+  letter-spacing: 0.02em;
   font-weight: var(--fw-bold);
   color: ${ACCENT};
 `;

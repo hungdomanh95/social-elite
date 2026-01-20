@@ -1,16 +1,10 @@
-import { useEffect, useMemo, useRef, useState } from "react";
-import { Link, useParams } from "react-router-dom";
 import { ArrowLeft, ArrowRight } from "lucide-react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
+import { Link, useParams } from "react-router-dom";
 import * as S from "./blogDetailPage.styled";
 
-import {
-  getBlogDetail,
-  getBlogRelated,
-  getBlogNavigation,
-  increaseBlogView,
-} from "@/shared/api/cms.api";
+import { getBlogDetail, getBlogNavigation, getBlogRelated, increaseBlogView } from "@/shared/api/cms.api";
 
-type CmsTag = { name: string };
 type CmsBlog = {
   documentId?: string;
   title?: string;
@@ -18,57 +12,183 @@ type CmsBlog = {
   excerpt?: string;
   description?: string;
   content?: string;
-  tags?: CmsTag[];
+  tags?: any[]; // keep flexible
   viewCount?: number;
   createdAt?: string;
 };
 
 type NavRes = { prev?: CmsBlog | null; next?: CmsBlog | null };
 
+// ------------------------------
+// Markdown helpers (robust for CMS)
+// ------------------------------
 const extractFirstMarkdownImageUrl = (md?: string) => {
   if (!md) return undefined;
   const m = md.match(/!\[[^\]]*]\(([^)]+)\)/);
   return m?.[1];
 };
 
-// ---- mini markdown renderer (no deps) ----
+const cleanLine = (s: string) =>
+  s
+    .replace(/\r/g, "")
+    .replace(/\u00a0/g, " ") // NBSP
+    .replace(/[ \t]+$/g, ""); // trimRight
+
+const unescapeMd = (s: string) =>
+  s
+    .replace(/\\\./g, ".")
+    .replace(/\\\(/g, "(")
+    .replace(/\\\)/g, ")")
+    .replace(/\\\[/g, "[")
+    .replace(/\\\]/g, "]")
+    .replace(/\\\*/g, "*")
+    .replace(/\\#/g, "#")
+    .replace(/\\\\/g, "\\");
+
 function renderInline(text: string) {
-  const parts = text.split(/(\*\*.*?\*\*)/g);
-  return parts.map((p, idx) => {
-    if (p.startsWith("**") && p.endsWith("**")) return <strong key={idx}>{p.slice(2, -2)}</strong>;
-    return <span key={idx}>{p}</span>;
-  });
+  const src = unescapeMd(text);
+
+  // token: **bold** | `code` | [text](url)
+  const tokens = src.split(/(\*\*[^*]+\*\*|`[^`]+`|\[[^\]]+]\([^)]+\))/g);
+
+  return tokens
+    .filter((t) => t !== "")
+    .map((t, idx) => {
+      // bold
+      if (t.startsWith("**") && t.endsWith("**")) {
+        const inner = t.slice(2, -2);
+        return <strong key={idx}>{inner}</strong>;
+      }
+
+      // inline code
+      if (t.startsWith("`") && t.endsWith("`")) {
+        const inner = t.slice(1, -1);
+        return <S.InlineCode key={idx}>{inner}</S.InlineCode>;
+      }
+
+      // link
+      if (t.startsWith("[") && t.includes("](") && t.endsWith(")")) {
+        const m = t.match(/^\[([^\]]+)]\(([^)]+)\)$/);
+        if (m?.[1] && m?.[2]) {
+          return (
+            <S.A
+              key={idx}
+              href={m[2]}
+              target="_blank"
+              rel="noreferrer noopener"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {m[1]}
+            </S.A>
+          );
+        }
+      }
+
+      return <span key={idx}>{t}</span>;
+    });
 }
 
-function renderMarkdownLite(md?: string) {
+const isHeadingLine = (line: string) => /^#{1,6}\s+/.test(line.trim());
+const isBulletLine = (line: string) => /^\s*[*-]\s+/.test(line);
+const isOrderedLine = (line: string) => /^\s*\d+\.\s+/.test(line);
+
+const isImageOnlyLine = (rawLine: string) => {
+  let l = rawLine.trim();
+
+  // remove heading markers
+  l = l.replace(/^#{1,6}\s*/g, "").trim();
+
+  // unwrap bold wrapper
+  const boldWrap = l.match(/^\*\*(.*)\*\*$/);
+  if (boldWrap?.[1]) l = boldWrap[1].trim();
+
+  return /^!\[[^\]]*]\([^)]+\)$/.test(l);
+};
+
+const extractImageUrlFromLine = (rawLine: string) => {
+  let l = rawLine.trim();
+  l = l.replace(/^#{1,6}\s*/g, "").trim();
+
+  const boldWrap = l.match(/^\*\*(.*)\*\*$/);
+  if (boldWrap?.[1]) l = boldWrap[1].trim();
+
+  const m = l.match(/^!\[[^\]]*]\(([^)]+)\)$/);
+  return m?.[1];
+};
+
+const isPlainCaptionLine = (line: string) => {
+  const t = line.trim();
+  if (!t) return false;
+  if (isHeadingLine(t)) return false;
+  if (isBulletLine(t)) return false;
+  if (isOrderedLine(t)) return false;
+  if (isImageOnlyLine(t)) return false;
+  return true;
+};
+
+function renderMarkdown(md?: string) {
   const src = (md ?? "").trim();
   if (!src) return null;
 
-  const lines = src.split("\n");
+  const lines = src.split("\n").map(cleanLine);
   const out: React.ReactNode[] = [];
 
   let i = 0;
   while (i < lines.length) {
-    const line = lines[i];
+    const raw = lines[i] ?? "";
+    const line = raw.trim();
 
-    if (!line.trim()) {
+    if (!line) {
       i++;
       continue;
     }
 
-    const img = line.match(/^\s*!\[[^\]]*]\(([^)]+)\)\s*$/);
-    if (img?.[1]) {
-      out.push(<S.ContentImage key={`img_${i}`} src={img[1]} alt="" loading="lazy" />);
-      i++;
+    // ✅ image block (supports **![...](...)** or in heading)
+    if (isImageOnlyLine(raw)) {
+      const url = extractImageUrlFromLine(raw);
+      const key = `img_${i}`;
+
+      // caption: next non-empty plain line
+      let caption: string | undefined;
+      let j = i + 1;
+      while (j < lines.length && !lines[j].trim()) j++;
+
+      if (j < lines.length && isPlainCaptionLine(lines[j])) {
+        caption = lines[j].trim();
+        i = j + 1;
+      } else {
+        i++;
+      }
+
+      out.push(
+        <S.Figure key={key}>
+          {url ? <S.ContentImage src={url} alt="" loading="lazy" /> : null}
+          {caption ? <S.FigureCaption>{renderInline(caption)}</S.FigureCaption> : null}
+        </S.Figure>
+      );
       continue;
     }
 
-    const h = line.match(/^(#{1,6})\s+(.*)$/);
+    // ✅ heading
+    const h = raw.match(/^(#{1,6})\s+(.*)$/);
     if (h) {
       const level = h[1].length;
-      const text = h[2] ?? "";
+      const text = (h[2] ?? "").trim();
+
+      // heading containing image only
+      if (isImageOnlyLine(text)) {
+        const url = extractImageUrlFromLine(text);
+        out.push(
+          <S.Figure key={`img_in_h_${i}`}>
+            {url ? <S.ContentImage src={url} alt="" loading="lazy" /> : null}
+          </S.Figure>
+        );
+        i++;
+        continue;
+      }
+
       out.push(
-        <S.Heading key={`h_${i}`} as={`h${Math.min(level, 3)}` as any}>
+        <S.Heading key={`h_${i}`} $level={Math.min(level, 3) as 1 | 2 | 3}>
           {renderInline(text)}
         </S.Heading>
       );
@@ -76,13 +196,17 @@ function renderMarkdownLite(md?: string) {
       continue;
     }
 
-    const isList = /^\s*[-*]\s+/.test(line);
-    if (isList) {
+    // ✅ unordered list
+    if (isBulletLine(raw)) {
       const items: string[] = [];
-      while (i < lines.length && /^\s*[-*]\s+/.test(lines[i])) {
-        items.push(lines[i].replace(/^\s*[-*]\s+/, ""));
+
+      while (i < lines.length && isBulletLine(lines[i])) {
+        const t = lines[i].replace(/^\s*[*-]\s+/, "").trim();
+        if (t) items.push(t);
         i++;
+        while (i < lines.length && !lines[i].trim()) i++; // ignore blank lines between bullets
       }
+
       out.push(
         <S.UL key={`ul_${i}`}>
           {items.map((t, idx) => (
@@ -93,24 +217,62 @@ function renderMarkdownLite(md?: string) {
       continue;
     }
 
-    const buf: string[] = [];
+    // ✅ ordered list
+    if (isOrderedLine(raw)) {
+      const items: string[] = [];
+
+      while (i < lines.length && isOrderedLine(lines[i])) {
+        const t = lines[i].replace(/^\s*\d+\.\s+/, "").trim();
+        if (t) items.push(t);
+        i++;
+        while (i < lines.length && !lines[i].trim()) i++;
+      }
+
+      out.push(
+        <S.OL key={`ol_${i}`}>
+          {items.map((t, idx) => (
+            <li key={idx}>{renderInline(t)}</li>
+          ))}
+        </S.OL>
+      );
+      continue;
+    }
+
+    // ✅ paragraph (supports markdown hard break with 2 spaces at end)
+    const segs: Array<{ text: string; hardBreak: boolean }> = [];
     while (
       i < lines.length &&
       lines[i].trim() &&
-      !/^(#{1,6})\s+/.test(lines[i]) &&
-      !/^\s*[-*]\s+/.test(lines[i]) &&
-      !/^\s*!\[[^\]]*]\(([^)]+)\)\s*$/.test(lines[i])
+      !isHeadingLine(lines[i]) &&
+      !isBulletLine(lines[i]) &&
+      !isOrderedLine(lines[i]) &&
+      !isImageOnlyLine(lines[i])
     ) {
-      buf.push(lines[i]);
+      const ln = lines[i];
+      const hardBreak = / {2}$/.test(ln);
+      segs.push({ text: ln.trim(), hardBreak });
       i++;
     }
-    const pText = buf.join(" ").replace(/\s+/g, " ").trim();
-    out.push(<S.P key={`p_${i}`}>{renderInline(pText)}</S.P>);
+
+    out.push(
+      <S.P key={`p_${i}`}>
+        {segs.map((s, idx) => (
+          <span key={idx}>
+            {idx > 0 && !segs[idx - 1].hardBreak ? " " : null}
+            {renderInline(s.text)}
+            {s.hardBreak ? <br /> : null}
+          </span>
+        ))}
+      </S.P>
+    );
   }
 
   return out;
 }
 
+// ------------------------------
+// Page
+// ------------------------------
 export default function BlogDetailPage() {
   const { documentId } = useParams<{ documentId: string }>();
   const id = (documentId ?? "").trim();
@@ -173,7 +335,7 @@ export default function BlogDetailPage() {
   }, [id]);
 
   const heroImg = useMemo(() => extractFirstMarkdownImageUrl(blog?.content), [blog?.content]);
-  const contentNodes = useMemo(() => renderMarkdownLite(blog?.content), [blog?.content]);
+  const contentNodes = useMemo(() => renderMarkdown(blog?.content), [blog?.content]);
 
   if (loading) {
     return (
@@ -207,8 +369,8 @@ export default function BlogDetailPage() {
 
         <S.MetaRow>
           <S.TagRow>
-            {(blog.tags ?? []).slice(0, 6).map((t, i) => (
-              <S.Tag key={`${t.name}_${i}`}>{t.name}</S.Tag>
+            {(blog.tags ?? []).slice(0, 6).map((t: any, i: number) => (
+              <S.Tag key={`${t?.name ?? "tag"}_${i}`}>{t?.name ?? "Tag"}</S.Tag>
             ))}
           </S.TagRow>
 

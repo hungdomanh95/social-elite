@@ -134,7 +134,7 @@ export const TitleLine = styled.div`
   /* font-weight: 600; */
   font-family: var(--font-display);
   font-weight: var(--fw-regular);
-  font-size: var(--h-64);
+  font-size: var(--text-7xl);
   // letter-spacing: -1px;
   line-height: 1.02; /* ✅ giữ gọn khi chữ to */
   color: rgba(255, 255, 255, 0.92);
@@ -143,7 +143,7 @@ export const TitleLine = styled.div`
 export const TitleLineAccent = styled.div`
   font-family: var(--font-display);
   font-weight: var(--fw-regular);
-  font-size: var(--h-64);
+  font-size: var(--text-7xl);
   line-height: 1.02;
   color: var(--accent);
 `;
@@ -179,7 +179,7 @@ export const CTAButton = styled.button`
 `;
 
 export const Badges = styled.div`
-  margin-top: var(--space-14);
+  margin-top: var(--space-16);
   display: grid;
   gap: 6px;
 

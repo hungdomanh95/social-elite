@@ -47,7 +47,7 @@ const Contact: React.FC<ContactProps> = (props) => {
           <div style={{display:"flex", flexDirection:"column" , width:"55%"}}>
             <S.Row2>
               <S.Field>
-                <S.Label>name</S.Label>
+                <S.Label>Name</S.Label>
                 <S.Input
                   value={name}
                   onChange={(e) => setName(e.target.value)}
@@ -57,7 +57,7 @@ const Contact: React.FC<ContactProps> = (props) => {
               </S.Field>
 
               <S.Field>
-                <S.Label>email</S.Label>
+                <S.Label>Email</S.Label>
                 <S.Input
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
@@ -68,7 +68,7 @@ const Contact: React.FC<ContactProps> = (props) => {
             </S.Row2>
 
             <S.Field>
-              <S.Label>message</S.Label>
+              <S.Label>Message</S.Label>
               <S.Input
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}

@@ -3,6 +3,9 @@ import cmsApi from "@/services/cmsApi";
 // Campaigns
 export const getCampaigns = async () => (await cmsApi.get("/campaigns")).data;
 
+export const getCampaignDetail = async (documentId: string) =>
+  (await cmsApi.get(`/campaigns/${documentId}`)).data;
+
 // Categories
 export const getCategories = async () => (await cmsApi.get("/categories")).data;
 

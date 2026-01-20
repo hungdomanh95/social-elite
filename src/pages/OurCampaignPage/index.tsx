@@ -1,5 +1,7 @@
+// src/pages/OurCampaignsPage/index.tsx
 import { ArrowRight } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
+import { Link } from "react-router-dom";
 import * as S from "./ourCampaignsPage.styled";
 import { getCampaigns } from "@/shared/api/cms.api";
 
@@ -26,7 +28,7 @@ type ApiCampaign = {
 };
 
 type CampaignUI = {
-  id: string;
+  id: string; // documentId
   title: string;
   desc: string;
   tags: string[];
@@ -53,6 +55,8 @@ const pickThumb = (t?: ApiThumbnail | null) => {
   return toAbsUrl(u);
 };
 
+const stripText = (s?: string) => (s ?? "").replace(/\s+/g, " ").trim();
+
 export default function OurCampaignsPage() {
   const [items, setItems] = useState<CampaignUI[]>([]);
   const [loading, setLoading] = useState(true);
@@ -64,13 +68,19 @@ export default function OurCampaignsPage() {
     getCampaigns()
       .then((res: any) => {
         const list: ApiCampaign[] = Array.isArray(res?.data) ? res.data : [];
-        const mapped: CampaignUI[] = list.map((c) => ({
-          id: c.documentId || String(c.id),
-          title: c.title,
-          desc: c.description,
-          tags: (c.tags || []).map((t) => t.name).filter(Boolean),
-          thumbUrl: pickThumb(c.thumbnail),
-        }));
+
+        const mapped: CampaignUI[] = list
+          .map((c) => {
+            const id = String(c.documentId || c.id);
+            return {
+              id,
+              title: stripText(c.title) || "Untitled",
+              desc: stripText(c.description),
+              tags: (c.tags || []).map((t) => t?.name).filter(Boolean) as string[],
+              thumbUrl: pickThumb(c.thumbnail),
+            };
+          })
+          .filter((x) => !!x.id);
 
         if (!alive) return;
         setItems(mapped);
@@ -111,7 +121,12 @@ export default function OurCampaignsPage() {
     }
 
     return items.map((c, idx) => (
-      <S.Card key={c.id} style={{ ["--d" as any]: `${idx * 60}ms` }}>
+      <S.Card
+        key={c.id}
+        // as={Link}
+        // to={`/campaigns/${c.id}`}
+        style={{ ["--d" as any]: `${idx * 60}ms` }}
+      >
         <S.CardMedia
           aria-hidden
           style={{
@@ -127,6 +142,10 @@ export default function OurCampaignsPage() {
 
           <S.CardTitle>{c.title}</S.CardTitle>
           <S.CardDesc>{c.desc}</S.CardDesc>
+
+          <S.ReadMore as={Link} to={`/campaigns/${c.id}`} aria-label={`Read more: ${c.title}`}>
+            Read More <ArrowRight size={16} />
+          </S.ReadMore>
         </S.CardBody>
       </S.Card>
     ));
@@ -142,9 +161,9 @@ export default function OurCampaignsPage() {
               <S.Title>Our Campaigns</S.Title>
             </S.TitleWrap>
 
-            <S.TopAction type="button">
+            {/* <S.TopAction type="button">
               View All Campaigns <ArrowRight size={16} />
-            </S.TopAction>
+            </S.TopAction> */}
           </S.HeaderRow>
 
           <S.Cards>{renderCards}</S.Cards>

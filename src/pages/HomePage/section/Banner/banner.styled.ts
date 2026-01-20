@@ -82,7 +82,8 @@ export const VideoWrap = styled.div`
   width: 100%;
   border-bottom: 1px solid var(--border);
 
-  aspect-ratio: 21 / 9;
+  aspect-ratio: 16 / 9;
+  /* height: 100vh; */
 
   @media (max-width: ${bp.lg}px) {
     aspect-ratio: 16 / 9;

@@ -1,3 +1,4 @@
+// src/pages/OurCampaignsPage/ourCampaignsPage.styled.ts
 import styled, { keyframes } from "styled-components";
 import { Container as SharedContainer } from "@/shared/components/Container";
 
@@ -6,6 +7,8 @@ const bp = { sm: 640, md: 768, lg: 1024 };
 const ACCENT = "var(--accent, #22c55e)";
 const BG = "#f4faf6";
 const BORDER = "rgba(15, 23, 42, 0.08)";
+const TEXT = "rgba(15, 23, 42, 0.92)";
+const MUTED = "rgba(15, 23, 42, 0.56)";
 
 const fadeUp = keyframes`
   from { opacity: 0; transform: translateY(10px); }
@@ -15,7 +18,7 @@ const fadeUp = keyframes`
 export const Page = styled.div`
   width: 100%;
   background: ${BG};
-  color: rgba(15, 23, 42, 0.92);
+  color: ${TEXT};
 `;
 
 export const Container = styled(SharedContainer)``;
@@ -66,7 +69,7 @@ export const Title = styled.h1`
 `;
 
 export const TopAction = styled.button`
- appearance: none;
+  appearance: none;
   border: 0;
   cursor: pointer;
 
@@ -82,7 +85,7 @@ export const TopAction = styled.button`
   padding: 10px 26px;
   font-size: var(--text-xs);
   font-family: var(--font-body);
-  font-weight:var(--fw-semibold);
+  font-weight: var(--fw-semibold);
 
   box-shadow: 0 12px 28px rgba(30, 215, 95, 0.18);
   transition: transform 160ms ease, filter 160ms ease;
@@ -100,8 +103,17 @@ export const Cards = styled.div`
   display: flex;
   flex-wrap: wrap;
   gap: 28px;
+
+  @media (max-width: ${bp.md}px) {
+    gap: 18px;
+  }
 `;
 
+/**
+ * ✅ Card support as <Link>:
+ * - When used with as={Link}, this will be an <a> tag
+ * - We keep text-decoration none + inherit color
+ */
 export const Card = styled.article`
   flex: 1 1 560px;
   max-width: calc(50% - 14px);
@@ -111,6 +123,9 @@ export const Card = styled.article`
     flex-basis: 100%;
   }
 
+  text-decoration: none;
+  color: inherit;
+
   background: transparent;
   animation: ${fadeUp} 520ms ease both;
   animation-delay: var(--d, 0ms);
@@ -118,36 +133,43 @@ export const Card = styled.article`
   @media (prefers-reduced-motion: reduce) {
     animation: none;
   }
+
+  transition: transform 180ms ease, filter 180ms ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.01);
+  }
 `;
 
 export const CardMedia = styled.div`
   width: 100%;
   aspect-ratio: 16 / 9;
   border-radius: 18px;
-  background: rgba(255, 255, 255, 0.06);
+
+  background: rgba(255, 255, 255, 0.6);
   background-size: cover;
   background-position: center;
+
   position: relative;
   overflow: hidden;
+  border: 1px solid ${BORDER};
 
-  /* overlay để chữ phía dưới ăn vibe hơn */
+  /* overlay cho vibe + giúp ảnh “ăn” UI hơn */
   &::after {
     content: "";
     position: absolute;
     inset: 0;
-    background: linear-gradient(
-      to bottom,
-      rgba(0, 0, 0, 0.0),
-      rgba(0, 0, 0, 0.22)
-    );
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.18));
+    pointer-events: none;
   }
 `;
 
 export const EmptyState = styled.div`
   padding: 10px 2px;
-  color: rgba(255, 255, 255, 0.7);
+  color: ${MUTED};
+  font-size: var(--text-sm, 14px);
 `;
-
 
 export const CardBody = styled.div`
   padding: 14px 2px 0;
@@ -169,7 +191,6 @@ export const Tag = styled.span`
   border-radius: 999px;
 
   font-size: var(--text-xs);
-  /* font-weight: var(--fw-semibold); */
   letter-spacing: 0.03em;
 
   background: rgba(2, 6, 23, 0.03);
@@ -180,12 +201,16 @@ export const Tag = styled.span`
 export const CardTitle = styled.h3`
   margin: 0;
   font-size: var(--text-sm);
+  font-weight: var(--fw-semibold);
+  color: rgba(15, 23, 42, 0.92);
 `;
 
 export const CardDesc = styled.p`
   margin: 10px 0 0;
   font-size: var(--text-xs);
-  color: rgba(15, 23, 42, 0.56);
+  color: ${MUTED};
+  line-height: var(--leading-relaxed, 1.6);
+  max-width: 90ch;
 `;
 
 export const CTA = styled.section`
@@ -252,5 +277,23 @@ export const CTAButton = styled.button`
   &:hover {
     transform: translateY(-1px);
     box-shadow: 0 16px 38px rgba(34, 197, 94, 0.22);
+  }
+`;
+export const ReadMore = styled.a`
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+
+  font-size: var(--text-xs);
+  color: ${ACCENT};
+  text-decoration: none;
+  font-weight: var(--fw-semibold);
+
+  svg {
+    transition: transform 160ms ease;
+  }
+
+  &:hover svg {
+    transform: translateX(2px);
   }
 `;

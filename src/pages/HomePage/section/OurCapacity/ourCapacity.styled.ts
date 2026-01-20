@@ -102,6 +102,7 @@ export const Container = styled.div`
 
 export const Header = styled.div`
   text-align: center;
+  margin-bottom: 32px;
 `;
 
 export const Kicker = styled.div`
@@ -158,7 +159,7 @@ export const Diagram = styled.div`
   font-family: var(--font-body);
 
   --cy: 54.5%;
-  --scale: 0.98;
+  --scale: 1.2;
 
   --centerSize: clamp(78px, calc(var(--d) * 0.32), 176px);
 

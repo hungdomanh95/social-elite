@@ -65,7 +65,7 @@ export const HeroTitle = styled.h1`
   margin: 0;
   line-height: 1.02;
   letter-spacing: -0.02em;
-  font-size: var(--text-6xl);
+  font-size: var(--h-64);
 
   .accent {
     color: var(--accent);

@@ -1,11 +1,7 @@
-import styled, { keyframes } from "styled-components";
+import styled from "styled-components";
 
 const bp = { md: 768 };
 
-const fadeUp = keyframes`
-  from { opacity: 0; transform: translateY(10px); }
-  to   { opacity: 1; transform: translateY(0); }
-`;
 
 export const Page = styled.main`
   width: 100%;
@@ -24,57 +20,6 @@ export const Container = styled.div`
   }
 `;
 
-export const TopBar = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  margin-bottom: 16px;
-  animation: ${fadeUp} 520ms ease-out both;
-
-  @media (prefers-reduced-motion: reduce) {
-    animation: none;
-  }
-`;
-
-export const Back = styled.a`
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 10px 12px;
-  border-radius: 14px;
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  color: rgba(255, 255, 255, 0.88);
-  text-decoration: none;
-
-  &:hover {
-    background: rgba(255, 255, 255, 0.06);
-  }
-`;
-
-export const NavBtns = styled.div`
-  display: flex;
-  gap: 10px;
-`;
-
-export const NavBtn = styled.a<{ $disabled?: boolean }>`
-  padding: 10px 12px;
-  border-radius: 14px;
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  color: rgba(255, 255, 255, 0.88);
-  text-decoration: none;
-
-  ${({ $disabled }) =>
-    $disabled
-      ? `
-    opacity: .45;
-    pointer-events: none;
-  `
-      : `
-    &:hover { background: rgba(255,255,255,0.06); }
-  `}
-`;
-
 export const HeroMedia = styled.div`
   width: 100%;
   border-radius: 22px;
@@ -86,8 +31,20 @@ export const HeroMedia = styled.div`
   overflow: hidden;
 `;
 
-export const TagRow = styled.div`
+export const MetaRow = styled.div`
   margin-top: 14px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 12px;
+`;
+
+export const ViewCount = styled.div`
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.7);
+`;
+
+export const TagRow = styled.div`
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
@@ -115,15 +72,89 @@ export const Desc = styled.p`
   max-width: 80ch;
 `;
 
+/* ✅ IMPORTANT: remove pre-wrap. markdown renderer handles layout */
 export const Content = styled.div`
   margin-top: 18px;
   padding-top: 16px;
   border-top: 1px solid rgba(255, 255, 255, 0.12);
-  white-space: pre-wrap;
   line-height: 1.72;
   color: rgba(255, 255, 255, 0.86);
 `;
 
+/* ----- Markdown elements ----- */
+export const InlineCode = styled.code`
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-size: 0.95em;
+  padding: 0.12em 0.35em;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+`;
+
+export const A = styled.a`
+  color: rgba(34, 197, 94, 0.92);
+  text-decoration: none;
+  font-weight: 600;
+
+  &:hover {
+    text-decoration: underline;
+  }
+`;
+
+export const Figure = styled.figure`
+  margin: 14px 0;
+`;
+
+export const FigureCaption = styled.figcaption`
+  margin-top: 10px;
+  font-size: 13px;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.7);
+`;
+
+export const ContentImage = styled.img`
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+`;
+
+export const Heading = styled.h2<{ $level: 1 | 2 | 3 }>`
+  margin: 18px 0 10px;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+
+  font-size: ${({ $level }) => ($level === 1 ? "28px" : $level === 2 ? "20px" : "16px")};
+`;
+
+export const P = styled.p`
+  margin: 10px 0;
+  color: rgba(255, 255, 255, 0.86);
+  line-height: 1.75;
+`;
+
+export const UL = styled.ul`
+  margin: 10px 0 10px 18px;
+  color: rgba(255, 255, 255, 0.86);
+  line-height: 1.75;
+
+  li {
+    margin: 6px 0;
+  }
+`;
+
+export const OL = styled.ol`
+  margin: 10px 0 10px 18px;
+  color: rgba(255, 255, 255, 0.86);
+  line-height: 1.75;
+
+  li {
+    margin: 6px 0;
+  }
+`;
+
+/* ----- Related ----- */
 export const RelatedBlock = styled.section`
   margin-top: 34px;
 `;
@@ -153,15 +184,6 @@ export const RelatedItem = styled.a`
   &:hover {
     background: rgba(255, 255, 255, 0.08);
   }
-`;
-
-export const RelatedThumb = styled.div`
-  flex: 0 0 112px;
-  height: 74px;
-  border-radius: 14px;
-  background: rgba(255, 255, 255, 0.08);
-  background-size: cover;
-  background-position: center;
 `;
 
 export const RelatedInfo = styled.div`
@@ -195,56 +217,6 @@ export const RelatedMore = styled.div`
   font-size: 13px;
   color: rgba(34, 197, 94, 0.92);
 `;
-// add these below your existing exports
-
-export const MetaRow = styled.div`
-  margin-top: 14px;
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  gap: 12px;
-`;
-
-export const ViewCount = styled.div`
-  font-size: 13px;
-  color: rgba(255, 255, 255, 0.7);
-`;
-
-export const ContentImage = styled.img`
-  width: 100%;
-  height: auto;
-  display: block;
-  border-radius: 18px;
-  margin: 14px 0;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-`;
-
-export const Heading = styled.h2`
-  margin: 18px 0 10px;
-  line-height: 1.2;
-  letter-spacing: -0.01em;
-
-  /* h1/h2/h3 đều dùng chung style base, size theo tag */
-  &h1 { font-size: 28px; }
-  &h2 { font-size: 20px; }
-  &h3 { font-size: 16px; }
-`;
-
-export const P = styled.p`
-  margin: 10px 0;
-  color: rgba(255, 255, 255, 0.86);
-  line-height: 1.75;
-`;
-
-export const UL = styled.ul`
-  margin: 10px 0 10px 18px;
-  color: rgba(255, 255, 255, 0.86);
-  line-height: 1.75;
-
-  li {
-    margin: 6px 0;
-  }
-`;
 
 export const EmptyInline = styled.div`
   padding: 6px 2px;
@@ -252,7 +224,7 @@ export const EmptyInline = styled.div`
   font-size: 13px;
 `;
 
-
+/* ----- Bottom Prev/Next ----- */
 export const BottomNav = styled.div`
   margin-top: 28px;
   padding-top: 18px;
@@ -288,7 +260,7 @@ export const NavLink = styled.a<{ $align: "left" | "right" }>`
   text-align: ${({ $align }) => $align};
   align-items: ${({ $align }) => ($align === "left" ? "flex-start" : "flex-end")};
 
-  &:hover ${"" /* subtle hover */} {
+  &:hover {
     opacity: 0.92;
   }
 `;
@@ -310,14 +282,7 @@ export const NavLabelRow = styled.div<{ $align: "left" | "right" }>`
   align-items: center;
   gap: 12px;
 
-  ${({ $align }) =>
-    $align === "right"
-      ? `
-    justify-content: flex-end;
-  `
-      : `
-    justify-content: flex-start;
-  `}
+  ${({ $align }) => ($align === "right" ? `justify-content:flex-end;` : `justify-content:flex-start;`)}
 `;
 
 export const NavIconCircle = styled.div`
@@ -346,7 +311,6 @@ export const NavTitle = styled.div<{ $align: "left" | "right" }>`
 
   text-align: ${({ $align }) => $align};
 
-  /* clamp 2 lines */
   overflow: hidden;
   display: -webkit-box;
   -webkit-line-clamp: 2;

@@ -105,7 +105,7 @@ export const Label = styled.div`
   font-weight: var(--fw-semibold);
   // font-weight: 700;
   // letter-spacing: 0.2px;
-  text-transform: lowercase;
+  /* text-transform: lowercase; */
 
   @media (max-width: ${bp.md}px) {
     font-size: var(--text-xs, 12px);

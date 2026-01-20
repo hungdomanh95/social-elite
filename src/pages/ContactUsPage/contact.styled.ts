@@ -28,7 +28,7 @@ export const Hero = styled.section`
 `;
 
 export const Kicker = styled.div`
-  font-size: var(--text-xs, 12px);
+  font-size: var(--text-base);
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--accent, #1fd760);
