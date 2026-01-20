@@ -8,6 +8,8 @@ const revealUp = keyframes`
   to   { opacity: 1; transform: translateY(0);   filter: blur(0); }
 `;
 
+
+
 const floatSoft = keyframes`
   0%,100% { transform: translateY(0); }
   50%     { transform: translateY(-4px); }
@@ -65,7 +67,6 @@ export const Top = styled.div`
   }
 `;
 
-
 export const Left = styled.div`
   display: flex;
   flex-direction: column;
@@ -84,7 +85,6 @@ export const Pill = styled.div`
   font-weight: var(--fw-bold);
 
   color: rgba(0, 210, 106, 0.95);
-
   background: rgba(0, 210, 106, 0.10);
   border: 1px solid rgba(0, 210, 106, 0.35);
 `;
@@ -99,7 +99,7 @@ export const Heading = styled.h2`
   }
 `;
 
-/* ✅ FIX: dùng css helper, không dùng string thường */
+/* ✅ View All style (giữ nguyên) */
 const viewAllBase = css`
   display: inline-flex;
   align-items: center;
@@ -108,10 +108,12 @@ const viewAllBase = css`
 
   padding: var(--space-3, 12px) var(--space-4, 16px);
   border-radius: 999px;
+
   font-size: var(--text-xs);
-  font-weight: var(--fw-semibold) ;
+  font-weight: var(--fw-semibold);
   background: var(--accent, #00d26a);
   color: #06130b;
+
   border: 0;
   cursor: pointer;
   text-decoration: none;
@@ -166,15 +168,61 @@ export const Grid = styled.div`
   }
 `;
 
+
+/**
+ * ✅ Thumb matches CardMedia vibe:
+ * - border + subtle overlay
+ * - cover background
+ */
+export const Thumb = styled.div<{ $src?: string }>`
+  width: 100%;
+  aspect-ratio: 16 / 9; /* ✅ match OurCampaigns */
+  border-radius: 18px;
+  overflow: hidden;
+
+  background: ${({ $src }) =>
+    $src
+      ? `url(${$src}) center / cover no-repeat`
+      : `linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.03))`};
+
+  position: relative;
+  border: 1px solid rgba(255,255,255,0.10);
+
+  box-shadow:
+    0 26px 60px rgba(0,0,0,.45),
+    0 0 0 1px rgba(255,255,255,.04) inset;
+
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, rgba(0,0,0,0), rgba(0,0,0,0.18));
+    pointer-events: none;
+  }
+`;
+
+/**
+ * ✅ Card style updated to match ourCampaignsPage cards:
+ * - animation fadeUp with --d
+ * - hover translate + brightness
+ * - text-decoration none + inherit color for Link
+ */
 export const Card = styled.div<{ $clickable?: boolean }>`
   display: flex;
   flex-direction: column;
-  gap: var(--space-2, 8px);
+  gap: 12px;
 
-  color: inherit;
   text-decoration: none;
+  color: inherit;
 
   ${({ $clickable }) => ($clickable ? "cursor: pointer;" : "")}
+
+  transition: transform 180ms ease, filter 180ms ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.01);
+  }
 
   @media (max-width: ${bp.md}px) {
     flex: 0 0 auto;
@@ -183,33 +231,29 @@ export const Card = styled.div<{ $clickable?: boolean }>`
   }
 `;
 
-export const Thumb = styled.div<{ $src?: string }>`
-  width: 100%;
-  aspect-ratio: 4 / 5;
-  border-radius: 16px;
-  overflow: hidden;
-
-  background: ${({ $src }) =>
-    $src
-      ? `url(${$src}) center / cover no-repeat`
-      : `linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.03))`};
-
-  box-shadow:
-    0 26px 60px rgba(0,0,0,.45),
-    0 0 0 1px rgba(255,255,255,.05) inset;
-`;
-
-export const CardTitle = styled.div`
+// ✅ y hệt OurCampaigns: h3 + font token
+export const CardTitle = styled.h3`
+  margin: 0;
+  font-size: var(--text-sm);
   font-weight: var(--fw-semibold);
-  font-size: var(--text-base, 16px);
-
-  @media (max-width: ${bp.md}px) {
-    font-size: var(--text-sm, 14px);
-  }
-`;
-
-export const CardMeta = styled.div`
-  color: #F6FDF9;
-  font-size: var(--text-xs, 12px);
   line-height: var(--leading-tight, 1.25);
+
+  /* SuccessStories đang nền tối => giữ trắng cho dễ đọc */
+  color: rgba(255, 255, 255, 0.92);
 `;
+
+// ✅ y hệt OurCampaigns desc style (token + spacing)
+export const CardMeta = styled.p`
+  margin: 10px 0 0;
+  font-size: var(--text-xs);
+  line-height: var(--leading-relaxed, 1.6);
+
+  color: rgba(255, 255, 255, 0.72);
+
+  /* clamp 2 lines giống vibe list card */
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+`;
+
