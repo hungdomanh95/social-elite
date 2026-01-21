@@ -3,7 +3,11 @@ import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import * as S from "./blogPage.styled";
 
-import { getCategories, getBlogsTopViewed, searchBlogs } from "@/shared/api/cms.api";
+import {
+  getCategories,
+  getBlogsTopViewed,
+  searchBlogs,
+} from "@/shared/api/cms.api";
 
 type CmsCategory = {
   id?: number;
@@ -51,7 +55,8 @@ type PostUI = {
   thumbUrl?: string;
 };
 
-const CMS_ORIGIN = import.meta.env.VITE_CMS_ORIGIN || "https://social-elite-cms.leapstud.io";
+const CMS_ORIGIN =
+  import.meta.env.VITE_CMS_ORIGIN || "https://social-elite-cms.leapstud.io";
 
 const toAbsUrl = (u?: string) => {
   if (!u) return undefined;
@@ -71,10 +76,7 @@ const pickThumb = (t?: CmsThumbnail | null) => {
   return toAbsUrl(u);
 };
 
-const stripText = (s?: string) =>
-  (s ?? "")
-    .replace(/\s+/g, " ")
-    .trim();
+const stripText = (s?: string) => (s ?? "").replace(/\s+/g, " ").trim();
 
 const excerptFrom = (blog: any) => {
   const ex = stripText(blog.excerpt);
@@ -96,7 +98,10 @@ const pickCategory = (blog: CmsBlog) => {
   const slug = c?.slug ?? c?.documentId ?? c?.id;
   const name = c?.name ?? c?.title ?? c?.label ?? c?.slug;
 
-  return { slug: slug ? String(slug) : undefined, name: name ? String(name) : undefined };
+  return {
+    slug: slug ? String(slug) : undefined,
+    name: name ? String(name) : undefined,
+  };
 };
 
 const normalizeBlogs = (res: any): PostUI[] => {
@@ -268,7 +273,10 @@ export default function BlogPage() {
             <S.PostsCol>
               {loadingPosts ? (
                 Array.from({ length: 6 }).map((_, idx) => (
-                  <S.PostCard key={`sk_${idx}`} style={{ ["--d" as any]: `${idx * 60}ms`, opacity: 0.75 }}>
+                  <S.PostCard
+                    key={`sk_${idx}`}
+                    style={{ ["--d" as any]: `${idx * 60}ms`, opacity: 0.75 }}
+                  >
                     <S.PostMedia aria-hidden />
                     <S.PostBody>
                       <S.PostTitle>Loading...</S.PostTitle>
@@ -281,16 +289,29 @@ export default function BlogPage() {
                 ))
               ) : posts.length ? (
                 posts.map((p, idx) => (
-                  <S.PostCard key={p.id} style={{ ["--d" as any]: `${idx * 60}ms` }}>
+                  <S.PostCard
+                    as={Link}
+                    to={`/blog/${p.id}`}
+                    key={p.id}
+                    style={{ ["--d" as any]: `${idx * 60}ms` }}
+                  >
                     <S.PostMedia
                       aria-hidden
-                      style={{ backgroundImage: p.thumbUrl ? `url(${p.thumbUrl})` : undefined }}
+                      style={{
+                        backgroundImage: p.thumbUrl
+                          ? `url(${p.thumbUrl})`
+                          : undefined,
+                      }}
                     />
                     <S.PostBody>
                       <S.PostTitle>{p.title}</S.PostTitle>
                       <S.PostExcerpt>{p.excerpt}</S.PostExcerpt>
 
-                      <S.ReadMore as={Link} to={p.href} aria-label={`Read more: ${p.title}`}>
+                      <S.ReadMore
+                        as={Link}
+                        to={p.href}
+                        aria-label={`Read more: ${p.title}`}
+                      >
                         Read More <ArrowRight size={16} />
                       </S.ReadMore>
                     </S.PostBody>
@@ -319,7 +340,9 @@ export default function BlogPage() {
                           <S.RelatedThumb aria-hidden />
                           <S.RelatedInfo>
                             <S.RelatedName>Loading...</S.RelatedName>
-                            <S.RelatedDesc>Fetching top viewed...</S.RelatedDesc>
+                            <S.RelatedDesc>
+                              Fetching top viewed...
+                            </S.RelatedDesc>
                           </S.RelatedInfo>
                         </S.RelatedItem>
                       ))
@@ -328,7 +351,11 @@ export default function BlogPage() {
                         <S.RelatedItem key={r.id} as={Link} to={r.href}>
                           <S.RelatedThumb
                             aria-hidden
-                            style={{ backgroundImage: r.thumbUrl ? `url(${r.thumbUrl})` : undefined }}
+                            style={{
+                              backgroundImage: r.thumbUrl
+                                ? `url(${r.thumbUrl})`
+                                : undefined,
+                            }}
                           />
                           <S.RelatedInfo>
                             <S.RelatedName>{r.title}</S.RelatedName>
@@ -353,9 +380,16 @@ export default function BlogPage() {
                       categories.map((c) => {
                         const isActive = active === c.key;
                         return (
-                          <S.CatRow key={c.key} $active={isActive} type="button" onClick={() => setActive(c.key)}>
+                          <S.CatRow
+                            key={c.key}
+                            $active={isActive}
+                            type="button"
+                            onClick={() => setActive(c.key)}
+                          >
                             <span>{c.label}</span>
-                            <S.CatCount $active={isActive}>{c.count}</S.CatCount>
+                            <S.CatCount $active={isActive}>
+                              {c.count}
+                            </S.CatCount>
                           </S.CatRow>
                         );
                       })

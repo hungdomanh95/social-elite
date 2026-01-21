@@ -1,3 +1,4 @@
+// blogPage.styled.ts
 import styled, { keyframes } from "styled-components";
 import { Container as SharedContainer } from "@/shared/components/Container";
 
@@ -95,7 +96,23 @@ export const SidebarSticky = styled.div`
   }
 `;
 
+/* ✅ moved ABOVE PostCard to allow hover selector */
+export const PostMedia = styled.div`
+  width: 100%;
+  aspect-ratio: 16 / 8;
+  background: rgba(34, 197, 94, 0.18);
+  background-size: cover;
+  background-position: center;
+
+  transform: scale(1);
+  filter: saturate(1);
+  transition:
+    transform 520ms cubic-bezier(0.2, 0.8, 0.2, 1),
+    filter 220ms ease;
+`;
+
 export const PostCard = styled.article`
+  position: relative;
   background: ${CARD};
   border: 1px solid ${BORDER};
   border-radius: 20px;
@@ -111,22 +128,68 @@ export const PostCard = styled.article`
     animation: none;
   }
 
-  transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+  /* ✅ smoother + richer hover */
+  transition:
+    transform 220ms cubic-bezier(0.2, 0.8, 0.2, 1),
+    box-shadow 220ms ease,
+    border-color 220ms ease;
+
+  /* ✅ subtle glow overlay */
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 240ms ease;
+    background:
+      radial-gradient(700px 260px at 14% -12%, rgba(34, 197, 94, 0.22), transparent 60%),
+      linear-gradient(180deg, rgba(34, 197, 94, 0.10), transparent 46%);
+    z-index: 0;
+  }
+
+  /* keep content above overlay */
+  > * {
+    position: relative;
+    z-index: 1;
+  }
 
   &:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 18px 54px rgba(2, 6, 23, 0.09);
-    border-color: rgba(34, 197, 94, 0.22);
+    transform: translateY(-3px) scale(1.01);
+    box-shadow: 0 20px 60px rgba(2, 6, 23, 0.10);
+    border-color: rgba(34, 197, 94, 0.26);
   }
-`;
 
-export const PostMedia = styled.div`
-  width: 100%;
-  aspect-ratio: 16 / 8;
-  background: rgba(34, 197, 94, 0.18);
+  &:hover::after {
+    opacity: 1;
+  }
 
-  background-size: cover;
-  background-position: center;
+  /* ✅ zoom media on hover */
+  &:hover ${PostMedia} {
+    transform: scale(1.045);
+    filter: saturate(1.05);
+  }
+
+  /* ✅ accessibility */
+  &:focus-visible {
+    outline: none;
+    box-shadow:
+      0 20px 60px rgba(2, 6, 23, 0.10),
+      0 0 0 4px rgba(34, 197, 94, 0.18);
+    border-color: rgba(34, 197, 94, 0.35);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+
+    &:hover {
+      transform: none;
+    }
+
+    &:hover ${PostMedia} {
+      transform: none;
+    }
+  }
 `;
 
 export const PostBody = styled.div`
@@ -142,8 +205,20 @@ export const PostTitle = styled.h3`
   font-family: var(--font-display);
   font-size: var(--text-xl);
   font-weight: var(--fw-semibold);
+
+  /* ✅ default: đen */
   color: rgba(15, 23, 42, 0.92);
+
+  transition: color 180ms ease, filter 180ms ease, transform 180ms ease;
+
+  /* ✅ hover card -> đổi xanh chủ đạo */
+  ${PostCard}:hover & {
+    color: ${ACCENT};
+    filter: brightness(0.98);
+    transform: translateY(-0.5px);
+  }
 `;
+
 
 export const PostExcerpt = styled.p`
   margin: 10px 0 16px;
@@ -172,6 +247,7 @@ export const ReadMore = styled.a`
   }
 `;
 
+/* ===== sidebar giữ nguyên ===== */
 export const SideCard = styled.div`
   background: ${CARD};
   border: 1px solid ${BORDER};
@@ -254,9 +330,12 @@ export const CatList = styled.div`
 
 export const CatRow = styled.button<{ $active?: boolean }>`
   width: 100%;
-  border: 1px solid ${({ $active }) => ($active ? "rgba(34, 197, 94, 0.35)" : "transparent")};
-  background: ${({ $active }) => ($active ? ACCENT : "rgba(2, 6, 23, 0.02)")};
-  color: ${({ $active }) => ($active ? "#06270f" : "rgba(15, 23, 42, 0.8)")};
+  border: 1px solid ${({ $active }) =>
+    $active ? "rgba(34, 197, 94, 0.35)" : "transparent"};
+  background: ${({ $active }) =>
+    $active ? ACCENT : "rgba(2, 6, 23, 0.02)"};
+  color: ${({ $active }) =>
+    $active ? "#06270f" : "rgba(15, 23, 42, 0.8)"};
 
   border-radius: 12px;
   padding: 12px 12px;
@@ -272,7 +351,8 @@ export const CatRow = styled.button<{ $active?: boolean }>`
 
   &:hover {
     transform: translateY(-1px);
-    background: ${({ $active }) => ($active ? ACCENT : "rgba(2, 6, 23, 0.04)")};
+    background: ${({ $active }) =>
+      $active ? ACCENT : "rgba(2, 6, 23, 0.04)"};
   }
 `;
 
@@ -286,7 +366,8 @@ export const CatCount = styled.span<{ $active?: boolean }>`
   padding: 0 8px;
 
   border-radius: 8px;
-  background: ${({ $active }) => ($active ? "rgba(255, 255, 255, 0.35)" : "rgba(2, 6, 23, 0.06)")};
+  background: ${({ $active }) =>
+    $active ? "rgba(255, 255, 255, 0.35)" : "rgba(2, 6, 23, 0.06)"};
   color: rgba(15, 23, 42, 0.7);
 
   font-size: var(--text-xs, 12px);

@@ -114,6 +114,7 @@ export const Cards = styled.div`
  * - When used with as={Link}, this will be an <a> tag
  * - We keep text-decoration none + inherit color
  */
+// ✅ replace Card
 export const Card = styled.article`
   flex: 1 1 560px;
   max-width: calc(50% - 14px);
@@ -127,6 +128,10 @@ export const Card = styled.article`
   color: inherit;
 
   background: transparent;
+
+  position: relative;
+  transform: translateZ(0);
+
   animation: ${fadeUp} 520ms ease both;
   animation-delay: var(--d, 0ms);
 
@@ -134,14 +139,42 @@ export const Card = styled.article`
     animation: none;
   }
 
-  transition: transform 180ms ease, filter 180ms ease;
+  transition:
+    transform 220ms cubic-bezier(0.2, 0.8, 0.2, 1),
+    filter 220ms ease;
+
+  /* ✅ subtle glow overlay */
+  &::after {
+    content: "";
+    position: absolute;
+    inset: -2px;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 240ms ease;
+    background:
+      radial-gradient(560px 220px at 12% -12%, rgba(34, 197, 94, 0.18), transparent 60%),
+      linear-gradient(180deg, rgba(34, 197, 94, 0.08), transparent 48%);
+  }
 
   &:hover {
-    transform: translateY(-2px);
+    transform: translateY(-3px) scale(1.01);
     filter: brightness(1.01);
+  }
+
+  &:hover::after {
+    opacity: 1;
+  }
+
+  &:focus-visible {
+    outline: none;
+  }
+
+  &:focus-visible::after {
+    opacity: 1;
   }
 `;
 
+// ✅ replace CardMedia
 export const CardMedia = styled.div`
   width: 100%;
   aspect-ratio: 16 / 9;
@@ -155,15 +188,59 @@ export const CardMedia = styled.div`
   overflow: hidden;
   border: 1px solid ${BORDER};
 
+  transform: scale(1);
+  filter: saturate(1);
+  transition:
+    transform 520ms cubic-bezier(0.2, 0.8, 0.2, 1),
+    filter 220ms ease,
+    border-color 220ms ease,
+    box-shadow 220ms ease;
+
   /* overlay cho vibe + giúp ảnh “ăn” UI hơn */
   &::after {
     content: "";
     position: absolute;
     inset: 0;
-    background: linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.18));
+    background: linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0),
+      rgba(0, 0, 0, 0.18)
+    );
     pointer-events: none;
   }
+
+  /* ✅ hover card -> zoom ảnh + border accent nhẹ */
+  ${Card}:hover & {
+    transform: scale(1.045);
+    filter: saturate(1.05);
+    border-color: rgba(34, 197, 94, 0.22);
+    box-shadow: 0 14px 40px rgba(2, 6, 23, 0.06);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+
+    ${Card}:hover & {
+      transform: none;
+    }
+  }
 `;
+
+// ✅ replace CardTitle (default đen, hover mới xanh)
+export const CardTitle = styled.h3`
+  margin: 0;
+  font-size: var(--text-sm);
+  font-weight: var(--fw-semibold);
+
+  color: rgba(15, 23, 42, 0.92);
+  transition: color 180ms ease, transform 180ms ease;
+
+  ${Card}:hover & {
+    color: ${ACCENT};
+    transform: translateY(-0.5px);
+  }
+`;
+
 
 export const EmptyState = styled.div`
   padding: 10px 2px;
@@ -198,12 +275,6 @@ export const Tag = styled.span`
   color: rgba(15, 23, 42, 0.78);
 `;
 
-export const CardTitle = styled.h3`
-  margin: 0;
-  font-size: var(--text-sm);
-  font-weight: var(--fw-semibold);
-  color: rgba(15, 23, 42, 0.92);
-`;
 
 export const CardDesc = styled.p`
   margin: 10px 0 0;

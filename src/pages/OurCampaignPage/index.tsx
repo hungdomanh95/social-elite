@@ -123,8 +123,8 @@ export default function OurCampaignsPage() {
     return items.map((c, idx) => (
       <S.Card
         key={c.id}
-        // as={Link}
-        // to={`/campaigns/${c.id}`}
+        as={Link}
+        to={`/campaigns/${c.id}`}
         style={{ ["--d" as any]: `${idx * 60}ms` }}
       >
         <S.CardMedia
