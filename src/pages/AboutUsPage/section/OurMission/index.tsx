@@ -1,9 +1,44 @@
-import React from 'react'
-import * as S from "./ourMission.styled"
+import React, { useMemo } from "react";
+import * as S from "./ourMission.styled";
+import { useLandingPage } from "@/shared/api/useLandingPage";
 
 type OurMissionProps = {};
 
+const splitTitleToLines = (title: string) => {
+  const t = (title || "").trim();
+  if (!t) return [""];
+
+  // nếu đã có xuống dòng sẵn
+  if (t.includes("\n")) return t.split("\n").map((x) => x.trim()).filter(Boolean);
+
+  // chia 2 dòng: ưu tiên tách gần giữa
+  const words = t.split(/\s+/).filter(Boolean);
+  if (words.length <= 2) return [t];
+
+  const mid = Math.ceil(words.length / 2);
+  return [words.slice(0, mid).join(" "), words.slice(mid).join(" ")];
+};
+
+const splitParagraphs = (content: string) => {
+  return (content || "")
+    .split(/\n\s*\n/g)
+    .map((p) => p.trim())
+    .filter(Boolean);
+};
+
 const OurMission: React.FC<OurMissionProps> = () => {
+  const { data: landing } = useLandingPage();
+
+  const kicker = landing?.missionHighlight || "Our";
+  const title = landing?.missionTitle || "Mission";
+
+  const titleLines = useMemo(() => splitTitleToLines(title), [title]);
+
+  const paragraphs = useMemo(
+    () => splitParagraphs(landing?.missionContent || ""),
+    [landing?.missionContent]
+  );
+
   return (
     <S.MissionSection>
       <S.Container>
@@ -14,37 +49,29 @@ const OurMission: React.FC<OurMissionProps> = () => {
 
         <S.MissionCard>
           <S.MissionLeft>
-            <S.MissionKicker>Unlock</S.MissionKicker>
+            <S.MissionKicker>{kicker}</S.MissionKicker>
+
             <S.MissionMain>
-              every business
-              <br />
-              possibilities
+              {titleLines.map((line, i) => (
+                <React.Fragment key={i}>
+                  {line}
+                  {i < titleLines.length - 1 ? <br /> : null}
+                </React.Fragment>
+              ))}
             </S.MissionMain>
           </S.MissionLeft>
 
           <S.MissionRight>
-            <p>
-              Social Elite is a pioneering social commerce ecosystem built to
-              redefine how brands grow and how creators monetize in the new era
-              of social commerce. We sit at the intersection of content,
-              commerce, and community where influence turns into impact and
-              creativity drives measurable results.
-            </p>
-
-            <p>
-              We work end-to-end with our partners, from consulting and
-              strategic planning to execution and daily operations.
-            </p>
-
-            <p>
-              At Social Elite, we don’t just participate in social commerce, we
-              build systems that make it work.
-            </p>
+            {paragraphs.length ? (
+              paragraphs.map((p, idx) => <p key={idx}>{p}</p>)
+            ) : (
+              <p>{landing?.missionContent || ""}</p>
+            )}
           </S.MissionRight>
         </S.MissionCard>
       </S.Container>
     </S.MissionSection>
-  )
-}
+  );
+};
 
-export default OurMission
+export default OurMission;

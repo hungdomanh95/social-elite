@@ -1,9 +1,10 @@
-import React, { useEffect, useMemo, useRef } from "react";
-import * as S from "./offer.styled";
 import Icon from "@/assets/icons";
+import { useLandingPage } from "@/shared/api/useLandingPage";
+import { useEffect, useMemo, useRef } from "react";
+import * as S from "./offer.styled";
 
 type OfferItem = {
-  icon: React.ReactNode;
+  iconName: string;
   label: string;
 };
 
@@ -13,23 +14,36 @@ type Props = {
 
 export default function Offer({ bgSrc }: Props) {
   const wrapRef = useRef<HTMLElement | null>(null);
+  const { data: landing } = useLandingPage();
 
-  const offerTop = useMemo<OfferItem[]>(
-    () => [
-      { icon: <Icon name="Users" size={28} />, label: "Talent Management" },
-      { icon: <Icon name="DollarSign" size={28}  />, label: "Social Seller Strategy" },
-      { icon: <Icon name="Handshake" size={28}  />, label: "Brand Collaboration" },
-    ],
-    []
-  );
+  const offers = useMemo<OfferItem[]>(() => {
+    const list = (landing?.creatorOffers ?? []) as Array<{
+      id?: number;
+      icon?: string;
+      text?: string;
+    }>;
 
-  const offerBottom = useMemo<OfferItem[]>(
-    () => [
-      { icon: <Icon name="TrendingUp" size={28}  />, label: "Revenue Maximization" },
-      { icon: <Icon name="Film" size={28}  />, label: "Content Production and Operation" },
-    ],
-    []
-  );
+    if (!Array.isArray(list)) return [];
+
+    return list
+      .filter((x) => !!x?.text)
+      .map((x) => ({
+        iconName: String(x.icon || "Users"),
+        label: String(x.text || ""),
+      }));
+  }, [landing?.creatorOffers]);
+
+  // ✅ split rows: ưu tiên đúng layout 3 + 2 nếu có 5 item
+  const { offerTop, offerBottom } = useMemo(() => {
+    const n = offers.length;
+
+    if (n === 5) {
+      return { offerTop: offers.slice(0, 3), offerBottom: offers.slice(3) };
+    }
+
+    const topCount = Math.max(1, Math.ceil(n / 2));
+    return { offerTop: offers.slice(0, topCount), offerBottom: offers.slice(topCount) };
+  }, [offers]);
 
   useEffect(() => {
     const root = wrapRef.current;
@@ -61,34 +75,40 @@ export default function Offer({ bgSrc }: Props) {
           We Offer
         </S.OfferTitle>
 
-        <S.OfferRow data-cols="3">
+        <S.OfferRow data-cols={offerTop.length >= 3 ? "3" : "2"}>
           {offerTop.map((it, idx) => (
             <S.OfferItem
               key={it.label}
               data-reveal
               style={{ ["--d" as any]: `${120 + idx * 90}ms` }}
             >
-              <S.OfferIcon aria-hidden="true">{it.icon}</S.OfferIcon>
+              <S.OfferIcon aria-hidden="true">
+                <Icon name={it.iconName as any} size={28} />
+              </S.OfferIcon>
               <S.OfferText>{it.label}</S.OfferText>
             </S.OfferItem>
           ))}
         </S.OfferRow>
 
-        <S.OfferRow data-cols="2">
-          {offerBottom.map((it, idx) => {
-            const base = 120 + offerTop.length * 90 + 140;
-            return (
-              <S.OfferItem
-                key={it.label}
-                data-reveal
-                style={{ ["--d" as any]: `${base + idx * 90}ms` }}
-              >
-                <S.OfferIcon aria-hidden="true">{it.icon}</S.OfferIcon>
-                <S.OfferText>{it.label}</S.OfferText>
-              </S.OfferItem>
-            );
-          })}
-        </S.OfferRow>
+        {offerBottom.length ? (
+          <S.OfferRow data-cols={offerBottom.length >= 3 ? "3" : "2"}>
+            {offerBottom.map((it, idx) => {
+              const base = 120 + offerTop.length * 90 + 140;
+              return (
+                <S.OfferItem
+                  key={it.label}
+                  data-reveal
+                  style={{ ["--d" as any]: `${base + idx * 90}ms` }}
+                >
+                  <S.OfferIcon aria-hidden="true">
+                    <Icon name={it.iconName as any} size={28} />
+                  </S.OfferIcon>
+                  <S.OfferText>{it.label}</S.OfferText>
+                </S.OfferItem>
+              );
+            })}
+          </S.OfferRow>
+        ) : null}
       </S.OfferInner>
     </S.OfferSection>
   );

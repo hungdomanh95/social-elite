@@ -439,6 +439,8 @@ export const Line = styled.div`
   font-size: clamp(13px, 1.05vw, 16px);
   line-height: 1.55;
   color: rgba(255, 255, 255, 0.74);
+  padding-right: 8px;
+  padding-left: 8px;
 
   &.accent {
     color: ${ACCENT};

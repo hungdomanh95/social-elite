@@ -3,8 +3,7 @@ import * as S from "./ecosystemOverview.styled";
 import TickerMarquee from "@/shared/components/TickerMarquee";
 import CountUp from "@/shared/components/CountUp";
 import Icon from "@/assets/icons";
-import { TICKER_TRENDING } from "../../mockData";
-
+import { useLandingPage } from "@/shared/api/useLandingPage";
 
 
 type Stat = {
@@ -13,51 +12,99 @@ type Stat = {
   label: string;
 };
 
-type Props = {
-  titleTop?: string;
-  titleAccent?: string;
-  onContactClick?: () => void;
-  badges?: Array<React.ReactNode>;
-  stats?: Stat[];
+const parseNumberWithSuffix = (raw?: string): { value: number; suffix?: string } => {
+  const s = String(raw ?? "").trim();
+  if (!s) return { value: 0 };
+
+  const match = s.match(/^([\d.,]+)\s*([a-zA-Z%+]+)?$/);
+  if (!match) return { value: Number(s.replace(/[^\d]/g, "")) || 0 };
+
+  const numPart = match[1] || "0";
+  const suffix = match[2];
+
+  const base = parseFloat(numPart.replace(/,/g, "")) || 0;
+
+  // optional scale for K/M/B
+  const scale =
+    suffix?.toUpperCase().includes("B") ? 1e9 :
+    suffix?.toUpperCase().includes("M") ? 1e6 :
+    suffix?.toUpperCase().includes("K") ? 1e3 :
+    1;
+
+  const value = Math.round(base * scale);
+
+  // keep "+" or "%" as suffix if present, otherwise keep K/M/B if you want
+  const keepSuffix =
+    suffix?.includes("+") ? "+" :
+    suffix?.includes("%") ? "%" :
+    undefined;
+
+  return { value, suffix: keepSuffix };
 };
 
-const EcosystemOverview: React.FC<Props> = ({
-  titleTop = "Vietnam's No.1",
-  titleAccent = "Social Commerce Ecosystem",
-  onContactClick,
-  badges,
-  stats,
-}) => {
-  const defaultBadges = useMemo(
-    () => [
-      <>
-        <S.BadgeAccent>#No.1</S.BadgeAccent>
-        {" "}influencer platform and celeb network
-      </>,
-      <>
-        <S.BadgeAccent>#Winner </S.BadgeAccent>
-        of Shopee Awards 2024{" "}
-        <S.BadgeAccent>Excellence Commercial MCN</S.BadgeAccent>
-      </>,
-     <>
-       <S.BadgeAccent>#2nd</S.BadgeAccent>
-        {" "}Runner Up of Youtube Works Awards 2025
-     </>
-    ],
-    []
-  );
+const EcosystemOverview: React.FC<{ onContactClick?: () => void }> = ({ onContactClick }) => {
+  const { data: landing } = useLandingPage();
 
-  const defaultStats: Stat[] = useMemo(
-    () => [
-      { value: 200, suffix: "+", label: "Social Channel Networks" },
-      { value: 500, suffix: "+", label: "Top-tier KOLs and Social Sellers" },
-      { value: 50, suffix: "+", label: "Exclusive Talents" },
-    ],
-    []
-  );
+  const titleTop = landing?.title || "—";
+  const titleAccent = landing?.summaryHighlight || "—";
 
-  const badgeList = badges?.length ? badges : defaultBadges;
-  const statList = stats?.length ? stats : defaultStats;
+  // ✅ Badges: parse HTML highlight -> render per line (<br>) as Badge
+  const badgeList = useMemo(() => {
+    const html = landing?.highlight || "";
+    if (!html) return [];
+
+    // strip outer <p>...</p> if any
+    const inner = html
+      .replace(/^<p>/i, "")
+      .replace(/<\/p>$/i, "")
+      .trim();
+
+    // split by <br> tags
+    const parts = inner
+      .split(/<br\s*\/?>/gi)
+      .map((p) => p.trim())
+      .filter(Boolean);
+
+    // render each part as HTML (badge content contains spans + strong)
+    return parts.map((part, idx) => (
+      <S.Badge key={idx}>
+        <span dangerouslySetInnerHTML={{ __html: part }} />
+      </S.Badge>
+    ));
+  }, [landing?.highlight]);
+
+  // ✅ Stats from CMS
+  const statList: Stat[] = useMemo(() => {
+    const list = landing?.stats ?? [];
+    return list.map((s: any) => {
+      const parsed = parseNumberWithSuffix(s?.number);
+      return {
+        value: parsed.value,
+        suffix: parsed.suffix,
+        label: s?.label ?? "",
+      };
+    });
+  }, [landing?.stats]);
+
+  const tickerItems = useMemo(() => {
+    const list = landing?.features ?? [];
+    return list
+      .filter((f: any) => !!f?.text)
+      .map((f: any) => {
+        const label = String(f.text);
+        const icon = String(f.icon || "TrendingUp");
+        console.log('icon: ', icon);
+        return (
+          <span
+            key={`${label}-${icon}`}
+            style={{ display: "inline-flex", gap: 10, alignItems: "center" }}
+          >
+            <Icon name={icon as any} size={16} color="var(--accent)" />
+            <span style={{ fontSize: 20, fontWeight: 600 }}>{label}</span>
+          </span>
+        );
+      });
+  }, [landing?.features]);
 
   return (
     <S.Section>
@@ -75,9 +122,7 @@ const EcosystemOverview: React.FC<Props> = ({
           </S.CTARow>
 
           <S.Badges data-reveal style={{ animationDelay: "160ms" }}>
-            {badgeList.map((b, i) => (
-              <S.Badge key={i}>{b}</S.Badge>
-            ))}
+            {badgeList.length ? badgeList : null}
           </S.Badges>
 
           <S.Stats data-reveal style={{ animationDelay: "240ms" }}>
@@ -99,20 +144,15 @@ const EcosystemOverview: React.FC<Props> = ({
           </S.Stats>
         </S.Content>
       </S.Container>
-      <TickerMarquee
-        style={{ marginTop: 32 , marginBottom: 24 }}
-        items={TICKER_TRENDING.map(({ label, icon }) => (
-          <span
-            key={label}
-            style={{ display: "inline-flex", gap: 10, alignItems: "center" }}
-          >
-            <Icon name={icon} size={16} color="var(--accent)" />
-            <span style={{ fontSize: 20, fontWeight: 600 }}>{label}</span>
-          </span>
-        ))}
-        durationSec={50}
-        gapPx={56}
-      />
+
+      {tickerItems.length ? (
+        <TickerMarquee
+          style={{ marginTop: 32, marginBottom: 24 }}
+          items={tickerItems}
+          durationSec={50}
+          gapPx={56}
+        />
+      ) : null}
     </S.Section>
   );
 };

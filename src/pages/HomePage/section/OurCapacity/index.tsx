@@ -1,24 +1,37 @@
 import React, { useLayoutEffect, useMemo, useRef, useState } from "react";
 import * as S from "./ourCapacity.styled";
 import BG_Capacity from "@/assets/images/BG_Capacity.png";
-
-import { CAPACITY_ITEMS } from "../../mockData";
+import { useLandingPage } from "@/shared/api/useLandingPage";
 import Icon from "@/assets/icons";
 
-const orderedKeys = [
-  "AGENCY_SERVICE",
-  "SOCIAL_CHANNEL_NETWORK",
-  "CREATOR_BUSINESS_MANAGEMENT",
-  "COMPLEX_STUDIO_SERVICE",
-  "MCN",
-] as const;
+type LandingService = {
+  id: number;
+  icon: string;
+  text: string;
+};
 
 const deg2rad = (deg: number) => (deg * Math.PI) / 180;
 const clamp = (min: number, v: number, max: number) =>
   Math.max(min, Math.min(max, v));
 
+const normalize = (s: string) =>
+  s
+    .replace(/\\n/g, " ")
+    .replace(/\s+/g, " ")
+    .trim()
+    .toLowerCase();
+
+const SERVICE_ORDER = [
+  "agency service",
+  "social channel network",
+  "creator business management",
+  "complex studio service",
+  "multi-channel network (mcn)",
+];
+
 const OurCapacity: React.FC = () => {
   const maskId = React.useId();
+  const { data: landing } = useLandingPage(); // ✅ lấy data từ CMS landing-page
 
   const sectionRef = useRef<HTMLElement | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
@@ -122,9 +135,7 @@ const OurCapacity: React.FC = () => {
     const CY = clamp(minCY, preferredCY, maxCY);
 
     // ✅ Line sát vòng tròn:
-    // giảm hole để line đi sát vào node (node che lên nên nhìn “dính”)
     const HOLE_OUTER = Math.max(0, nodeR - 0.25);
-    // center cũng giảm nhẹ để polyline không bị hụt (center che lên anyway)
     const HOLE_CENTER = Math.max(0, centerR - 0.35);
 
     return { d, R, CY, HOLE_OUTER, HOLE_CENTER };
@@ -150,12 +161,63 @@ const OurCapacity: React.FC = () => {
     return Math.round(clamp(18, metrics.d * 0.03, 26));
   }, [metrics.d]);
 
+  // ✅ lấy services từ JSON + sắp thứ tự đúng design
+  const orderedServices: LandingService[] = useMemo(() => {
+    const list: LandingService[] = (landing?.services ?? []) as any;
+
+    if (!Array.isArray(list) || list.length === 0) return [];
+
+    const picked: LandingService[] = [];
+    const used = new Set<number>();
+
+    // pick theo thứ tự mong muốn
+    for (const key of SERVICE_ORDER) {
+      const found = list.find((s) => !used.has(s.id) && normalize(s.text || "").includes(key));
+      if (found) {
+        picked.push(found);
+        used.add(found.id);
+      }
+    }
+
+    // append phần còn lại (nếu có)
+    const rest = list.filter((s) => !used.has(s.id));
+    const merged = [...picked, ...rest];
+
+    // UI orbit có 5 đỉnh -> lấy tối đa 5 item
+    return merged.slice(0, 5);
+  }, [landing?.services]);
+
+  const headline = useMemo(() => {
+    return (landing?.serviceTitle || "Comprehensive Set Of Service").trim();
+  }, [landing?.serviceTitle]);
+
+  const renderServiceText = (text: string) => {
+    const lines = String(text || "")
+      .replace(/\\n/g, "\n")
+      .split("\n")
+      .map((l) => l.trim())
+      .filter(Boolean);
+
+    if (lines.length <= 1) return text.replace(/\\n/g, " ");
+
+    return (
+      <>
+        {lines.map((line, i) => (
+          <React.Fragment key={i}>
+            {line}
+            {i < lines.length - 1 ? <br /> : null}
+          </React.Fragment>
+        ))}
+      </>
+    );
+  };
+
   return (
     <S.Section ref={sectionRef} $bg={BG_Capacity}>
       <S.Container ref={containerRef}>
         <S.Header ref={headerRef}>
           <S.Kicker>Our Capacity</S.Kicker>
-          <S.Headline>Comprehensive Set Of Service</S.Headline>
+          <S.Headline>{headline}</S.Headline>
         </S.Header>
 
         <S.Bleed>
@@ -203,15 +265,13 @@ const OurCapacity: React.FC = () => {
                   <polyline mask={`url(#${maskId})`} points={pointsStr} />
                 </S.Lines>
 
-                {orderedKeys.map((key, idx) => {
-                  const item = CAPACITY_ITEMS.find((x) => x.key === key);
-                  if (!item) return null;
-
+                {orderedServices.map((item, idx) => {
                   const p = vertices[idx];
+                  if (!p) return null;
 
                   return (
                     <S.Node
-                      key={item.key}
+                      key={item.id ?? idx}
                       style={
                         {
                           ["--x" as any]: `${p.x}%`,
@@ -224,9 +284,9 @@ const OurCapacity: React.FC = () => {
                         <S.NodeShell>
                           <S.NodeContent>
                             <S.NodeIconWrap>
-                              <Icon name={item.icon} size={iconSize} />
+                              <Icon name={String(item.icon) as any} size={iconSize} />
                             </S.NodeIconWrap>
-                            <S.NodeText>{item.title}</S.NodeText>
+                            <S.NodeText>{renderServiceText(item.text)}</S.NodeText>
                           </S.NodeContent>
                         </S.NodeShell>
                       </S.NodeInner>

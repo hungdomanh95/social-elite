@@ -1,5 +1,8 @@
 import cmsApi from "@/services/cmsApi";
 
+// Landing Page
+export const getLandingPage = async () => (await cmsApi.get("/landing-page")).data;
+
 // Campaigns
 export const getCampaigns = async () => (await cmsApi.get("/campaigns")).data;
 

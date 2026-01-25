@@ -6,7 +6,6 @@ import type { SuccessStory } from "../../mockData";
 import { getCampaigns } from "@/shared/api/cms.api";
 
 type Props = {
-  items?: SuccessStory[];
   onViewAll?: () => void;
 };
 
@@ -99,7 +98,6 @@ const SuccessStories: React.FC<Props> = ({ onViewAll }) => {
   const [data, setData] = useState<SuccessStory[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
-  // ✅ luôn fetch campaigns (bỏ items)
   useEffect(() => {
     let alive = true;
 

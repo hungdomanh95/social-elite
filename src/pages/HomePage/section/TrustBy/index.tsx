@@ -1,3 +1,4 @@
+import { useLandingPage } from "@/shared/api/useLandingPage";
 import TickerMarquee from "@/shared/components/TickerMarquee";
 import React from "react";
 
@@ -9,14 +10,27 @@ export type TrustBrand = {
 };
 
 type Props = {
-  brands: TrustBrand[];
 };
 
-const TrustBy: React.FC<Props> = (props) => {
+const CMS_ORIGIN = "https://social-elite-cms.leapstud.io";
+
+const TrustBy: React.FC<Props> = () => {
+    const { data: landing } = useLandingPage();
+
+    const brands =
+      (landing?.trustedBranches ?? []).map((b: any) => ({
+        id: b?.id ?? b?.documentId ?? b?.name,
+        img: `${CMS_ORIGIN}${b?.url || ""}`,
+        alt: b?.name || "brand",
+      })) ?? [];
+
+
   return (
-      <TickerMarquee
-        title="Trusted By"
-        items={props.brands.map((b) => (
+    <TickerMarquee
+      title="Trusted By"
+      items={brands
+        .filter((b) => !!b.img)
+        .map((b) => (
           <img
             key={b.id}
             src={b.img}
@@ -24,9 +38,9 @@ const TrustBy: React.FC<Props> = (props) => {
             style={{ height: 46, width: "auto" }}
           />
         ))}
-        durationSec={50}
-        gapPx={56}
-      />
+      durationSec={50}
+      gapPx={56}
+    />
   );
 };
 

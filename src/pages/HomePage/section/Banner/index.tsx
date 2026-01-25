@@ -1,20 +1,23 @@
 import { useEffect, useRef, useState } from "react";
 import * as S from "./banner.styled";
+import { useLandingPage } from "@/shared/api/useLandingPage";
 
 type BannerProps = {
-  videoSrc: string;
   posterSrc?: string;
   mutedInitially?: boolean;
 };
 
 export default function Banner({
-  videoSrc,
   posterSrc,
   mutedInitially = true,
 }: BannerProps) {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const wrapRef = useRef<HTMLDivElement | null>(null);
   const tagRef = useRef<HTMLDivElement | null>(null);
+
+    const { data: landing } = useLandingPage();
+
+    const videoSrc = landing?.videos?.[0]?.videoUrl ?? "";
 
   const [muted, setMuted] = useState<boolean>(mutedInitially);
   const [hovered, setHovered] = useState(false);

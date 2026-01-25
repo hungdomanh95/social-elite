@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import * as S from "./cmsApiTest.styled";
 
 import {
+  getLandingPage, // ✅ thêm
   getCampaigns,
   getCategories,
   getBlogsTopViewed,
@@ -29,6 +30,9 @@ export default function CmsApiTestPage() {
 
   const setBusy = (key: string, v: boolean) =>
     setLoading((prev) => ({ ...prev, [key]: v }));
+
+  // ✅ thêm landing
+  const [landingRes, setLandingRes] = useState<any>(null);
 
   const [campaignsRes, setCampaignsRes] = useState<any>(null);
   const [categoriesRes, setCategoriesRes] = useState<any>(null);
@@ -85,13 +89,15 @@ export default function CmsApiTestPage() {
             CMS <span className="accent">API Test</span>
           </S.Title>
           <S.Subtitle>
-            Test nhanh toàn bộ endpoint CMS (Campaigns / Categories / Blogs / Detail / Related /
+            Test nhanh toàn bộ endpoint CMS (Landing / Campaigns / Categories / Blogs / Detail / Related /
             Navigation / View).
           </S.Subtitle>
           <S.EnvRow>
             <S.EnvChip>
               <span>BASE</span>
-              <code>{import.meta.env.VITE_CMS_API_BASE || "https://social-elite-cms.leapstud.io/api"}</code>
+              <code>
+                {import.meta.env.VITE_CMS_API_BASE || "https://social-elite-cms.leapstud.io/api"}
+              </code>
             </S.EnvChip>
             <S.EnvChip>
               <span>AUTH HEADER</span>
@@ -103,6 +109,46 @@ export default function CmsApiTestPage() {
         <S.GridLike data-reveal>
           {/* LEFT */}
           <S.Col>
+            {/* ✅ 0) Landing Page */}
+            <S.Card>
+              <S.CardHead>
+                <S.CardTitle>0) Landing Page</S.CardTitle>
+                <S.Row>
+                  <S.Button
+                    type="button"
+                    onClick={() => doFetch("landing", () => getLandingPage(), setLandingRes)}
+                    disabled={!!loading.landing}
+                  >
+                    {loading.landing ? "Loading..." : "GET /landing-page"}
+                  </S.Button>
+                  <S.Ghost
+                    type="button"
+                    onClick={() => copyJson(landingRes)}
+                    disabled={!landingRes}
+                    title="Copy JSON"
+                  >
+                    Copy
+                  </S.Ghost>
+                  <S.Ghost
+                    type="button"
+                    onClick={() => setLandingRes(null)}
+                    disabled={!landingRes}
+                    title="Clear"
+                  >
+                    Clear
+                  </S.Ghost>
+                </S.Row>
+              </S.CardHead>
+
+              <S.Preview>
+                {landingRes ? (
+                  <S.Json>{safeStringify(landingRes)}</S.Json>
+                ) : (
+                  <S.Empty>Chưa gọi API.</S.Empty>
+                )}
+              </S.Preview>
+            </S.Card>
+
             <S.Card>
               <S.CardHead>
                 <S.CardTitle>1) Campaigns</S.CardTitle>
@@ -218,10 +264,7 @@ export default function CmsApiTestPage() {
               <S.Form>
                 <S.Field>
                   <S.Label>Category (slug)</S.Label>
-                  <S.Select
-                    value={categorySlug}
-                    onChange={(e) => setCategorySlug(e.target.value)}
-                  >
+                  <S.Select value={categorySlug} onChange={(e) => setCategorySlug(e.target.value)}>
                     <option value="">(all)</option>
                     {categories.map((c: AnyObj, idx: number) => (
                       <option key={c?.slug ?? idx} value={c?.slug ?? ""}>
@@ -266,7 +309,11 @@ export default function CmsApiTestPage() {
               </S.Form>
 
               <S.Preview>
-                {searchRes ? <S.Json>{safeStringify(searchRes)}</S.Json> : <S.Empty>Chưa gọi API.</S.Empty>}
+                {searchRes ? (
+                  <S.Json>{safeStringify(searchRes)}</S.Json>
+                ) : (
+                  <S.Empty>Chưa gọi API.</S.Empty>
+                )}
               </S.Preview>
             </S.Card>
 
@@ -288,9 +335,7 @@ export default function CmsApiTestPage() {
                 <S.RowWrap>
                   <S.Button
                     type="button"
-                    onClick={() =>
-                      doFetch("detail", () => getBlogDetail(currentBlogId), setDetailRes)
-                    }
+                    onClick={() => doFetch("detail", () => getBlogDetail(currentBlogId), setDetailRes)}
                     disabled={!currentBlogId || !!loading.detail}
                   >
                     {loading.detail ? "Loading..." : "GET /blogs/:id"}
@@ -318,9 +363,7 @@ export default function CmsApiTestPage() {
 
                   <S.AccentButton
                     type="button"
-                    onClick={() =>
-                      doFetch("view", () => increaseBlogView(currentBlogId), setViewRes)
-                    }
+                    onClick={() => doFetch("view", () => increaseBlogView(currentBlogId), setViewRes)}
                     disabled={!currentBlogId || !!loading.view}
                     title="Increase view on detail load"
                   >
@@ -329,7 +372,10 @@ export default function CmsApiTestPage() {
                 </S.RowWrap>
 
                 <S.Row>
-                  <S.Ghost type="button" onClick={() => copyJson({ detailRes, relatedRes, navigationRes, viewRes })}>
+                  <S.Ghost
+                    type="button"
+                    onClick={() => copyJson({ detailRes, relatedRes, navigationRes, viewRes })}
+                  >
                     Copy All
                   </S.Ghost>
                   <S.Ghost

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { subscribeNotify, type NotifyPayload } from "./notify";
+import { notify, subscribeNotify, type NotifyPayload } from "./notify";
 
 type ToastItem = NotifyPayload;
 

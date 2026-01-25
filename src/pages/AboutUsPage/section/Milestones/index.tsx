@@ -1,12 +1,34 @@
-import React from "react";
+import React, { useMemo } from "react";
 import * as S from "./milestones.styled";
-import { MILESTONES, type MilestoneItem, type Side } from "./mockup";
+import { useLandingPage } from "@/shared/api/useLandingPage";
 
-type MilestonesProps = {
-  items?: MilestoneItem[];
+type Side = "left" | "right";
+
+type MilestoneCms = {
+  id: number;
+  year: string;
+  highlights: string; // HTML
 };
 
-const Milestones: React.FC<MilestonesProps> = ({ items = MILESTONES }) => {
+type MilestonesProps = {};
+
+const stripOuterP = (html: string) => {
+  const s = (html || "").trim();
+  return s.replace(/^<p>/i, "").replace(/<\/p>$/i, "").trim();
+};
+
+const Milestones: React.FC<MilestonesProps> = () => {
+  const { data: landing } = useLandingPage();
+
+  const items: MilestoneCms[] = useMemo(() => {
+    const list = (landing?.milestones ?? []) as MilestoneCms[];
+    if (!Array.isArray(list)) return [];
+
+    // sort theo year tăng dần nếu backend trả lộn
+    const sorted = [...list].sort((a, b) => Number(a.year) - Number(b.year));
+    return sorted;
+  }, [landing?.milestones]);
+
   const CYCLE = 6; // phải khớp --cycle trong css
 
   return (
@@ -25,7 +47,7 @@ const Milestones: React.FC<MilestonesProps> = ({ items = MILESTONES }) => {
         <S.Timeline aria-label="Key Milestones timeline">
           <S.TimelineList>
             {items.map((m, idx) => {
-              const side: Side = m.side ?? (idx % 2 === 0 ? "left" : "right");
+              const side: Side = idx % 2 === 0 ? "left" : "right";
 
               // SYNC: dot chạy từ item đầu -> item cuối theo cycle
               const denom = Math.max(items.length - 1, 1);
@@ -36,9 +58,11 @@ const Milestones: React.FC<MilestonesProps> = ({ items = MILESTONES }) => {
                 delay = Math.max(CYCLE - 0.25, 0);
               }
 
+              const html = stripOuterP(m.highlights);
+
               return (
                 <S.Row
-                  key={m.year}
+                  key={m.id ?? m.year}
                   $side={side}
                   style={{ ["--d" as any]: `${delay}s` }}
                 >
@@ -48,12 +72,12 @@ const Milestones: React.FC<MilestonesProps> = ({ items = MILESTONES }) => {
                   <S.Content $side={side}>
                     <S.Year>{m.year}</S.Year>
 
+                    {/* ✅ CMS trả HTML, giữ nguyên highlight style */}
                     <S.Lines>
-                      {m.lines.map((l) => (
-                        <S.Line key={l.key} className={l.accent ? "accent" : ""}>
-                          {l.content}
-                        </S.Line>
-                      ))}
+                      <S.Line
+                        as="div"
+                        dangerouslySetInnerHTML={{ __html: html }}
+                      />
                     </S.Lines>
                   </S.Content>
                 </S.Row>
