@@ -7,6 +7,9 @@ type BannerProps = {
   mutedInitially?: boolean;
 };
 
+const CMS_ORIGIN =
+  import.meta.env.VITE_CMS_ORIGIN || "https://social-elite-cms.leapstud.io";
+
 export default function Banner({
   posterSrc,
   mutedInitially = true,
@@ -15,9 +18,17 @@ export default function Banner({
   const wrapRef = useRef<HTMLDivElement | null>(null);
   const tagRef = useRef<HTMLDivElement | null>(null);
 
-    const { data: landing } = useLandingPage();
+  const { data: landing } = useLandingPage();
 
-    const videoSrc = landing?.videos?.[0]?.videoUrl ?? "";
+  // ✅ videoSrc: ưu tiên videoUrl (absolute/relative), fallback qua video.url (relative)
+  const firstVideo = landing?.videos?.[0];
+  const rawVideoUrl = (firstVideo?.videoUrl || firstVideo?.video?.url || "") as string;
+
+  const videoSrc = rawVideoUrl
+    ? rawVideoUrl.startsWith("http")
+      ? rawVideoUrl
+      : `${CMS_ORIGIN}${rawVideoUrl.startsWith("/") ? "" : "/"}${rawVideoUrl}`
+    : "";
 
   const [muted, setMuted] = useState<boolean>(mutedInitially);
   const [hovered, setHovered] = useState(false);
@@ -81,7 +92,6 @@ export default function Banner({
     wrap.style.setProperty("--cursor-y", `${y}px`);
   };
 
-
   const onPointerEnter: React.PointerEventHandler<HTMLDivElement> = (e) => {
     setHovered(true);
     setCursorVars(e.clientX, e.clientY);
@@ -130,13 +140,14 @@ export default function Banner({
     }
   };
 
+  // ✅ khi đổi videoSrc thì re-sync muted + cố gắng play lại
   useEffect(() => {
     syncMuted(mutedInitially);
     const el = videoRef.current;
-    if (el) {
-      el.pause();
-      el.play().catch(() => {});
-    }
+    if (!el || !videoSrc) return;
+
+    el.pause();
+    el.play().catch(() => {});
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [videoSrc]);
 

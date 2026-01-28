@@ -34,3 +34,14 @@ export const increaseBlogView = async (documentId: string) =>
 // Next/Prev navigation
 export const getBlogNavigation = async (documentId: string) =>
   (await cmsApi.get(`/blogs/${documentId}/navigation`)).data;
+
+
+export type ContactMessagePayload = {
+  name: string;
+  email: string;
+  message: string;
+};
+
+// Contact Messages
+export const submitContactMessage = async (payload: ContactMessagePayload) =>
+  (await cmsApi.post("/contact-messages/submit", payload)).data;

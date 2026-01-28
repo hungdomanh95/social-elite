@@ -1,10 +1,11 @@
-import Icon from "@/assets/icons";
 import { useLandingPage } from "@/shared/api/useLandingPage";
 import { useEffect, useMemo, useRef } from "react";
 import * as S from "./offer.styled";
 
+import { DynamicIcon, type IconName } from "lucide-react/dynamic";
+
 type OfferItem = {
-  iconName: string;
+  ico: IconName;
   label: string;
 };
 
@@ -19,7 +20,7 @@ export default function Offer({ bgSrc }: Props) {
   const offers = useMemo<OfferItem[]>(() => {
     const list = (landing?.creatorOffers ?? []) as Array<{
       id?: number;
-      icon?: string;
+      ico?: IconName;
       text?: string;
     }>;
 
@@ -28,7 +29,7 @@ export default function Offer({ bgSrc }: Props) {
     return list
       .filter((x) => !!x?.text)
       .map((x) => ({
-        iconName: String(x.icon || "Users"),
+        ico: (x.ico ?? "users") as IconName,
         label: String(x.text || ""),
       }));
   }, [landing?.creatorOffers]);
@@ -42,7 +43,10 @@ export default function Offer({ bgSrc }: Props) {
     }
 
     const topCount = Math.max(1, Math.ceil(n / 2));
-    return { offerTop: offers.slice(0, topCount), offerBottom: offers.slice(topCount) };
+    return {
+      offerTop: offers.slice(0, topCount),
+      offerBottom: offers.slice(topCount),
+    };
   }, [offers]);
 
   useEffect(() => {
@@ -83,7 +87,7 @@ export default function Offer({ bgSrc }: Props) {
               style={{ ["--d" as any]: `${120 + idx * 90}ms` }}
             >
               <S.OfferIcon aria-hidden="true">
-                <Icon name={it.iconName as any} size={28} />
+                <DynamicIcon name={it.ico} size={28} color="currentColor" />
               </S.OfferIcon>
               <S.OfferText>{it.label}</S.OfferText>
             </S.OfferItem>
@@ -93,6 +97,7 @@ export default function Offer({ bgSrc }: Props) {
         {offerBottom.length ? (
           <S.OfferRow data-cols={offerBottom.length >= 3 ? "3" : "2"}>
             {offerBottom.map((it, idx) => {
+              console.log('it: ', it);
               const base = 120 + offerTop.length * 90 + 140;
               return (
                 <S.OfferItem
@@ -101,7 +106,7 @@ export default function Offer({ bgSrc }: Props) {
                   style={{ ["--d" as any]: `${base + idx * 90}ms` }}
                 >
                   <S.OfferIcon aria-hidden="true">
-                    <Icon name={it.iconName as any} size={28} />
+                    <DynamicIcon name={it.ico} size={28} color="currentColor" />
                   </S.OfferIcon>
                   <S.OfferText>{it.label}</S.OfferText>
                 </S.OfferItem>

@@ -2,9 +2,9 @@ import React, { useMemo } from "react";
 import * as S from "./ecosystemOverview.styled";
 import TickerMarquee from "@/shared/components/TickerMarquee";
 import CountUp from "@/shared/components/CountUp";
-import Icon from "@/assets/icons";
 import { useLandingPage } from "@/shared/api/useLandingPage";
 
+import { DynamicIcon, iconNames, type IconName } from "lucide-react/dynamic";
 
 type Stat = {
   value: number;
@@ -12,7 +12,9 @@ type Stat = {
   label: string;
 };
 
-const parseNumberWithSuffix = (raw?: string): { value: number; suffix?: string } => {
+const parseNumberWithSuffix = (
+  raw?: string
+): { value: number; suffix?: string } => {
   const s = String(raw ?? "").trim();
   if (!s) return { value: 0 };
 
@@ -24,25 +26,57 @@ const parseNumberWithSuffix = (raw?: string): { value: number; suffix?: string }
 
   const base = parseFloat(numPart.replace(/,/g, "")) || 0;
 
-  // optional scale for K/M/B
   const scale =
-    suffix?.toUpperCase().includes("B") ? 1e9 :
-    suffix?.toUpperCase().includes("M") ? 1e6 :
-    suffix?.toUpperCase().includes("K") ? 1e3 :
-    1;
+    suffix?.toUpperCase().includes("B")
+      ? 1e9
+      : suffix?.toUpperCase().includes("M")
+      ? 1e6
+      : suffix?.toUpperCase().includes("K")
+      ? 1e3
+      : 1;
 
   const value = Math.round(base * scale);
 
-  // keep "+" or "%" as suffix if present, otherwise keep K/M/B if you want
-  const keepSuffix =
-    suffix?.includes("+") ? "+" :
-    suffix?.includes("%") ? "%" :
-    undefined;
+  const keepSuffix = suffix?.includes("+")
+    ? "+"
+    : suffix?.includes("%")
+    ? "%"
+    : undefined;
 
   return { value, suffix: keepSuffix };
 };
 
-const EcosystemOverview: React.FC<{ onContactClick?: () => void }> = ({ onContactClick }) => {
+const DEFAULT_TICKER_ICON: IconName = "trending-up";
+
+const normalizeIconName = (v: string) =>
+  v
+    .trim()
+    .toLowerCase()
+    .replace(/\s+/g, "-")
+    .replace(/_/g, "-");
+
+const isValidIconName = (name: string): name is IconName =>
+  iconNames.includes(name as IconName);
+
+function SafeDynamicIcon({
+  name,
+  fallback,
+  size,
+  color,
+}: {
+  name?: string;
+  fallback: IconName;
+  size: number;
+  color?: string;
+}) {
+  const normalized = normalizeIconName(String(name ?? ""));
+  const iconName = isValidIconName(normalized) ? normalized : fallback;
+  return <DynamicIcon name={iconName} size={size} color={color} />;
+}
+
+const EcosystemOverview: React.FC<{ onContactClick?: () => void }> = ({
+  onContactClick,
+}) => {
   const { data: landing } = useLandingPage();
 
   const titleTop = landing?.title || "—";
@@ -53,19 +87,13 @@ const EcosystemOverview: React.FC<{ onContactClick?: () => void }> = ({ onContac
     const html = landing?.highlight || "";
     if (!html) return [];
 
-    // strip outer <p>...</p> if any
-    const inner = html
-      .replace(/^<p>/i, "")
-      .replace(/<\/p>$/i, "")
-      .trim();
+    const inner = html.replace(/^<p>/i, "").replace(/<\/p>$/i, "").trim();
 
-    // split by <br> tags
     const parts = inner
       .split(/<br\s*\/?>/gi)
       .map((p) => p.trim())
       .filter(Boolean);
 
-    // render each part as HTML (badge content contains spans + strong)
     return parts.map((part, idx) => (
       <S.Badge key={idx}>
         <span dangerouslySetInnerHTML={{ __html: part }} />
@@ -86,20 +114,27 @@ const EcosystemOverview: React.FC<{ onContactClick?: () => void }> = ({ onContac
     });
   }, [landing?.stats]);
 
+  // ✅ Ticker items: dùng DynamicIcon + CMS `ico` (kebab-case)
   const tickerItems = useMemo(() => {
     const list = landing?.features ?? [];
     return list
       .filter((f: any) => !!f?.text)
-      .map((f: any) => {
+      .map((f: any, idx: number) => {
         const label = String(f.text);
-        const icon = String(f.icon || "TrendingUp");
-        console.log('icon: ', icon);
+        const ico = String(f.ico || DEFAULT_TICKER_ICON);
+        const key = f?.id ?? `${label}-${ico}-${idx}`;
+
         return (
           <span
-            key={`${label}-${icon}`}
+            key={key}
             style={{ display: "inline-flex", gap: 10, alignItems: "center" }}
           >
-            <Icon name={icon as any} size={16} color="var(--accent)" />
+            <SafeDynamicIcon
+              name={ico}
+              fallback={DEFAULT_TICKER_ICON}
+              size={16}
+              color="var(--accent)"
+            />
             <span style={{ fontSize: 20, fontWeight: 600 }}>{label}</span>
           </span>
         );

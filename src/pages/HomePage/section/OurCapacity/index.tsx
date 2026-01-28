@@ -2,12 +2,13 @@ import React, { useLayoutEffect, useMemo, useRef, useState } from "react";
 import * as S from "./ourCapacity.styled";
 import BG_Capacity from "@/assets/images/BG_Capacity.png";
 import { useLandingPage } from "@/shared/api/useLandingPage";
-import Icon from "@/assets/icons";
+
+import { DynamicIcon, type IconName } from "lucide-react/dynamic";
 
 type LandingService = {
   id: number;
-  icon: string;
   text: string;
+  ico: IconName; // ✅ ico luôn đúng theo lucide
 };
 
 const deg2rad = (deg: number) => (deg * Math.PI) / 180;
@@ -31,7 +32,7 @@ const SERVICE_ORDER = [
 
 const OurCapacity: React.FC = () => {
   const maskId = React.useId();
-  const { data: landing } = useLandingPage(); // ✅ lấy data từ CMS landing-page
+  const { data: landing } = useLandingPage();
 
   const sectionRef = useRef<HTMLElement | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
@@ -40,7 +41,6 @@ const OurCapacity: React.FC = () => {
   const [headerPx, setHeaderPx] = useState(0);
   const [dBoundPx, setDBoundPx] = useState(0);
 
-  // ✅ compute max square for Diagram that fits inside 1 viewport (after header/padding/gap)
   useLayoutEffect(() => {
     const sectionEl = sectionRef.current;
     const containerEl = containerRef.current;
@@ -61,14 +61,12 @@ const OurCapacity: React.FC = () => {
       const gapStr = contStyle.rowGap || contStyle.gap || "0";
       const gapPx = parseFloat(gapStr) || 0;
 
-      // buffer thêm để tránh bị “cấn” do browser bar/status bar
       const safety = 28;
 
       const availH =
         secRect.height - padTop - padBottom - headRect.height - gapPx - safety;
       const availW = contRect.width;
 
-      // ✅ shrink nhẹ để chừa mép an toàn
       const d = Math.floor(clamp(240, Math.min(availW, availH) * 0.96, 880));
 
       setHeaderPx(Math.round(headRect.height));
@@ -89,17 +87,14 @@ const OurCapacity: React.FC = () => {
     };
   }, []);
 
-  // ✅ core: enforce TOP + BOTTOM inside Diagram (0..100)
   const metrics = useMemo(() => {
     const d = dBoundPx || 720;
     const isSmall = d <= 420;
 
-    // sizes (px) -> viewBox units
     const centerSizePx = isSmall
       ? clamp(78, d * 0.3, 150)
       : clamp(88, d * 0.32, 176);
 
-    // ✅ Node to hơn 1 xíu (so với bản ổn trước)
     const nodeSizePx = isSmall
       ? clamp(56, d * 0.205, 112)
       : clamp(62, d * 0.235, 132);
@@ -110,31 +105,22 @@ const OurCapacity: React.FC = () => {
     const pad = isSmall ? 3.0 : 2.6;
     const gap = isSmall ? 2.2 : 1.9;
 
-    // R mong muốn
     let RDesired = centerR + nodeR + gap;
 
-    // cap nhìn đẹp
     const RCapVisual = 47.0;
-
-    // ✅ fit top+bottom: R <= 50 - nodeR - pad
     const RCapFit = 50 - nodeR - pad;
 
     let R = Math.min(RDesired, RCapVisual, RCapFit);
 
-    // mức tối thiểu để layout không quá “bẹp”
     R = Math.max(R, isSmall ? 35.5 : 37.0);
-
-    // luôn phải cap theo fit
     R = Math.min(R, RCapFit);
 
     const minCY = R + nodeR + pad;
     const maxCY = 100 - (R + nodeR + pad);
 
-    // prefer hơi thấp giống design
     const preferredCY = 54.5;
     const CY = clamp(minCY, preferredCY, maxCY);
 
-    // ✅ Line sát vòng tròn:
     const HOLE_OUTER = Math.max(0, nodeR - 0.25);
     const HOLE_CENTER = Math.max(0, centerR - 0.35);
 
@@ -161,30 +147,25 @@ const OurCapacity: React.FC = () => {
     return Math.round(clamp(18, metrics.d * 0.03, 26));
   }, [metrics.d]);
 
-  // ✅ lấy services từ JSON + sắp thứ tự đúng design
   const orderedServices: LandingService[] = useMemo(() => {
     const list: LandingService[] = (landing?.services ?? []) as any;
-
     if (!Array.isArray(list) || list.length === 0) return [];
 
     const picked: LandingService[] = [];
     const used = new Set<number>();
 
-    // pick theo thứ tự mong muốn
     for (const key of SERVICE_ORDER) {
-      const found = list.find((s) => !used.has(s.id) && normalize(s.text || "").includes(key));
+      const found = list.find(
+        (s) => !used.has(s.id) && normalize(s.text || "").includes(key)
+      );
       if (found) {
         picked.push(found);
         used.add(found.id);
       }
     }
 
-    // append phần còn lại (nếu có)
     const rest = list.filter((s) => !used.has(s.id));
-    const merged = [...picked, ...rest];
-
-    // UI orbit có 5 đỉnh -> lấy tối đa 5 item
-    return merged.slice(0, 5);
+    return [...picked, ...rest].slice(0, 5);
   }, [landing?.services]);
 
   const headline = useMemo(() => {
@@ -284,8 +265,13 @@ const OurCapacity: React.FC = () => {
                         <S.NodeShell>
                           <S.NodeContent>
                             <S.NodeIconWrap>
-                              <Icon name={String(item.icon) as any} size={iconSize} />
+                              <DynamicIcon
+                                name={item.ico}
+                                size={iconSize}
+                                color="var(--accent)"
+                              />
                             </S.NodeIconWrap>
+
                             <S.NodeText>{renderServiceText(item.text)}</S.NodeText>
                           </S.NodeContent>
                         </S.NodeShell>

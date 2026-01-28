@@ -1,56 +1,46 @@
 import TickerMarquee from "@/shared/components/TickerMarquee";
 import { useLandingPage } from "@/shared/api/useLandingPage";
 
-import type { LucideIcon } from "lucide-react";
-import {
-  TrendingUp,
-  Briefcase,
-  Cpu,
-  Users,
-  Monitor,
-
-  Network,
-  ShoppingBag,
-  Layers,
-  CircleCheck,
-  Globe,
-} from "lucide-react";
+import { DynamicIcon, iconNames, type IconName } from "lucide-react/dynamic";
 
 import * as S from "./engine.styled";
 
-/* ========= ICON MAPS ========= */
+const DEFAULT_TICKER_ICON: IconName = "trending-up";
+const DEFAULT_ENGINE_ICON: IconName = "network";
 
-// ticker icons theo CMS (string)
-const TICKER_ICONS: Record<string, LucideIcon> = {
-  TrendingUp,
-  Briefcase,
-  Cpu,
-  Users,
-  Monitor,
-};
+const normalizeIconName = (v: string) =>
+  v
+    .trim()
+    .toLowerCase()
+    .replace(/\s+/g, "-")
+    .replace(/_/g, "-");
 
-function TickerIcon({ name }: { name: string }) {
-  const Cmp = TICKER_ICONS[name] ?? TrendingUp;
-  return <Cmp size={20} color="var(--accent)" />;
+const isValidIconName = (name: string): name is IconName =>
+  iconNames.includes(name as IconName);
+
+function SafeDynamicIcon({
+  name,
+  fallback,
+  size,
+  color,
+}: {
+  name?: string;
+  fallback: IconName;
+  size: number;
+  color?: string;
+}) {
+  const normalized = normalizeIconName(String(name ?? ""));
+  const iconName = isValidIconName(normalized) ? normalized : fallback;
+
+  return <DynamicIcon name={iconName} size={size} color={color} />;
 }
-
-// engine icons theo CMS (string)
-type EngineIconKey = "network" | "bag" | "stack" | "check" | "globe";
-
-const ENGINE_ICONS: Record<EngineIconKey, LucideIcon> = {
-  network: Network,
-  bag: ShoppingBag,
-  stack: Layers,
-  check: CircleCheck,
-  globe: Globe,
-};
 
 export default function SocialCommerceEngine() {
   const { data: landing } = useLandingPage();
 
   const tickerItems = (landing?.features ?? []) as Array<{
     id?: number;
-    icon?: string;
+    icon?: string; // ✅ giờ nên là kebab-case, ví dụ "trending-up"
     text?: string;
   }>;
 
@@ -62,7 +52,7 @@ export default function SocialCommerceEngine() {
 
   const engines = (landing?.engines ?? []) as Array<{
     id?: number;
-    icon?: EngineIconKey | string;
+    ico?: string; // ✅ kebab-case, ví dụ "shopping-bag"
     title?: string;
     content?: string;
   }>;
@@ -73,12 +63,16 @@ export default function SocialCommerceEngine() {
         <TickerMarquee
           items={tickerItems.map((t, idx) => {
             const label = String(t?.text ?? "");
-            const iconName = String(t?.icon ?? "TrendingUp");
             const key = t?.id ?? `${label}-${idx}`;
 
             return (
               <S.TickerItem key={key}>
-                <TickerIcon name={iconName} />
+                <SafeDynamicIcon
+                  name={t?.icon}
+                  fallback={DEFAULT_TICKER_ICON}
+                  size={20}
+                  color="var(--accent)"
+                />
                 <span>{label}</span>
               </S.TickerItem>
             );
@@ -110,23 +104,23 @@ export default function SocialCommerceEngine() {
           </S.EngineTitle>
 
           <S.FeatureGrid data-reveal>
-            {engines.map((f, idx) => {
-              const iconKey = String(f?.icon ?? "network") as EngineIconKey;
-              const IconCmp = ENGINE_ICONS[iconKey] ?? Network;
+            {engines.map((f, idx) => (
+              <S.FeatureItem key={f?.id ?? f?.title ?? idx}>
+                <S.FeatureIcon aria-hidden="true">
+                  <SafeDynamicIcon
+                    name={f?.ico}
+                    fallback={DEFAULT_ENGINE_ICON}
+                    size={18}
+                    color="currentColor"
+                  />
+                </S.FeatureIcon>
 
-              return (
-                <S.FeatureItem key={f?.id ?? f?.title ?? idx}>
-                  <S.FeatureIcon aria-hidden="true">
-                    <IconCmp size={18} />
-                  </S.FeatureIcon>
-
-                  <S.FeatureContent>
-                    <S.FeatureTitle>{f?.title}</S.FeatureTitle>
-                    <S.FeatureDesc>{f?.content}</S.FeatureDesc>
-                  </S.FeatureContent>
-                </S.FeatureItem>
-              );
-            })}
+                <S.FeatureContent>
+                  <S.FeatureTitle>{f?.title}</S.FeatureTitle>
+                  <S.FeatureDesc>{f?.content}</S.FeatureDesc>
+                </S.FeatureContent>
+              </S.FeatureItem>
+            ))}
           </S.FeatureGrid>
         </S.EngineRow>
       </S.EngineContainer>
