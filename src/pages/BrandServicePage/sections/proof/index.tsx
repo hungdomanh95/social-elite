@@ -1,21 +1,70 @@
+import { useMemo } from "react";
 import { Container } from "@/shared/components/Container";
+import { useLandingPage } from "@/shared/api/useLandingPage";
 import * as S from "./proof.styled";
 
+type PartnerLogo = {
+  name?: string | null;
+  alternativeText?: string | null;
+  url?: string | null;
+  formats?: {
+    thumbnail?: {
+      url?: string | null;
+    };
+  } | null;
+};
+
+const CMS_ORIGIN =
+  import.meta.env.VITE_CMS_ORIGIN || "https://social-elite-cms.leapstud.io";
+
+const toAbs = (u?: string | null) => {
+  if (!u) return "";
+  if (u.startsWith("http")) return u;
+  if (!CMS_ORIGIN) return u; // fallback nếu bạn đang proxy /uploads
+  return `${CMS_ORIGIN}${u}`;
+};
+
 export default function ProofGrid() {
-  const blocks = Array.from({ length: 45 }, (_, i) => i);
+  const { data: landing } = useLandingPage();
+
+  const title = String(landing?.partnerTitle || "We've done it for the best.");
+  const highlight = String(landing?.partnerHighlight || "Now we're here for you.");
+
+  const logos = useMemo(() => {
+    const list = (landing?.partnerLogos ?? []) as PartnerLogo[];
+    const normalized = list
+      .map((x) => {
+        const thumb = x?.formats?.thumbnail?.url;
+        const raw = thumb || x?.url;
+        const src = toAbs(raw);
+        if (!src) return null;
+
+        const alt = String(x?.alternativeText || x?.name || "Partner logo");
+        return { src, alt };
+      })
+      .filter(Boolean) as Array<{ src: string; alt: string }>;
+
+    if (normalized.length === 0) return [];
+
+    // ✅ giữ “mật độ” như UI cũ (45 ô). Nếu logos nhiều hơn 45 thì show hết.
+    const target = Math.max(45, normalized.length);
+    return Array.from({ length: target }, (_, i) => normalized[i % normalized.length]);
+  }, [landing?.partnerLogos]);
 
   return (
     <S.ProofSection>
       <Container>
         <S.ProofTitle data-reveal>
-          We&apos;ve done it for the best.
+          {title}
           <br />
-          <span className="accent">Now we&apos;re here for you.</span>
+          <span className="accent">{highlight}</span>
         </S.ProofTitle>
 
         <S.BlockWrap aria-hidden="true" data-reveal>
-          {blocks.map((i) => (
-            <S.Block key={i} />
+          {logos.map((item, i) => (
+            <S.Block key={`${item.src}-${i}`} style={{ ["--i" as any]: i }}>
+              <S.BlockImg src={item.src} alt={item.alt} loading="lazy" decoding="async" />
+            </S.Block>
           ))}
         </S.BlockWrap>
       </Container>

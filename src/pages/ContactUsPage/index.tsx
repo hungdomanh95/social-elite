@@ -123,7 +123,7 @@ export default function ContactPage() {
             <S.Form onSubmit={submit}>
               <S.Row>
                 <S.Field>
-                  <S.Label>name</S.Label>
+                  <S.Label>Name</S.Label>
                   <S.Control>
                     <S.Input
                       value={form.name}
@@ -135,7 +135,7 @@ export default function ContactPage() {
                 </S.Field>
 
                 <S.Field>
-                  <S.Label>email</S.Label>
+                  <S.Label>Email</S.Label>
                   <S.Control>
                     <S.Input
                       value={form.email}
@@ -149,7 +149,7 @@ export default function ContactPage() {
               </S.Row>
 
               <S.Field>
-                <S.Label>message</S.Label>
+                <S.Label>Message</S.Label>
                 <S.Control>
                   <S.Input
                     value={form.message}

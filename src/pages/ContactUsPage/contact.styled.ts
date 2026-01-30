@@ -246,7 +246,7 @@ export const Label = styled.div`
   font-size: var(--text-xs, 12px);
   color: rgba(255, 255, 255, 0.82);
   font-weight: var(--fw-semibold);
-  text-transform: lowercase;
+  /* text-transform: lowercase; */
   /* margin-bottom: 8px; */
 `;
 
