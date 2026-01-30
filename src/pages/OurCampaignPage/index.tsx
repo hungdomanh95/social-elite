@@ -179,9 +179,8 @@ export default function OurCampaignsPage() {
             Let&apos;s collaborate on a campaign that drives real results for your brand.
           </S.CTADesc>
 
-          <S.CTAButton type="button">
-            Start a Project <ArrowRight size={16} />
-          </S.CTAButton>
+          <S.CTAButton to="/contact-us">Start a Project <ArrowRight size={16} /></S.CTAButton>
+
         </S.Container>
       </S.CTA>
     </S.Page>

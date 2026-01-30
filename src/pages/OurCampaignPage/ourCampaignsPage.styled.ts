@@ -1,6 +1,7 @@
 // src/pages/OurCampaignsPage/ourCampaignsPage.styled.ts
 import styled, { keyframes } from "styled-components";
 import { Container as SharedContainer } from "@/shared/components/Container";
+import { Link } from "react-router-dom";
 
 const bp = { sm: 640, md: 768, lg: 1024 };
 
@@ -322,9 +323,10 @@ export const CTADesc = styled.p`
   }
 `;
 
-export const CTAButton = styled.button`
+export const CTAButton = styled(Link)`
   border: none;
   cursor: pointer;
+  text-decoration: none;
 
   display: inline-flex;
   align-items: center;
