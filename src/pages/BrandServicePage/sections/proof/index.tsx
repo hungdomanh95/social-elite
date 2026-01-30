@@ -32,7 +32,8 @@ export default function ProofGrid() {
 
   const logos = useMemo(() => {
     const list = (landing?.partnerLogos ?? []) as PartnerLogo[];
-    const normalized = list
+
+    return list
       .map((x) => {
         const thumb = x?.formats?.thumbnail?.url;
         const raw = thumb || x?.url;
@@ -43,13 +44,8 @@ export default function ProofGrid() {
         return { src, alt };
       })
       .filter(Boolean) as Array<{ src: string; alt: string }>;
-
-    if (normalized.length === 0) return [];
-
-    // ✅ giữ “mật độ” như UI cũ (45 ô). Nếu logos nhiều hơn 45 thì show hết.
-    const target = Math.max(45, normalized.length);
-    return Array.from({ length: target }, (_, i) => normalized[i % normalized.length]);
   }, [landing?.partnerLogos]);
+
 
   return (
     <S.ProofSection>

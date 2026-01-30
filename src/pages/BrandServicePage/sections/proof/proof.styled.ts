@@ -33,7 +33,7 @@ export const ProofTitle = styled.h2`
 
 export const BlockWrap = styled.div`
   --gap: 14px;
-  --cols: 9;
+  --cols: 8;
 
   width: min(1120px, 100%);
   margin: 42px auto 0;
@@ -53,6 +53,7 @@ export const BlockWrap = styled.div`
     --gap: 12px;
   }
 `;
+
 
 export const Block = styled.div`
   height: clamp(46px, 4.2vw, 56px);

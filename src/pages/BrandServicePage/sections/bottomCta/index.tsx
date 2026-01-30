@@ -1,11 +1,7 @@
 import { Container } from "@/shared/components/Container";
 import * as S from "./bottomCta.styled";
 
-type Props = {
-  onContactClick?: () => void;
-};
-
-export default function BottomCTA({ onContactClick }: Props) {
+export default function BottomCTA() {
   return (
     <S.CtaSection>
       <Container>
@@ -15,10 +11,7 @@ export default function BottomCTA({ onContactClick }: Props) {
             <br />
             <span className="light">with bold creativity</span>
           </S.CtaTitle>
-
-          <S.CtaButton type="button" onClick={onContactClick}>
-            Get in touch
-          </S.CtaButton>
+          <S.CtaButton to="/contact-us">Get in touch</S.CtaButton>
         </S.CtaRow>
       </Container>
     </S.CtaSection>

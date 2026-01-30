@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 const bp = { md: 768 };
@@ -36,10 +37,11 @@ export const CtaTitle = styled.h3`
   }
 `;
 
-export const CtaButton = styled.button`
+export const CtaButton = styled(Link)`
   appearance: none;
   border: 0;
   cursor: pointer;
+  text-decoration: none;
 
   background: #ffffff;
   color: #0b0f0c;
