@@ -74,9 +74,7 @@ function SafeDynamicIcon({
   return <DynamicIcon name={iconName} size={size} color={color} />;
 }
 
-const EcosystemOverview: React.FC<{ onContactClick?: () => void }> = ({
-  onContactClick,
-}) => {
+const EcosystemOverview: React.FC = () => {
   const { data: landing } = useLandingPage();
 
   const titleTop = landing?.title || "—";
@@ -151,7 +149,8 @@ const EcosystemOverview: React.FC<{ onContactClick?: () => void }> = ({
           </S.Heading>
 
           <S.CTARow data-reveal style={{ animationDelay: "90ms" }}>
-            <S.CTAButton type="button" onClick={onContactClick}>
+            {/* ✅ Navigate to ContactUsPage */}
+            <S.CTAButton href="/contact-us" aria-label="Go to Contact Us">
               Contact Us
             </S.CTAButton>
           </S.CTARow>

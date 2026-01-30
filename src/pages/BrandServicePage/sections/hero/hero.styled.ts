@@ -84,11 +84,11 @@ export const HeroActions = styled.div`
   }
 `;
 
-export const HeroButton = styled.button`
+export const HeroButton = styled.a`
   appearance: none;
   border: 0;
   cursor: pointer;
-
+  text-decoration: none;
   display: inline-flex;
   align-items: center;
   justify-content: center;

@@ -102,11 +102,12 @@ export const H1 = styled.h1`
 `;
 
 
-export const CTAButton = styled.button`
+export const CTAButton = styled.a`
   margin-top: 30px;
   appearance: none;
   border: 0;
   cursor: pointer;
+  text-decoration: none;
 
   display: inline-flex;
   align-items: center;

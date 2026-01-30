@@ -3,11 +3,9 @@ import * as S from "./hero.styled";
 import OrbitVisual from "./OrbitVisual";
 import { useLandingPage } from "@/shared/api/useLandingPage";
 
-type Props = {
-  onJoinClick?: () => void;
-};
-
-const parseNumberWithSuffix = (raw?: string): { value: number; suffix?: string } => {
+const parseNumberWithSuffix = (
+  raw?: string
+): { value: number; suffix?: string } => {
   const s = String(raw ?? "").trim();
   if (!s) return { value: 0 };
 
@@ -20,15 +18,16 @@ const parseNumberWithSuffix = (raw?: string): { value: number; suffix?: string }
 
   const value = Math.round(parseFloat(numPart.replace(/,/g, "")) || 0);
 
-  const suffix =
-    suffixPart.includes("+") ? "+" :
-    suffixPart.includes("%") ? "%" :
-    undefined;
+  const suffix = suffixPart.includes("+")
+    ? "+"
+    : suffixPart.includes("%")
+    ? "%"
+    : undefined;
 
   return { value, suffix };
 };
 
-export default function Hero({ onJoinClick }: Props) {
+export default function Hero() {
   const { data: landing } = useLandingPage();
 
   const titleLines =
@@ -72,7 +71,8 @@ export default function Hero({ onJoinClick }: Props) {
               )}
             </S.H1>
 
-            <S.CTAButton type="button" onClick={onJoinClick}>
+            {/* ✅ Navigate to Contact page */}
+            <S.CTAButton href="/contact-us" aria-label="Go to Contact Us">
               Join Us!
             </S.CTAButton>
           </S.Copy>

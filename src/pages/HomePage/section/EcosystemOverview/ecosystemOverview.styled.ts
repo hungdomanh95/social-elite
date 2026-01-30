@@ -152,8 +152,9 @@ export const CTARow = styled.div`
   margin-top: 14px;
 `;
 
-export const CTAButton = styled.button`
+export const CTAButton = styled.a`
   border: 0;
+  text-decoration: none;
   cursor: pointer;
 
   padding: 14px 20px;

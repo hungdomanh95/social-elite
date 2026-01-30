@@ -2,11 +2,7 @@ import * as S from "./hero.styled";
 import OrbitVisual from "./OrbitVisual";
 import { useLandingPage } from "@/shared/api/useLandingPage";
 
-type Props = {
-  onContactClick?: () => void;
-};
-
-export default function BrandServiceHero({ onContactClick }: Props) {
+export default function BrandServiceHero() {
   const { data: landing } = useLandingPage();
 
   const lines = (landing?.branchTitle ?? []) as Array<{
@@ -46,7 +42,8 @@ export default function BrandServiceHero({ onContactClick }: Props) {
             </S.HeroTitle>
 
             <S.HeroActions data-reveal>
-              <S.HeroButton type="button" onClick={onContactClick}>
+              {/* ✅ Navigate to Contact page */}
+              <S.HeroButton href="/contact-us" aria-label="Go to Contact Us">
                 <span>Get in touch!</span>
               </S.HeroButton>
             </S.HeroActions>
