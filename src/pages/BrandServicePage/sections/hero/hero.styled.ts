@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { Container as  BaseContainer} from "@/shared/components/Container";
+import { Link } from "react-router-dom";
 
 const bp = { md: 768, lg: 1024 };
 
@@ -84,7 +85,7 @@ export const HeroActions = styled.div`
   }
 `;
 
-export const HeroButton = styled.a`
+export const HeroButton = styled(Link)`
   appearance: none;
   border: 0;
   cursor: pointer;

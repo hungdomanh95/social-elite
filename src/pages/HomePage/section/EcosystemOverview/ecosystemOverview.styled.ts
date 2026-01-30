@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { Container as BaseContainer } from "@/shared/components/Container";
-
+import { Link } from "react-router-dom";
 const bp = {
   md: 768,
   lg: 1024,
@@ -152,7 +152,7 @@ export const CTARow = styled.div`
   margin-top: 14px;
 `;
 
-export const CTAButton = styled.a`
+export const CTAButton = styled(Link)`
   border: 0;
   text-decoration: none;
   cursor: pointer;

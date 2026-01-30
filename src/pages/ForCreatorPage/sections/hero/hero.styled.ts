@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { Container } from "@/shared/components/Container";
+import { Link } from "react-router-dom";
 
 const bp = { md: 768, lg: 1024 };
 
@@ -102,7 +103,7 @@ export const H1 = styled.h1`
 `;
 
 
-export const CTAButton = styled.a`
+export const CTAButton = styled(Link)`
   margin-top: 30px;
   appearance: none;
   border: 0;

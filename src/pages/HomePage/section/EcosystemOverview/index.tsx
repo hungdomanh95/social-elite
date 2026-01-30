@@ -150,9 +150,8 @@ const EcosystemOverview: React.FC = () => {
 
           <S.CTARow data-reveal style={{ animationDelay: "90ms" }}>
             {/* ✅ Navigate to ContactUsPage */}
-            <S.CTAButton href="/contact-us" aria-label="Go to Contact Us">
-              Contact Us
-            </S.CTAButton>
+            <S.CTAButton to="/contact-us">Contact Us</S.CTAButton>
+
           </S.CTARow>
 
           <S.Badges data-reveal style={{ animationDelay: "160ms" }}>

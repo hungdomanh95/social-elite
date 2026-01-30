@@ -72,9 +72,8 @@ export default function Hero() {
             </S.H1>
 
             {/* ✅ Navigate to Contact page */}
-            <S.CTAButton href="/contact-us" aria-label="Go to Contact Us">
-              Join Us!
-            </S.CTAButton>
+            <S.CTAButton to="/contact-us">Join Us!</S.CTAButton>
+
           </S.Copy>
 
           <S.VisualArea>

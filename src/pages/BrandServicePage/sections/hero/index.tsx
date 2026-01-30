@@ -43,9 +43,7 @@ export default function BrandServiceHero() {
 
             <S.HeroActions data-reveal>
               {/* ✅ Navigate to Contact page */}
-              <S.HeroButton href="/contact-us" aria-label="Go to Contact Us">
-                <span>Get in touch!</span>
-              </S.HeroButton>
+               <S.HeroButton to="/contact-us">Get in touch!</S.HeroButton>
             </S.HeroActions>
           </S.HeroCopy>
 
