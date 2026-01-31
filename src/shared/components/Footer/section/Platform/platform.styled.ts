@@ -23,19 +23,22 @@ export const Platform = styled.section`
 `;
 
 export const Inner = styled(BaseContainer)`
-  /* ===== key: đồng bộ chiều cao "hàng trên" để 2 list nằm ngang nhau ===== */
-  /* --platform-top-h: clamp(240px, 20vw, 320px); */
-
+  /* ✅ canh giữa + không bị lệch khi width nhỏ */
   display: flex;
   max-width: 786px;
-  gap:16px;
-  /* align-items: flex-start; */
-  /* justify-content: space-between; */
+  margin-left: auto;
+  margin-right: auto;
+
+  gap: 16px;
+  align-items: stretch;
+  justify-content: center;
 
   @media (max-width: ${bp.md}px) {
-    --platform-top-h: auto;
     flex-direction: column;
     gap: 28px;
+
+    /* ✅ giữ đúng “centered container” */
+    align-items: center;
   }
 `;
 
@@ -44,9 +47,12 @@ export const LeftGroup = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  min-width: 0;
 
   @media (max-width: ${bp.md}px) {
+    width: 100%;
     gap: 18px;
+    align-items: center;
   }
 `;
 
@@ -54,19 +60,24 @@ export const RightGroup = styled.div`
   width: 50%;
   display: flex;
   flex-direction: column;
-  gap:40px;
+  gap: 40px;
+  min-width: 0;
 
   @media (max-width: ${bp.md}px) {
+    width: 100%;
     gap: 18px;
+    align-items: center;
   }
 `;
 
 export const TitleBlock = styled.div`
   width: 100%;
   max-width: 520px;
+
   @media (max-width: ${bp.md}px) {
     height: auto;
     max-width: 100%;
+    text-align: center;
   }
 `;
 
@@ -84,7 +95,7 @@ export const ImageBlock = styled.div`
   @media (max-width: ${bp.md}px) {
     height: auto;
     max-width: 100%;
-    justify-content: flex-start;
+    justify-content: center;
   }
 `;
 
@@ -109,10 +120,17 @@ export const ListRight = styled.div`
 export const TitleLine = styled.div`
   font-family: var(--font-display);
   font-weight: var(--fw-regular);
-  font-size: var(--text-4xl);
   font-size: 44px;
-  line-height: 36px;
+  line-height: 1.05;
 
+  @media (max-width: ${bp.lg}px) {
+    font-size: 40px;
+  }
+
+  @media (max-width: ${bp.md}px) {
+    font-size: clamp(28px, 8vw, 38px);
+    line-height: 1.1;
+  }
 `;
 
 export const TitleAccent = styled.span`
@@ -131,6 +149,7 @@ export const ImageLeftFooter = styled.img`
   @media (max-width: ${bp.md}px) {
     width: 100%;
     height: auto;
+    object-position: center top;
   }
 `;
 
@@ -156,6 +175,10 @@ export const FeatureItem = styled.li`
   display: flex;
   align-items: flex-start;
   gap: 12px;
+
+  @media (max-width: ${bp.md}px) {
+    width: 100%;
+  }
 `;
 
 export const Dot = styled.span`

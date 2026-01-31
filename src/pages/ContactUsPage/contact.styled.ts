@@ -40,6 +40,10 @@ export const Title = styled.h1`
   margin: 0;
   font-size: var(--text-7xl);
   color: #050705;
+
+  @media (max-width: ${bp.md}px) {
+    font-size: clamp(34px, 8.5vw, 52px);
+  }
 `;
 
 export const Lead = styled.p`
@@ -48,6 +52,10 @@ export const Lead = styled.p`
   font-size: var(--text-sm);
   line-height: 1.7;
   color: rgba(5, 7, 5, 0.62);
+
+  @media (max-width: ${bp.md}px) {
+    padding: 0 14px;
+  }
 `;
 
 export const Cards = styled.section`
@@ -58,18 +66,13 @@ export const Cards = styled.section`
   justify-content: center;
   gap: 18px;
 
-  /* ✅ luôn 1 hàng */
+  /* ✅ desktop: giữ 1 hàng */
   flex-wrap: nowrap;
 
-  /* ✅ màn nhỏ không đủ chỗ thì scroll ngang thay vì xuống hàng */
-  overflow-x: auto;
-  overflow-y: visible;
-  -webkit-overflow-scrolling: touch;
+  /* ✅ desktop: không scroll */
+  overflow: visible;
 
-  /* để shadow card không bị cắt */
   padding: 2px 6px 10px;
-
-  scroll-snap-type: x mandatory;
 
   animation: ${fadeUp} 560ms ease-out both;
   animation-delay: 70ms;
@@ -78,23 +81,26 @@ export const Cards = styled.section`
     animation: none;
   }
 
-  @media (min-width: ${bp.lg}px) {
-    /* desktop thường đủ chỗ => không cần scroll */
+  /* ✅ mobile/tablet: chuyển sang column */
+  @media (max-width: ${bp.lg}px) {
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 14px;
+
+    /* bỏ scroll ngang */
     overflow-x: visible;
-    padding-bottom: 0;
     scroll-snap-type: none;
+
+    padding: 0 16px;
   }
 `;
 
 export const InfoCard = styled.div`
-  /* ✅ 3 card nằm 1 hàng trên desktop (giữ max 340px đúng design) */
+  /* ✅ desktop: 3 card 1 hàng */
   flex: 0 0 min(340px, calc((100% - 36px) / 3));
   max-width: 340px;
-
-  /* ✅ màn nhỏ vẫn 1 hàng nhưng card đủ to để đọc, swipe ngang */
   min-width: 280px;
-
-  scroll-snap-align: start;
 
   background: rgba(255, 255, 255, 0.62);
   border: 1px solid rgba(5, 7, 5, 0.06);
@@ -122,13 +128,19 @@ export const InfoCard = styled.div`
     }
   }
 
-  @media (max-width: ${bp.md}px) {
+  /* ✅ mobile/tablet: full width card */
+  @media (max-width: ${bp.lg}px) {
+    flex: none;
+    width: 100%;
+    max-width: 520px;
+    min-width: 0;
     padding: 22px 18px;
-    min-width: 260px;
+    text-align: left;
   }
 
   @media (max-width: ${bp.sm}px) {
-    min-width: 240px;
+    max-width: 100%;
+    padding: 20px 16px;
   }
 `;
 
@@ -145,6 +157,10 @@ export const IconBubble = styled.div`
   background: rgba(31, 215, 96, 0.14);
   border: 1px solid rgba(31, 215, 96, 0.2);
   color: var(--accent, #1fd760);
+
+  @media (max-width: ${bp.lg}px) {
+    margin: 2px 0 10px;
+  }
 `;
 
 export const CardTitle = styled.div`
@@ -152,6 +168,10 @@ export const CardTitle = styled.div`
   font-weight: 750;
   color: #0b0f0c;
   margin-bottom: 10px;
+
+  @media (max-width: ${bp.lg}px) {
+    margin-bottom: 8px;
+  }
 `;
 
 export const CardLines = styled.div`
@@ -186,11 +206,21 @@ export const Panel = styled.section`
   @media (prefers-reduced-motion: reduce) {
     animation: none;
   }
+
+  @media (max-width: ${bp.md}px) {
+    border-radius: 16px;
+    margin-left: 16px;
+    margin-right: 16px;
+  }
 `;
 
 export const PanelInner = styled.div`
   padding: clamp(36px, 4.4vw, 62px) clamp(22px, 3.8vw, 54px);
   text-align: center;
+
+  @media (max-width: ${bp.md}px) {
+    padding: 28px 18px;
+  }
 `;
 
 export const PanelTitle = styled.h2`
@@ -202,6 +232,10 @@ export const PanelTitle = styled.h2`
   span {
     color: var(--accent, #1fd760);
   }
+
+  @media (max-width: ${bp.md}px) {
+    font-size: clamp(24px, 7vw, 36px);
+  }
 `;
 
 export const PanelLead = styled.p`
@@ -210,6 +244,10 @@ export const PanelLead = styled.p`
   font-size: var(--text-sm);
   line-height: 1.7;
   color: rgba(255, 255, 255, 0.62);
+
+  @media (max-width: ${bp.md}px) {
+    max-width: 520px;
+  }
 `;
 
 export const Form = styled.form`
@@ -246,8 +284,6 @@ export const Label = styled.div`
   font-size: var(--text-xs, 12px);
   color: rgba(255, 255, 255, 0.82);
   font-weight: var(--fw-semibold);
-  /* text-transform: lowercase; */
-  /* margin-bottom: 8px; */
 `;
 
 export const Control = styled.div`
@@ -272,7 +308,6 @@ const baseInput = `
   color: rgba(255,255,255,0.88);
   font-size: var(--text-sm, 13px);
   line-height: 1.6;
-  // padding: 8px 0 12px;
 
   &::placeholder{
     color: rgba(255,255,255,0.34);
@@ -295,7 +330,7 @@ export const Actions = styled.div`
 `;
 
 export const Button = styled.button`
-   border: none;
+  border: none;
   cursor: pointer;
   font-size: var(--text-xs);
   line-height: var(--leading-tight, 1.25);
@@ -307,6 +342,7 @@ export const Button = styled.button`
 
   color: #000000;
   background: var(--accent-3);
+
   @media (max-width: ${bp.md}px) {
     padding: 11px 18px;
   }

@@ -6,20 +6,11 @@ const bp = {
   lg: 1024,
 };
 
-export const Container = styled(BaseContainer)`
-  position: relative;
-  display: flex;
-  max-width: 786px;
-  justify-content: space-between;
-`;
-
-
 export const ContactBlock = styled.section`
   position: relative;
   padding: 64px 0 54px;
   border-top: 1px solid var(--border);
   border-bottom: 1px solid var(--border);
-
   background: rgba(0, 0, 0, 0.35);
 
   @media (max-width: ${bp.lg}px) {
@@ -31,26 +22,31 @@ export const ContactBlock = styled.section`
   }
 `;
 
-// export const ContactGrid = styled.div`
-//   display: flex;
-//   align-items: center;
-//   justify-content: space-between;
-//   gap: 36px;
+export const Container = styled(BaseContainer)`
+  position: relative;
+  display: flex;
+  max-width: 786px;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 28px;
 
-//   @media (max-width: ${bp.lg}px) {
-//     gap: 28px;
-//   }
+  /* ✅ mobile: heading trên, form dưới */
+  @media (max-width: ${bp.md}px) {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 18px;
+  }
+`;
 
-//   @media (max-width: ${bp.md}px) {
-//     flex-direction: column;
-//     align-items: stretch;
-//     gap: 22px;
-//   }
-// `;
-
-export const ContactTitle = styled.div`
-  /* flex: 1 1 0; */
+export const ContactTitle = styled.section`
   min-width: 0;
+
+  /* ✅ desktop giữ cột title gọn, mobile full width */
+  flex: 0 0 auto;
+
+  @media (max-width: ${bp.md}px) {
+    width: 100%;
+  }
 `;
 
 export const ContactHeading = styled.h2`
@@ -59,23 +55,27 @@ export const ContactHeading = styled.h2`
   font-size: var(--text-5xl);
   font-weight: var(--fw-regular);
   color: var(--accent-3);
+
   @media (max-width: ${bp.lg}px) {
     font-size: var(--text-4xl);
   }
 
+  /* ✅ mobile nhỏ hơn + nằm trên */
   @media (max-width: ${bp.md}px) {
     font-size: var(--text-2xl);
+    line-height: 1.15;
   }
 `;
 
-export const Form = styled.div`
-  flex: 1.6 1 0;
+export const Form = styled.form`
+  flex: 1 1 0;
   min-width: 0;
   display: flex;
-  /* flex-direction: column; */
+  flex-direction: column;
   gap: 18px;
 
   @media (max-width: ${bp.md}px) {
+    width: 100%;
     gap: 14px;
   }
 `;
@@ -88,6 +88,7 @@ export const Row2 = styled.div`
   @media (max-width: ${bp.md}px) {
     flex-direction: column;
     gap: 14px;
+    margin-bottom: 10px;
   }
 `;
 
@@ -103,9 +104,6 @@ export const Label = styled.div`
   font-size: var(--text-sm);
   line-height: var(--leading-tight, 1.25);
   font-weight: var(--fw-semibold);
-  // font-weight: 700;
-  // letter-spacing: 0.2px;
-  /* text-transform: lowercase; */
 
   @media (max-width: ${bp.md}px) {
     font-size: var(--text-xs, 12px);
@@ -119,6 +117,7 @@ const baseInput = `
   border: none;
   outline: none;
   font-size: 12px;
+  padding: 10px 0;
 
   border-bottom: 2px solid rgba(255, 255, 255, 0.18);
 
@@ -152,11 +151,11 @@ export const Textarea = styled.textarea`
 
 export const Actions = styled.div`
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   padding-top: var(--space-8);
 
-  @media (max-width: ${bp.md}px) {
-    justify-content: flex-start;
+  @media (min-width: ${bp.md + 1}px) {
+    justify-content: center;
   }
 `;
 
@@ -173,6 +172,15 @@ export const SendBtn = styled.button`
 
   color: #000000;
   background: var(--accent-3);
+
+  transition: transform 160ms ease, filter 160ms ease, box-shadow 160ms ease;
+
+  &:hover {
+    transform: translateY(-1px);
+    filter: brightness(1.02);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.25);
+  }
+
   @media (max-width: ${bp.md}px) {
     padding: 11px 18px;
   }

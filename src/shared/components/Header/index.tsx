@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState, useCallback } from "react";
 import { useLocation } from "react-router-dom";
+import { createPortal } from "react-dom";
 import * as S from "./header.styled";
 import Black_BG from "@/assets/images/Black_BG.png";
 import NavTop from "@/assets/images/NavTop.png";
@@ -17,7 +18,6 @@ export default function Header() {
       { label: "For Creator", to: "/for-creator" },
       { label: "Blog", to: "/blog" },
       { label: "Our Campaign", to: "/our-campaign" },
-      // { label: "dev", to: "/dev/cms-test" },
     ],
     []
   );
@@ -27,7 +27,7 @@ export default function Header() {
     window.scrollTo({ top: 0, left: 0, behavior: reduce ? "auto" : "smooth" });
   }, []);
 
-  // đóng mobile menu + scroll top khi đổi route
+  // đóng menu + scroll top khi đổi route
   useEffect(() => {
     setOpen(false);
     scrollToTop();
@@ -53,50 +53,8 @@ export default function Header() {
     return () => window.removeEventListener("keydown", onKeyDown);
   }, [open]);
 
-  return (
-    <S.Wrap>
-      <S.NavTop aria-hidden src={NavTop} alt="" />
-      <S.Inner>
-        <S.CenterRow>
-          <S.Logo to="/" aria-label="Social Elite" onClick={scrollToTop}>
-            <S.LogoImg src={Black_BG} alt="socialelite" />
-          </S.Logo>
-
-          <S.Nav aria-label="Primary">
-            {menu.map((m) => (
-              <S.MenuLink
-                key={m.to}
-                to={m.to}
-                onClick={scrollToTop}
-                className={({ isActive }) => (isActive ? "active" : "")}
-              >
-                {m.label}
-              </S.MenuLink>
-            ))}
-          </S.Nav>
-
-          <S.Cta
-            to="/contact-us"
-            onClick={scrollToTop}
-            className={({ isActive }) => (isActive ? "active" : "")}
-          >
-            Contact Us
-          </S.Cta>
-        </S.CenterRow>
-
-        <S.Hamburger
-          type="button"
-          aria-label="Open menu"
-          aria-expanded={open}
-          onClick={() => setOpen((v) => !v)}
-        >
-          <span />
-          <span />
-          <span />
-        </S.Hamburger>
-      </S.Inner>
-
-      {open && (
+  const mobileMenu = open
+    ? createPortal(
         <S.MobileOverlay role="dialog" aria-modal="true" onClick={() => setOpen(false)}>
           <S.MobilePanel onClick={(e) => e.stopPropagation()}>
             <S.MobileTop>
@@ -137,8 +95,58 @@ export default function Header() {
               Contact Us
             </S.MobileCta>
           </S.MobilePanel>
-        </S.MobileOverlay>
-      )}
-    </S.Wrap>
+        </S.MobileOverlay>,
+        document.body
+      )
+    : null;
+
+  return (
+    <>
+      <S.Wrap>
+        <S.NavTop aria-hidden src={NavTop} alt="" />
+
+        <S.Inner>
+          <S.CenterRow>
+            <S.Logo to="/" aria-label="Social Elite" onClick={scrollToTop}>
+              <S.LogoImg src={Black_BG} alt="socialelite" />
+            </S.Logo>
+
+            <S.Nav aria-label="Primary">
+              {menu.map((m) => (
+                <S.MenuLink
+                  key={m.to}
+                  to={m.to}
+                  onClick={scrollToTop}
+                  className={({ isActive }) => (isActive ? "active" : "")}
+                >
+                  {m.label}
+                </S.MenuLink>
+              ))}
+            </S.Nav>
+
+            <S.Cta
+              to="/contact-us"
+              onClick={scrollToTop}
+              className={({ isActive }) => (isActive ? "active" : "")}
+            >
+              Contact Us
+            </S.Cta>
+          </S.CenterRow>
+
+          <S.Hamburger
+            type="button"
+            aria-label="Open menu"
+            aria-expanded={open}
+            onClick={() => setOpen((v) => !v)}
+          >
+            <span />
+            <span />
+            <span />
+          </S.Hamburger>
+        </S.Inner>
+      </S.Wrap>
+
+      {mobileMenu}
+    </>
   );
 }

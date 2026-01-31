@@ -12,20 +12,16 @@ export const Wrap = styled.header`
   height: var(--header-h, 64px);
   overflow: hidden;
 
-  /* Glass base */
   background: rgba(10, 13, 11, 0.38);
   border-bottom: 1px solid rgba(255, 255, 255, 0.14);
 
-  /* Glass blur */
   -webkit-backdrop-filter: blur(14px) saturate(140%);
   backdrop-filter: blur(14px) saturate(140%);
 
-  /* depth */
   box-shadow:
     0 18px 40px rgba(0, 0, 0, 0.35),
     0 1px 0 rgba(255, 255, 255, 0.06) inset;
 
-  /* top sheen */
   &::before {
     content: "";
     position: absolute;
@@ -41,7 +37,6 @@ export const Wrap = styled.header`
     opacity: 0.65;
   }
 
-  /* dark tint để giống UI (đọc chữ tốt hơn) */
   &::after {
     content: "";
     position: absolute;
@@ -53,13 +48,11 @@ export const Wrap = styled.header`
       linear-gradient(180deg, rgba(0, 0, 0, 0.22), transparent 60%);
   }
 
-  /* fallback nếu browser không support blur */
   @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
     background: rgba(10, 13, 11, 0.88);
   }
 `;
 
-/* ✅ Thay Glow bằng ảnh NavTop */
 export const NavTop = styled.img`
   position: absolute;
   inset: 0;
@@ -71,14 +64,8 @@ export const NavTop = styled.img`
   pointer-events: none;
   user-select: none;
 
-  /* giống UI: dịu, chìm vào nền */
-  /* opacity: 0.72;
-  filter: saturate(1.1) contrast(1.05); */
-
-  /* nhẹ nhàng “blend” (nếu browser support) */
   mix-blend-mode: screen;
 
-  /* subtle motion (rất nhẹ, hiện đại) */
   transform: translateZ(0);
   will-change: transform;
 
@@ -115,7 +102,6 @@ export const Inner = styled.div`
   }
 `;
 
-/* Cụm giữa (logo + menu + cta) */
 export const CenterRow = styled.div`
   display: flex;
   align-items: center;
@@ -186,7 +172,7 @@ export const MenuLink = styled(NavLink)`
 `;
 
 export const Cta = styled(NavLink)`
-   appearance: none;
+  appearance: none;
   border: 0;
   cursor: pointer;
 
@@ -202,7 +188,7 @@ export const Cta = styled(NavLink)`
   padding: 8px 26px;
   font-size: var(--text-xs);
   font-family: var(--font-body);
-  font-weight:var(--fw-semibold);
+  font-weight: var(--fw-semibold);
 
   box-shadow: 0 12px 28px rgba(30, 215, 95, 0.18);
   transition: transform 160ms ease, filter 160ms ease;
@@ -251,13 +237,17 @@ export const Hamburger = styled.button`
   }
 `;
 
-/* Mobile (giữ nguyên của bạn) */
+/* ✅ Overlay render via Portal => phải “đè” mọi thứ */
 export const MobileOverlay = styled.div`
   position: fixed;
   inset: 0;
-  z-index: 60;
+  z-index: 9999;
+
+  width: 100vw;
+  height: 100dvh;
 
   background: rgba(0, 0, 0, 0.66);
+  -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
 
   display: flex;
@@ -273,8 +263,9 @@ export const MobileOverlay = styled.div`
 
 export const MobilePanel = styled.div`
   width: min(420px, 92vw);
-  height: 100%;
-  padding: var(--space-5, 20px);
+  height: 100dvh;
+  padding: calc(var(--space-5, 20px) + env(safe-area-inset-top)) var(--space-5, 20px)
+    calc(var(--space-5, 20px) + env(safe-area-inset-bottom));
 
   background: #0a0d0b;
   border-left: 1px solid rgba(255, 255, 255, 0.08);
