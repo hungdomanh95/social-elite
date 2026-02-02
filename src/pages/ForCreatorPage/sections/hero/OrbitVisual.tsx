@@ -86,7 +86,8 @@ const OrbitVisual: React.FC<OrbitVisualProps> = ({ revealDelayMs }) => {
       const d = -(t / durDash) * 360; // CCW
 
       if (dashedRef.current) {
-        dashedRef.current.style.transform = `rotate(${d}deg)`;
+        // ✅ rotate + scale theo CSS var để DashedRing co giãn ở bp.md
+        dashedRef.current.style.transform = `rotate(${d}deg) scale(var(--dash-scale, 1))`;
       }
 
       for (let i = 0; i < n; i++) {
@@ -122,9 +123,9 @@ const OrbitVisual: React.FC<OrbitVisualProps> = ({ revealDelayMs }) => {
 
         <S.AvatarsLayer aria-hidden="true">
           {creators.map((src, i) => (
-            <S.AvatarSlot key={i} ref={(el:any) => (slotRefs.current[i] = el)}>
+            <S.AvatarSlot key={i} ref={(el: any) => (slotRefs.current[i] = el)}>
               <S.Avatar style={{ width: avatarSize, height: avatarSize }}>
-                <S.AvatarInner ref={(el:any) => (innerRefs.current[i] = el)}>
+                <S.AvatarInner ref={(el: any) => (innerRefs.current[i] = el)}>
                   <img src={src} alt={`Creator ${i + 1}`} />
                 </S.AvatarInner>
               </S.Avatar>

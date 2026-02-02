@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-const bp = { lg: 1024 };
+const bp = { md: 768, lg: 1024 };
 
 export const Visual = styled.div`
   display: grid;
@@ -17,8 +17,26 @@ export const OrbitRoot = styled.div`
   aspect-ratio: 1 / 1;
   position: relative;
 
+  /* ✅ defaults */
+  --avatar-scale: 1;
+  --dash-scale: 1;
+  --center-size: 38%;
+  --center-logo: 64%;
+
   @media (max-width: ${bp.lg}px) {
     width: min(560px, 88vw);
+  }
+
+  /* ✅ <= md: avatar to hơn, dashed ring co lại, center giảm theo tỷ lệ */
+  @media (max-width: ${bp.md}px) {
+    --avatar-scale: 1.5;
+    --dash-scale: 0.86;
+
+    /* 38% / 1.5 ≈ 25.33% -> lấy 25.5% cho đẹp */
+    --center-size: 35%;
+
+    /* logo giữ tương đối để vẫn rõ */
+    --center-logo: 64%;
   }
 `;
 
@@ -41,7 +59,7 @@ export const OuterRing = styled.div`
   pointer-events: none;
   z-index: 1;
 
-  border: 1px solid rgba(34, 197, 94, 0.38);
+  border: 2px solid rgba(34, 197, 94, 0.38);
 `;
 
 export const DashedRing = styled.div`
@@ -82,8 +100,8 @@ export const Avatar = styled.div`
   left: 0;
   top: 0;
 
-  /* ✅ đặt avatar vào đúng tâm slot */
-  transform: translate(-50%, -50%);
+  /* ✅ scale avatar theo bp.md */
+  transform: translate(-50%, -50%) scale(var(--avatar-scale));
 
   border-radius: 999px;
   overflow: hidden;
@@ -114,8 +132,8 @@ export const Center = styled.div`
   position: absolute;
   left: 50%;
   top: 50%;
-  width: 38%;
-  height: 38%;
+  width: var(--center-size);
+  height: var(--center-size);
   transform: translate(-50%, -50%);
   border-radius: 999px;
   z-index: 4;
@@ -123,7 +141,11 @@ export const Center = styled.div`
   display: grid;
   place-items: center;
 
-  background: radial-gradient(circle at 40% 35%, rgba(34, 197, 94, 1), rgba(34, 197, 94, 0.78));
+  background: radial-gradient(
+    circle at 40% 35%,
+    rgba(34, 197, 94, 1),
+    rgba(34, 197, 94, 0.78)
+  );
   box-shadow:
     0 18px 46px rgba(34, 197, 94, 0.18),
     0 30px 80px rgba(0, 0, 0, 0.35);
@@ -137,11 +159,15 @@ export const CenterGlow = styled.div`
   border-radius: 999px;
   pointer-events: none;
 
-  background: radial-gradient(closest-side, rgba(34, 197, 94, 0.22), transparent 70%);
+  background: radial-gradient(
+    closest-side,
+    rgba(34, 197, 94, 0.22),
+    transparent 70%
+  );
 `;
 
 export const CenterLogo = styled.img`
-  width: 64%;
+  width: var(--center-logo);
   height: auto;
   display: block;
   user-select: none;

@@ -42,6 +42,7 @@ export const HeroInner = styled(Container)`
 
   @media (max-width: ${bp.md}px) {
     width: min(1240px, calc(100% - 28px));
+    margin-bottom: 0px;
   }
 `;
 
@@ -100,6 +101,9 @@ export const H1 = styled.h1`
   .accent {
     color: var(--accent, #22c55e);
   }
+    @media (max-width: ${bp.md}px) {
+    font-size: clamp(44px, 10vw, 64px);
+  }
 `;
 
 
@@ -138,30 +142,35 @@ export const CTAButton = styled(Link)`
 
 /* ✅ 3 stats trải đều đúng như hình */
 export const Stats = styled.div`
+  margin-top: 26px;
   display: flex;
-  align-items: flex-end;
   justify-content: space-between;
+  gap: 22px;
 
-  /* đảm bảo khoảng cách đều và không bị “dồn” */
-  gap: clamp(28px, 5.6vw, 110px);
-
+  /* ✅ mobile: mỗi StatCard xuống 1 dòng */
   @media (max-width: ${bp.md}px) {
+    margin-top: 18px;
     flex-direction: column;
-    align-items: flex-start;
-    gap: 18px;
+    /* align-items: center; */
+    gap: 14px;
+    padding:16px;
+
+    max-width: 420px;
+    /* margin-left: auto; */
+    /* margin-right: auto; */
   }
 `;
 
 export const StatCard = styled.div`
-  flex: 1 1 0;
-  min-width: 0;
-
   display: flex;
   flex-direction: column;
+  gap: 4px;
+  justify-content: center;
   align-items: center;
-  gap: 8px;
 
   @media (max-width: ${bp.md}px) {
+    width: 100%;
+    max-width: 360px;
     align-items: flex-start;
   }
 `;
@@ -172,6 +181,10 @@ export const StatNumber = styled.div`
   font-size: var(--text-8xl);
   line-height: var(--leading-none, 1);
   color: var(--accent);
+
+  @media (max-width: ${bp.md}px) {
+    font-size: clamp(36px, 9vw, 56px);
+  }
 `;
 
 export const StatLabel = styled.div`
@@ -179,5 +192,8 @@ export const StatLabel = styled.div`
   color: rgba(255, 255, 255, 1);
   line-height: var(--leading-snug, 1.375);
   text-align: center;
-`;
 
+  @media (max-width: ${bp.md}px) {
+    font-size: clamp(14px, 3.8vw, 18px);
+  }
+`;
