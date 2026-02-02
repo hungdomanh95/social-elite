@@ -27,9 +27,6 @@ export const SoundTag = styled.div`
   color: #111;
   box-shadow: 0 10px 22px rgba(0, 0, 0, 0.2);
 
-  // font-weight: 800;
-  // letter-spacing: 0.08em;
-  /* text-transform: uppercase; */
   line-height: var(--leading-none, 1);
 
   pointer-events: none;
@@ -82,23 +79,25 @@ export const VideoWrap = styled.div`
   width: 100%;
   border-bottom: 1px solid var(--border);
 
+  /* ✅ Luôn giữ đúng 16:9 (mobile cũng 16:9) */
   aspect-ratio: 16 / 9;
-  /* height: 100vh; */
 
-  @media (max-width: ${bp.lg}px) {
-    aspect-ratio: 16 / 9;
-  }
-
-  @media (max-width: ${bp.md}px) {
-    aspect-ratio: 4 / 3;
-  }
+  /* ✅ quan trọng nếu video cover và có border-radius sau này */
+  overflow: hidden;
 
   cursor: default;
   outline: none;
   user-select: none;
 
+  /* (Tuỳ chọn) Nếu trang của bạn có padding container, bật đoạn này để video full-bleed 100vw trên mobile */
+  /* @media (max-width: ${bp.md}px) {
+    width: 100vw;
+    margin-left: calc(50% - 50vw);
+    margin-right: calc(50% - 50vw);
+  } */
+
   &[data-hide-cursor="true"]:hover {
-    cursor: none; /* CURSOR: ẩn cursor khi hover (bật/tắt bằng data-hide-cursor) */
+    cursor: none;
   }
 
   &[data-tag-visible="true"] ${SoundTag} {
@@ -133,6 +132,6 @@ export const Video = styled.video`
   inset: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: cover; /* ✅ video 16:9 + container 16:9 => gần như không crop */
   background: #000;
 `;

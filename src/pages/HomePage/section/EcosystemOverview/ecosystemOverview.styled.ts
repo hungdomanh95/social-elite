@@ -140,6 +140,14 @@ export const TitleLine = styled.div`
   word-break: break-word;
 
   /* ✅ smaller on mobile */
+   @media (max-width: ${bp.md}px) {
+    font-size: clamp(26px, 7.2vw, 40px);
+    line-height: 1.08;
+  }
+
+  @media (max-width: 420px) {
+    font-size: clamp(24px, 7.8vw, 36px);
+  }
   @media (max-width: ${bp.md}px) {
     font-size: clamp(44px, 10vw, 64px);
   }
@@ -161,6 +169,9 @@ export const TitleLineAccent = styled.div`
 
   @media (max-width: 420px) {
     font-size: clamp(24px, 7.8vw, 36px);
+  }
+  @media (max-width: ${bp.md}px) {
+    font-size: clamp(44px, 10vw, 64px);
   }
 `;
 
