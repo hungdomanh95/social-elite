@@ -38,9 +38,9 @@ const LEFT_TALENTS: TalentConfig[] = [
 ];
 
 const RIGHT_TALENTS: TalentConfig[] = [
-  { id: "r1", src: Talent5, name: "Chế Nguyễn Quỳnh Châu", scale: SCALE_TALENT_RIGHT, z: 4, dx: 0 },
-  { id: "r2", src: Talent6, name: "Sĩ Thanh", scale: SCALE_TALENT_RIGHT, z: 3, dx: 0 },
-  { id: "r3", src: Talent7, name: "Liêu Hà Trinh", scale: SCALE_TALENT_RIGHT, z: 2, dx: -0.5 },
+  { id: "r1", src: Talent5, name: "Chế Nguyễn Quỳnh Châu", scale: SCALE_TALENT_RIGHT, z: 4, dx: 1.5 },
+  { id: "r2", src: Talent6, name: "Sĩ Thanh", scale: SCALE_TALENT_RIGHT, z: 3, dx: 1.5 },
+  { id: "r3", src: Talent7, name: "Liêu Hà Trinh", scale: SCALE_TALENT_RIGHT, z: 2, dx: 0 },
   { id: "r4", src: Talent8, name: "Minh Anh", scale: SCALE_TALENT_RIGHT, z: 1, dx: 0 },
 ];
 
@@ -65,7 +65,7 @@ function useFollowTag(): FollowTagApi {
 
   const rafRef = useRef<number | null>(null);
   const lastPtRef = useRef<{ x: number; y: number } | null>(null);
-  const tagSizeRef = useRef<{ w: number; h: number }>({ w: 140, h: 44 });
+  const tagSizeRef = useRef<{ w: number; h: number }>({ w: 160, h: 44 });
 
   const setCursorVars = useCallback((clientX: number, clientY: number) => {
     const wrap = wrapRef.current;
@@ -176,41 +176,24 @@ export default function EliteTalents() {
               <S.BgImg src={BgLeft} alt="" draggable={false} />
 
               <S.HoverTag ref={leftTag.tagRef} aria-hidden="true">
-                {/* <S.HoverDot /> */}
                 <S.HoverText>{leftTag.label}</S.HoverText>
               </S.HoverTag>
 
-              <S.TalentsOverlay
-                style={
-                  {
-                    ["--baseRatio" as any]: String(BASE_RATIO_LEFT),
-                  } as React.CSSProperties
-                }
-              >
+              <S.TalentsOverlay style={{ ["--baseRatio" as any]: String(BASE_RATIO_LEFT) } as React.CSSProperties}>
                 {LEFT_TALENTS.map((t) => (
                   <S.TalentSlot
                     key={t.id}
-                    style={
-                      {
-                        ["--z" as any]: String(t.z),
-                        ["--dx" as any]: String(t.dx ?? 0),
-                      } as React.CSSProperties
-                    }
+                    style={{ ["--z" as any]: String(t.z), ["--dx" as any]: String(t.dx ?? 0) } as React.CSSProperties}
                   >
                     <S.TalentBtn
                       type="button"
                       aria-label={t.name}
-                      // ✅ bỏ tooltip native
                       onPointerEnter={(e) => leftTag.enter(e, t.name)}
                       onPointerMove={leftTag.move}
                       onPointerLeave={leftTag.leave}
                       onFocus={() => leftTag.focus(t.name)}
                       onBlur={leftTag.blur}
-                      style={
-                        {
-                          ["--scale" as any]: String(t.scale),
-                        } as React.CSSProperties
-                      }
+                      style={{ ["--scale" as any]: String(t.scale) } as React.CSSProperties}
                     >
                       <S.TalentImg src={t.src} alt={t.name} draggable={false} />
                     </S.TalentBtn>
@@ -228,41 +211,24 @@ export default function EliteTalents() {
               <S.BgImg src={BgRight} alt="" draggable={false} />
 
               <S.HoverTag ref={rightTag.tagRef} aria-hidden="true">
-                {/* <S.HoverDot /> */}
                 <S.HoverText>{rightTag.label}</S.HoverText>
               </S.HoverTag>
 
-              <S.TalentsOverlay
-                style={
-                  {
-                    ["--baseRatio" as any]: String(BASE_RATIO_RIGHT),
-                  } as React.CSSProperties
-                }
-              >
+              <S.TalentsOverlay style={{ ["--baseRatio" as any]: String(BASE_RATIO_RIGHT) } as React.CSSProperties}>
                 {RIGHT_TALENTS.map((t) => (
                   <S.TalentSlot
                     key={t.id}
-                    style={
-                      {
-                        ["--z" as any]: String(t.z),
-                        ["--dx" as any]: String(t.dx ?? 0),
-                      } as React.CSSProperties
-                    }
+                    style={{ ["--z" as any]: String(t.z), ["--dx" as any]: String(t.dx ?? 0) } as React.CSSProperties}
                   >
                     <S.TalentBtn
                       type="button"
                       aria-label={t.name}
-                      // ✅ bỏ tooltip native
                       onPointerEnter={(e) => rightTag.enter(e, t.name)}
                       onPointerMove={rightTag.move}
                       onPointerLeave={rightTag.leave}
                       onFocus={() => rightTag.focus(t.name)}
                       onBlur={rightTag.blur}
-                      style={
-                        {
-                          ["--scale" as any]: String(t.scale),
-                        } as React.CSSProperties
-                      }
+                      style={{ ["--scale" as any]: String(t.scale) } as React.CSSProperties}
                     >
                       <S.TalentImg src={t.src} alt={t.name} draggable={false} />
                     </S.TalentBtn>

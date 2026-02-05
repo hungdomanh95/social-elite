@@ -6,7 +6,7 @@ const bp = { md: 768, lg: 1024 };
 export const Section = styled.section`
   position: relative;
   overflow: visible;
-  padding:var(--space-14) 0 36px;
+  padding: 36px 0;
   background: #050707;
 `;
 
@@ -14,7 +14,7 @@ export const Container = styled(BaseContainer)`
   display: flex;
   align-items: flex-end;
   justify-content: flex-start;
-  margin-bottom: var(--space-18);
+  margin-bottom: var(--space-24);
 
   &::after {
     content: "";
@@ -27,13 +27,15 @@ export const Container = styled(BaseContainer)`
       flex: 0 0 0;
     }
   }
+    @media (max-width: ${bp.md}px) {
+     margin-bottom: var(--space-20);
+  }
 `;
 
 export const Title = styled.h2`
   flex: 0 0 50%;
   display: flex;
   justify-content: flex-start;
-  margin: 0 0 18px;
 
   font-size: var(--text-4xl);
   font-weight: var(--fw-semibold);
@@ -52,27 +54,34 @@ export const Title = styled.h2`
 
   @media (max-width: ${bp.lg}px) {
     flex: 0 0 100%;
-
     .inner {
       max-width: none;
     }
   }
 `;
 
+/** ✅ Full-bleed sát mép màn hình */
 export const FullBleed = styled.div`
-  width: 100%;
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
   overflow: visible;
+
+  /* iOS safe-area */
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
 `;
 
+/** ✅ bỏ max-width + bỏ padding để 2 cụm sát mép */
 export const Stage = styled.div`
   width: 100%;
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: 0 clamp(10px, 1.8vw, 24px);
+  max-width: none;
+  margin: 0;
+  padding: 0;
 
   display: flex;
   align-items: flex-end;
-  gap: clamp(16px, 3vw, 40px);
+  gap: clamp(16px, 3vw, 44px);
 
   @media (max-width: ${bp.lg}px) {
     flex-direction: column;
@@ -90,7 +99,7 @@ export const Col = styled.div`
   }
 `;
 
-/* HoverTag (giống SoundTag) */
+/** ✅ HoverTag: bỏ dot */
 export const HoverTag = styled.div`
   position: absolute;
   top: 0;
@@ -101,7 +110,6 @@ export const HoverTag = styled.div`
 
   display: inline-flex;
   align-items: center;
-  gap: 8px;
 
   padding: 10px 14px;
   border-radius: 999px;
@@ -128,25 +136,13 @@ export const HoverTag = styled.div`
   }
 `;
 
-export const HoverDot = styled.span`
-  width: 12px;
-  height: 12px;
-  border-radius: 999px;
-  background: #111;
-`;
-
-export const HoverText = styled.span`
-  font-size: var(--text-base, 16px);
-  font-weight: var(--fw-semibold);
-`;
-
 export const Scene = styled.div`
   position: relative;
   width: 100%;
   overflow: visible;
   isolation: isolate;
 
-  &[data-tag-visible="true"] ${HoverTag} {
+  &[data-tag-visible="true"] ${/* sc-selector */ HoverTag} {
     opacity: 1;
     transform: translate3d(calc(var(--cursor-x, 0px) + 14px), var(--cursor-y, 0px), 0)
       translate3d(0, -100%, 0)
@@ -154,9 +150,8 @@ export const Scene = styled.div`
       scale(1);
   }
 
-  /* mobile/touch: thường không hover -> ẩn tag */
   @media (hover: none) {
-    ${HoverTag} {
+    ${/* sc-selector */ HoverTag} {
       display: none;
     }
   }
@@ -183,7 +178,14 @@ export const CoverImg = styled.img`
   user-select: none;
   pointer-events: none;
 
-  z-index: 3; /* nằm trên talent để “cắt” */
+  z-index: 3;
+`;
+
+
+
+export const HoverText = styled.span`
+  font-size: var(--text-base, 16px);
+  font-weight: var(--fw-semibold);
 `;
 
 export const TalentsOverlay = styled.div`
@@ -199,8 +201,6 @@ export const TalentsOverlay = styled.div`
   --baseRatio: 0.82;
 
   z-index: 2;
-
-  /* overlay không bắt pointer, chỉ button bắt */
   pointer-events: none;
 `;
 
