@@ -6,86 +6,63 @@ const bp = { md: 768, lg: 1024 };
 export const Section = styled.section`
   position: relative;
   overflow: visible;
-  padding: 36px 0;
+  padding: var(--space-14) 0 36px;
   background: #050707;
 `;
 
+/* Title giữ trong container để canh đẹp, không full-bleed */
 export const Container = styled(BaseContainer)`
   display: flex;
-  align-items: flex-end;
-  justify-content: flex-start;
-  margin-bottom: var(--space-24);
+  justify-content: center;
+  margin-bottom: 0; /* ✅ bỏ margin-bottom hên xui */
 
   &::after {
     content: "";
-    flex: 0 0 50%;
-  }
-
-  @media (max-width: ${bp.lg}px) {
-    &::after {
-      display: none;
-      flex: 0 0 0;
-    }
-  }
-    @media (max-width: ${bp.md}px) {
-     margin-bottom: var(--space-20);
+    flex: 0 0 0;
   }
 `;
 
 export const Title = styled.h2`
-  flex: 0 0 50%;
-  display: flex;
-  justify-content: flex-start;
+  width: 100%;
+  margin: 0;
+  /* text-align: center; */
 
   font-size: var(--text-4xl);
   font-weight: var(--fw-semibold);
-  text-align: left;
   color: rgba(255, 255, 255, 0.95);
 
   .inner {
-    width: 100%;
-    max-width: 560px;
-    display: block;
+    display: inline-block;
   }
 
   .accent {
     color: var(--accent, #22c55e);
   }
-
-  @media (max-width: ${bp.lg}px) {
-    flex: 0 0 100%;
-    .inner {
-      max-width: none;
-    }
-  }
 `;
 
-/** ✅ Full-bleed sát mép màn hình */
+/* ✅ TRIỆT ĐỂ: chừa khoảng “safe space” giữa title và talents */
 export const FullBleed = styled.div`
+  width: 100%;
+  overflow: visible;
+
+  /* chỉnh giá trị này nếu bạn tăng scale nữa */
+  padding-top: clamp(48px, 7vw, 140px);
+`;
+
+/* ✅ sát mép màn hình: full 100vw + kéo ra khỏi container */
+export const Stage = styled.div`
   width: 100vw;
   margin-left: calc(50% - 50vw);
   margin-right: calc(50% - 50vw);
-  overflow: visible;
-
-  /* iOS safe-area */
-  padding-left: env(safe-area-inset-left);
-  padding-right: env(safe-area-inset-right);
-`;
-
-/** ✅ bỏ max-width + bỏ padding để 2 cụm sát mép */
-export const Stage = styled.div`
-  width: 100%;
-  max-width: none;
-  margin: 0;
-  padding: 0;
 
   display: flex;
   align-items: flex-end;
-  gap: clamp(16px, 3vw, 44px);
+  gap: clamp(16px, 3vw, 40px);
 
   @media (max-width: ${bp.lg}px) {
     flex-direction: column;
     align-items: stretch;
+    gap: clamp(16px, 4vw, 28px);
   }
 `;
 
@@ -93,13 +70,12 @@ export const Col = styled.div`
   flex: 1 1 0;
   min-width: 0;
   overflow: visible;
-
   @media (max-width: ${bp.md}px) {
-    margin-bottom: var(--space-14);
+    margin-top: var(--space-14);
   }
 `;
 
-/** ✅ HoverTag: bỏ dot */
+/* HoverTag (không dot) */
 export const HoverTag = styled.div`
   position: absolute;
   top: 0;
@@ -118,7 +94,7 @@ export const HoverTag = styled.div`
   color: #111;
   box-shadow: 0 10px 22px rgba(0, 0, 0, 0.22);
 
-  line-height: var(--leading-none, 1);
+  line-height: 1;
   pointer-events: none;
   user-select: none;
   white-space: nowrap;
@@ -144,7 +120,11 @@ export const Scene = styled.div`
 
   &[data-tag-visible="true"] ${/* sc-selector */ HoverTag} {
     opacity: 1;
-    transform: translate3d(calc(var(--cursor-x, 0px) + 14px), var(--cursor-y, 0px), 0)
+    transform: translate3d(
+        calc(var(--cursor-x, 0px) + 14px),
+        var(--cursor-y, 0px),
+        0
+      )
       translate3d(0, -100%, 0)
       translate3d(0, -10px, 0)
       scale(1);
@@ -188,6 +168,7 @@ export const HoverText = styled.span`
   font-weight: var(--fw-semibold);
 `;
 
+/* overlay đặt talent */
 export const TalentsOverlay = styled.div`
   position: absolute;
   inset: 0;
@@ -201,7 +182,8 @@ export const TalentsOverlay = styled.div`
   --baseRatio: 0.82;
 
   z-index: 2;
-  pointer-events: none;
+
+  pointer-events: none; /* chỉ button bắt */
 `;
 
 export const TalentSlot = styled.div`

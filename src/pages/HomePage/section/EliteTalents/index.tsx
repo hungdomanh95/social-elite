@@ -3,6 +3,7 @@ import * as S from "./eliteTalents.styled";
 
 import BgLeft from "@/assets/images/talents/ba_talent_left.png";
 import BgLeftCover from "@/assets/images/talents/ba_talent_left_cover.png";
+
 import BgRight from "@/assets/images/talents/bg_talent_right.png";
 
 import Talent1 from "@/assets/images/talents/talent1.png";
@@ -83,6 +84,7 @@ function useFollowTag(): FollowTagApi {
     const minX = pad;
     const maxX = Math.max(minX, rect.width - w - pad - ox);
 
+    // tag bay lên trên con trỏ => y phải đủ lớn để không chạm top
     const minY = h + pad;
     const maxY = Math.max(minY, rect.height - pad);
 
@@ -179,11 +181,22 @@ export default function EliteTalents() {
                 <S.HoverText>{leftTag.label}</S.HoverText>
               </S.HoverTag>
 
-              <S.TalentsOverlay style={{ ["--baseRatio" as any]: String(BASE_RATIO_LEFT) } as React.CSSProperties}>
+              <S.TalentsOverlay
+                style={
+                  {
+                    ["--baseRatio" as any]: String(BASE_RATIO_LEFT),
+                  } as React.CSSProperties
+                }
+              >
                 {LEFT_TALENTS.map((t) => (
                   <S.TalentSlot
                     key={t.id}
-                    style={{ ["--z" as any]: String(t.z), ["--dx" as any]: String(t.dx ?? 0) } as React.CSSProperties}
+                    style={
+                      {
+                        ["--z" as any]: String(t.z),
+                        ["--dx" as any]: String(t.dx ?? 0),
+                      } as React.CSSProperties
+                    }
                   >
                     <S.TalentBtn
                       type="button"
@@ -193,7 +206,11 @@ export default function EliteTalents() {
                       onPointerLeave={leftTag.leave}
                       onFocus={() => leftTag.focus(t.name)}
                       onBlur={leftTag.blur}
-                      style={{ ["--scale" as any]: String(t.scale) } as React.CSSProperties}
+                      style={
+                        {
+                          ["--scale" as any]: String(t.scale),
+                        } as React.CSSProperties
+                      }
                     >
                       <S.TalentImg src={t.src} alt={t.name} draggable={false} />
                     </S.TalentBtn>
@@ -201,6 +218,7 @@ export default function EliteTalents() {
                 ))}
               </S.TalentsOverlay>
 
+              {/* cover để “cắt” theo curve */}
               <S.CoverImg src={BgLeftCover} alt="" draggable={false} />
             </S.Scene>
           </S.Col>
@@ -214,11 +232,22 @@ export default function EliteTalents() {
                 <S.HoverText>{rightTag.label}</S.HoverText>
               </S.HoverTag>
 
-              <S.TalentsOverlay style={{ ["--baseRatio" as any]: String(BASE_RATIO_RIGHT) } as React.CSSProperties}>
+              <S.TalentsOverlay
+                style={
+                  {
+                    ["--baseRatio" as any]: String(BASE_RATIO_RIGHT),
+                  } as React.CSSProperties
+                }
+              >
                 {RIGHT_TALENTS.map((t) => (
                   <S.TalentSlot
                     key={t.id}
-                    style={{ ["--z" as any]: String(t.z), ["--dx" as any]: String(t.dx ?? 0) } as React.CSSProperties}
+                    style={
+                      {
+                        ["--z" as any]: String(t.z),
+                        ["--dx" as any]: String(t.dx ?? 0),
+                      } as React.CSSProperties
+                    }
                   >
                     <S.TalentBtn
                       type="button"
@@ -228,13 +257,20 @@ export default function EliteTalents() {
                       onPointerLeave={rightTag.leave}
                       onFocus={() => rightTag.focus(t.name)}
                       onBlur={rightTag.blur}
-                      style={{ ["--scale" as any]: String(t.scale) } as React.CSSProperties}
+                      style={
+                        {
+                          ["--scale" as any]: String(t.scale),
+                        } as React.CSSProperties
+                      }
                     >
                       <S.TalentImg src={t.src} alt={t.name} draggable={false} />
                     </S.TalentBtn>
                   </S.TalentSlot>
                 ))}
               </S.TalentsOverlay>
+
+              {/* cover để “cắt” theo curve */}
+              {/* <S.CoverImg src={BgRightCover} alt="" draggable={false} /> */}
             </S.Scene>
           </S.Col>
         </S.Stage>
