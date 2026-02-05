@@ -5,16 +5,15 @@ import Header from "@/shared/components/Header";
 import Footer from "@/shared/components/Footer";
 import { useLandingPage } from "@/shared/api/useLandingPage";
 
-// ✅ hook landing (đã fetch + cache + store như bạn setup)
+// ✅ đổi path này cho đúng nơi bạn đặt ảnh
+import BlackBG from "@/assets/images/Black_BG.png";
 
 export default function MainLayout() {
   const location = useLocation();
   const isHome = location.pathname === "/";
 
-  // ✅ chỉ xử lý landing-page
   const { data: landing, loading, error, refetch } = useLandingPage();
 
-  // ✅ Gate: chỉ chặn khi vào Home lần đầu và chưa có data
   if (isHome && !landing) {
     if (error) {
       return (
@@ -37,18 +36,15 @@ export default function MainLayout() {
 
     return (
       <GateWrap aria-busy="true" aria-live="polite">
-        <GateCard>
-          <Spinner />
-          <GateTitle style={{ marginTop: 14 }}>
-            {loading ? "Đang tải dữ liệu..." : "Chuẩn bị nội dung..."}
-          </GateTitle>
-          <GateDesc>Vui lòng chờ một chút.</GateDesc>
-        </GateCard>
+        <LoadingImage
+          src={BlackBG}
+          alt={loading ? "Đang tải dữ liệu" : "Chuẩn bị nội dung"}
+          draggable={false}
+        />
       </GateWrap>
     );
   }
 
-  // ✅ có landing rồi (hoặc không phải Home) => render layout bình thường
   return (
     <Page>
       <Header />
@@ -69,16 +65,6 @@ const Main = styled.main`
 `;
 
 /* ======= Loading Gate ======= */
-
-const GateWrap = styled.div`
-  min-height: 100vh;
-  width: 100%;
-  background: #010402;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 28px;
-`;
 
 const GateCard = styled.div`
   width: min(520px, 100%);
@@ -140,18 +126,50 @@ const GateGhost = styled.button`
   }
 `;
 
-const spin = keyframes`
-  to { transform: rotate(360deg); }
+
+const fadeIn = keyframes`
+  from { opacity: 0; transform: translateY(10px) scale(0.98); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
 `;
 
-const Spinner = styled.div`
-  width: 34px;
-  height: 34px;
-  border-radius: 999px;
-  border: 3px solid rgba(255, 255, 255, 0.15);
-  border-top-color: rgba(34, 197, 94, 0.75);
-  margin: 0 auto;
-  animation: ${spin} 820ms linear infinite;
+const floaty = keyframes`
+  0%, 100% { transform: translateY(0) scale(1); }
+  50%      { transform: translateY(-8px) scale(1.01); }
+`;
+
+export const GateWrap = styled.div`
+  min-height: 100vh;
+  width: 100%;
+  background: #010402;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 28px;
+  position: relative;
+  overflow: hidden;
+
+  /* vignette nhẹ cho “sang” hơn */
+  &::before {
+    content: "";
+    position: absolute;
+    inset: -40%;
+    background: radial-gradient(
+      circle,
+      rgba(34, 197, 94, 0.08) 0%,
+      rgba(0, 0, 0, 0) 55%
+    );
+    filter: blur(18px);
+    pointer-events: none;
+  }
+`;
+
+export const LoadingImage = styled.img`
+  width: min(520px, 86vw);
+  height: auto;
+  display: block;
+  z-index: 1;
+  animation: ${fadeIn} 420ms ease-out both, ${floaty} 2.6s ease-in-out infinite;
+  will-change: transform, opacity;
 
   @media (prefers-reduced-motion: reduce) {
     animation: none;
